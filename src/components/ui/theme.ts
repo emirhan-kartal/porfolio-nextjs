@@ -25,6 +25,14 @@ const darkTheme = createTheme({
                 },
             },
         },
+        MuiDrawer: {
+            styleOverrides: {
+                paper: {
+                    backgroundColor: "#1C1C22",
+                    backgroundImage: "none",
+                },
+            },
+        },
         MuiInputLabel: {
             styleOverrides: {
                 root: {

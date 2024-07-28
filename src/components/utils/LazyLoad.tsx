@@ -15,7 +15,7 @@ export default function LazyLoad({ children }: { children: React.ReactNode }) {
                 <Box
                     sx={{
                         width: "100%",
-                        height: "100vh",
+                        height: ref.current?.clientHeight,
                         display: "flex",
                         justifyContent: "center",
                         alignItems: "center",

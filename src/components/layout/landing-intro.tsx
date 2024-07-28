@@ -16,12 +16,13 @@ export default function LandingIntro() {
         transition: { duration: 0.5 },
     };
     return (
-        <ContentWrapper sx={{ pt: 0 }} content>
+        <ContentWrapper sx={{ p:0}} content>
             <Box
                 display={"flex"}
                 alignItems={"center"}
                 justifyContent={"center"}
                 flexDirection={"column"}
+                height={"88dvh"}
                 gap={3}
                 component={motion.div}
                 variants={container("wo-delay")}

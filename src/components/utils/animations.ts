@@ -15,13 +15,11 @@ export const containerVariants = {
             staggerChildren: 0.5,
             delayChildren: 0.8,
         },
-        whileInView: {
-            once: true,
-        },
+
     },
 };
 
-export const container = (type?: string) => {
+export const container = (type?: string,delay?:number) => {
     if (type === "wo-delay") {
         return {
             ...containerVariants,
@@ -40,7 +38,7 @@ export const container = (type?: string) => {
                 ...containerVariants.visible,
                 transition: {
                     ...containerVariants.visible.transition,
-                    delayChildren: 0.5,
+                    delayChildren: delay ?? 0.5,
                 },
             },
         };

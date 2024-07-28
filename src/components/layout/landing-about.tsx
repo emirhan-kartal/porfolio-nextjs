@@ -4,7 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import ContentWrapper from "../ui/content-wrapper";
 import { motion } from "framer-motion";
-import { containerVariants, itemVariants } from "../utils/animations";
+import { container, containerVariants, itemVariants } from "../utils/animations";
 
 export interface Skill {
     title: string;
@@ -95,7 +95,7 @@ const LandingAbout = ({ whatIdo }: { whatIdo: Skill[] }) => {
                     spacing={2}
                     rowGap={2}
                     component={motion.div}
-                    variants={{...containerVariants, animate: {transition: {delayChildren: 0.1, staggerChildren: 0.3}}}}
+                    variants={container("w-delay",3.2)}
                     initial="hidden"
                     animate="visible"
                 >

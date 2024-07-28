@@ -46,7 +46,7 @@ const FeaturedProjects = ({ projects }: { projects: Project[] }) => {
                     variants={itemVariants}
                 >
                     <Typography>
-                        I make projects that will enchance my skillset into
+                        I make projects that will enhance my skillset into
                         reality.
                     </Typography>
                 </Grid>
