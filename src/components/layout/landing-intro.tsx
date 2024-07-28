@@ -1,28 +1,59 @@
-import { Box, Typography } from "@mui/material";
+import { Box, Theme, Typography, useMediaQuery } from "@mui/material";
 import EButton from "../ui/ebutton";
 import GradientText from "../ui/gradient-text";
 import Image from "next/image";
 import ContentWrapper from "../ui/content-wrapper";
 import SimpleFramer from "../ui/simple-framer";
 import { motion } from "framer-motion";
-import { container, containerVariants, itemVariants } from "../utils/animations";
+import {
+    container,
+    containerVariants,
+    itemVariants,
+} from "../utils/animations";
+import { useEffect, useState } from "react";
 
 export default function LandingIntro() {
-    const variant = {
-        initial: { opacity: 0, y: 50 },
-        animate: { opacity: 1, y: 0 },
-        exit: { opacity: 0 },
-        viewport: { once: true },
-        transition: { duration: 0.5 },
+    const settings = {
+        small: {
+            fontSize: { xs: "2.5rem", md: "3rem" },
+            textFontSize: 14,
+            imageHeight: 150,
+            imageWidth: 150,
+        },
+        regular: {
+            fontSize: { xs: "3rem", md: "3.5rem" },
+            textFontSize: 16,
+            imageHeight: 180,
+            imageWidth: 180,
+        },
     };
+    const [isSmallDevice, setIsSmallDevice] = useState(false);
+    const chosenSettings = isSmallDevice ? settings.small : settings.regular;
+    useEffect(() => {
+        if (typeof window !== "undefined") {
+            var handler = () => {
+                setIsSmallDevice(
+                    window.innerWidth < 400 ||
+                        (window.innerHeight < 800 && !(window.innerWidth > 900))
+                );
+            };
+            handler();
+            window.addEventListener("resize", handler);
+        }
+        return () => {
+            if (typeof window !== "undefined") {
+                window.removeEventListener("resize", handler);
+            }
+        };
+    }, []);
     return (
-        <ContentWrapper sx={{ p:0}} content>
+        <ContentWrapper sx={{ p: 0 }} content>
             <Box
                 display={"flex"}
                 alignItems={"center"}
                 justifyContent={"center"}
                 flexDirection={"column"}
-                height={"88dvh"}
+                height={"90dvh"}
                 gap={3}
                 component={motion.div}
                 variants={container("wo-delay")}
@@ -31,8 +62,8 @@ export default function LandingIntro() {
             >
                 <Box
                     borderRadius={"100%"}
-                    height={180}
-                    width={180}
+                    height={chosenSettings.imageHeight}
+                    width={chosenSettings.imageWidth}
                     component={motion.div}
                     variants={itemVariants}
                     sx={{
@@ -45,8 +76,8 @@ export default function LandingIntro() {
                     <Image
                         src="/me.png"
                         alt="Vercel Logo"
-                        width={180}
-                        height={180}
+                        width={chosenSettings.imageWidth}
+                        height={chosenSettings.imageHeight}
                         style={{ borderRadius: "100%" }}
                     />
                 </Box>
@@ -57,24 +88,24 @@ export default function LandingIntro() {
                 >
                     <GradientText
                         sx={{
-                            fontSize: { xs: "48px", sm: "56px" },
+                            fontSize: chosenSettings.fontSize,
                             fontWeight: "bold",
                         }}
                     >
                         Hi I&apos;m Emirhan,
                     </GradientText>
-                    <Typography fontSize={{ xs: "48px", sm: "56px" }}>
+                    <Typography fontSize={chosenSettings.fontSize}>
                         a Frontend Developer
                     </Typography>
                     <Typography
-                        fontSize={{ xs: "48px", sm: "56px" }}
+                        fontSize={chosenSettings.fontSize}
                         display={{ xs: "none", sm: "block" }}
                     >
                         based in Turkiye
                     </Typography>
                 </Box>
                 <Typography
-                    fontSize={16}
+                    fontSize={chosenSettings.textFontSize}
                     component={motion.div}
                     variants={itemVariants}
                 >
@@ -90,10 +121,20 @@ export default function LandingIntro() {
                     component={motion.div}
                     variants={itemVariants}
                 >
-                    <EButton type="white" width="210px" height="4rem" href="/contact">
+                    <EButton
+                        type="white"
+                        width="210px"
+                        height="4rem"
+                        href="/contact"
+                    >
                         GET IN TOUCH
                     </EButton>
-                    <EButton type="black" width="240px" height="4rem" href="/projects">
+                    <EButton
+                        type="black"
+                        width="240px"
+                        height="4rem"
+                        href="/projects"
+                    >
                         VIEW ALL WORKS
                     </EButton>
                 </Box>

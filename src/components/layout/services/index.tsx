@@ -25,7 +25,7 @@ export default function ServiceList() {
     return (
         <ContentWrapper>
             
-                <GradientText sx={{ mb: 1.5, fontSize: "48px" }}>
+                <GradientText sx={{ mb: 1.5, fontSize: "3rem" }}>
                     Our Services
                 </GradientText>
                 <Box display="flex" flexDirection="column" gap={10}>

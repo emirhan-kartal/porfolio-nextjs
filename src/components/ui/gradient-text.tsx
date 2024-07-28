@@ -25,7 +25,7 @@ export default function GradientText({
                         "linear-gradient(90deg, #B16CEA, #FF5E69, #FF8A56, #FFA84B)",
                     WebkitBackgroundClip: "text",
                     WebkitTextFillColor: "transparent",
-                    fontSize: "24px",
+                    fontSize: "1.5rem",
                     textDecoration: "underline",
                     width: "100%", // i dunno why but it doesnt shop up with full width
                     ...sx,
