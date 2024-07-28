@@ -20,7 +20,7 @@ export default function BlogContainer({ blogs }: { blogs: Blog[] }) {
             variants={container("wo-delay")}
         >
             {blogs.map((blog) => (
-                <motion.div key={blog.title}>
+                <motion.div key={blog.title} variants={itemVariants}>
                     <BlogCard {...blog} />
                 </motion.div>
             ))}
