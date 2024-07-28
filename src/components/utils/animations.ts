@@ -12,7 +12,7 @@ export const containerVariants = {
         y: 0,
         transition: {
             duration: 0.5,
-            staggerChildren: 0.38,
+            staggerChildren: 0.5,
             delayChildren: 0.8,
         },
         whileInView: {
@@ -33,8 +33,31 @@ export const container = (type?: string) => {
                 },
             },
         };
+    } else if (type === "w-delay") {
+        return {
+            ...containerVariants,
+            visible: {
+                ...containerVariants.visible,
+                transition: {
+                    ...containerVariants.visible.transition,
+                    delayChildren: 0.5,
+                },
+            },
+        };
     }
     return containerVariants;
+};
+export const itemWithDelay = (delayTime: number) => {
+    return {
+        ...itemVariants,
+        visible: {
+            ...itemVariants.visible,
+            transition: {
+                ...itemVariants.visible.transition,
+                delay: delayTime,
+            },
+        },
+    };
 };
 
 export const itemVariants = {

@@ -5,6 +5,7 @@ import ContentWrapper, { contentWrapperSx } from "../ui/content-wrapper";
 import { motion, useInView } from "framer-motion";
 import { containerVariants, itemVariants } from "../utils/animations";
 import { useRef } from "react";
+import ProjectContainer from "../ui/project-container";
 
 export type Project = {
     title: string;
@@ -50,30 +51,7 @@ const FeaturedProjects = ({ projects }: { projects: Project[] }) => {
                     </Typography>
                 </Grid>
 
-                <Grid
-                    container
-                    columnSpacing={1}
-                    sx={{ ...contentWrapperSx, flexDirection: "row" }}
-                    component={motion.div}
-                    initial="hidden"
-                    animate="visible"
-                    variants={containerVariants}
-                >
-                    {projects.map((project, index) => (
-                        <Grid
-                            item
-                            xs={12}
-                            sm={6}
-                            key={index}
-                            component={motion.div}
-                            variants={itemVariants}
-                        >
-                            <motion.div variants={itemVariants}>
-                                <ProjectCard {...project} />
-                            </motion.div>
-                        </Grid>
-                    ))}
-                </Grid>
+                <ProjectContainer projects={projects} />
             </Grid>
         </ContentWrapper>
     );

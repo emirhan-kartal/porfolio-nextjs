@@ -89,10 +89,10 @@ export default function LandingIntro() {
                     component={motion.div}
                     variants={itemVariants}
                 >
-                    <EButton type="white" width="210px" height="4rem">
+                    <EButton type="white" width="210px" height="4rem" href="/contact">
                         GET IN TOUCH
                     </EButton>
-                    <EButton type="black" width="240px" height="4rem">
+                    <EButton type="black" width="240px" height="4rem" href="/projects">
                         VIEW ALL WORKS
                     </EButton>
                 </Box>

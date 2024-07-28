@@ -15,7 +15,7 @@ export default function ProjectCard({
     return (
         <Box display={"flex"} flexDirection={"column"}>
             <Box
-                height={{ xs: 250, sm: 300, md: 350 }}
+                height={{ xs: 300, sm: 350, md: 400 }}
                 display={"flex"}
                 justifyContent={"center"}
                 bgcolor={"text.primary"}
@@ -40,8 +40,8 @@ export default function ProjectCard({
                 p={2}
                 sx={{ borderBottomLeftRadius: 16, borderBottomRightRadius: 16 }}
             >
-                <Typography variant={"h5"}>{title}</Typography>
-                <Typography variant={"body1"}>{description}</Typography>
+                <Typography variant={"h5"} mb={1}>{title}</Typography>
+                <Typography variant={"body1"} height={40} fontSize={13} color={"lightgray"}>{description}</Typography>
                 <Box display={"flex"} flexWrap={"wrap"} gap={1} mt={2}>
                     {tags.map((tag, index) => (
                         <Typography

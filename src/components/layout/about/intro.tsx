@@ -1,11 +1,16 @@
-import { Box, Grid, Typography } from "@mui/material";
+import { Box, duration, Grid, Typography } from "@mui/material";
 import ContentWrapper from "../../ui/content-wrapper";
 import Gallery from "../../ui/gallery";
 import GradientIcon from "../../ui/gradient-icon";
 import GradientText from "../../ui/gradient-text";
 import AnimatedComponent from "../../ui/animated-component";
-import { motion } from "framer-motion";
-import { container, containerVariants, itemVariants } from "@/components/utils/animations";
+import { delay, motion } from "framer-motion";
+import {
+    container,
+    containerVariants,
+    itemVariants,
+    itemWithDelay,
+} from "@/components/utils/animations";
 
 export default function AboutIntro() {
     return (
@@ -71,7 +76,7 @@ export default function AboutIntro() {
                             mb={{ xs: 1, sm: 2, md: 0 }}
                             gap={2}
                             component={motion.div}
-                            variants={itemVariants}
+                            variants={itemWithDelay(1.5)}
                         >
                             <GradientIcon
                                 icon={"akar-icons:github-fill"}
@@ -92,11 +97,7 @@ export default function AboutIntro() {
                     initial="hidden"
                     animate="visible"
                 >
-                    <Box
-                    component={motion.div}
-                    variants={itemVariants}
-
-                    >
+                    <Box component={motion.div} variants={itemWithDelay(2)}>
                         <Gallery />
                     </Box>
                 </Box>
