@@ -28,9 +28,12 @@ export default function FollowMe() {
                         width={0}
                         src={"/me.png"}
                         alt={"Emirhan Kartal"}
-                        objectFit="cover"
                         sizes="100wv"
-                        style={{ height: "auto", width: width }}
+                        style={{
+                            height: "auto",
+                            width: width,
+                            objectFit:"cover",
+                        }}
                     />
                 </Box>
                 <Box

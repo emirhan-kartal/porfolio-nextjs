@@ -34,7 +34,7 @@ export default function EButton({
                     cursor: "pointer",
                     width: width ? width : "fit-content",
                     height: height ? height : "fit-content",
-                    "&:hover > :first-child": {
+                    "&:hover > :first-of-type": {
                         color: "white",
                     },
                     ...sx,

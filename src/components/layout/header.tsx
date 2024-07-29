@@ -71,7 +71,7 @@ export default function Header() {
                 {drawerMenu}
             </Drawer>
             <Box
-                height={"10dvh"}
+                height={"10svh"}
                 bgcolor={"primary.main"}
                 display={"flex"}
                 alignItems={"center"}

@@ -30,9 +30,8 @@ export default function ProjectCard({
                     alt={title}
                     width={0}
                     height={0}
-                    objectFit="cover"
                     sizes="100wv"
-                    style={{ height: "auto", width: "auto" }}
+                    style={{ height: "auto", width: "auto", objectFit: "cover" }}
                 />
             </Box>
             <Box

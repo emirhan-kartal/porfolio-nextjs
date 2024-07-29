@@ -15,14 +15,13 @@ export default function LazyLoad({ children }: { children: React.ReactNode }) {
                 <Box
                     sx={{
                         width: "100%",
-                        height: ref.current?.clientHeight,
+                        height: "100dvh",
                         display: "flex",
                         justifyContent: "center",
                         alignItems: "center",
                     }}
-                    bgcolor={"primary.main"}
+                    bgcolor={"background.paper"}
                 >
-                    <h1>Loading...</h1>
                 </Box>
             )}
         </div>

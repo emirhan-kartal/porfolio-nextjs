@@ -11,12 +11,12 @@ export default function Footer({ className = "" }: { className?: string }) {
         { title: "Contact", link: "/contact" },
     ];
     return (
-        <ContentWrapper sx={{pb:0,pt:0}}>
+        <ContentWrapper sx={{ pb: 0, pt: 0 }}>
             <Box
                 position={"relative"}
                 bottom={0}
                 height={370}
-                width={{xs:"90%",md:"85%"}}
+                width={{ xs: "90%", md: "85%" }}
                 paddingTop={{ xs: 8 }}
                 className={className}
                 component={"footer"}
@@ -25,7 +25,7 @@ export default function Footer({ className = "" }: { className?: string }) {
                     aria-hidden="true"
                     sx={{ height: 2, bgcolor: "white", mb: 8 }}
                 />
-                <Grid container spacing={4} xs={12}>
+                <Grid item container spacing={4} xs={12}>
                     <Grid
                         item
                         xs={12}

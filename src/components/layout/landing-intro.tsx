@@ -53,7 +53,7 @@ export default function LandingIntro() {
                 alignItems={"center"}
                 justifyContent={"center"}
                 flexDirection={"column"}
-                height={"90dvh"}
+                height={"90svh"}
                 gap={3}
                 component={motion.div}
                 variants={container("wo-delay")}
@@ -76,6 +76,7 @@ export default function LandingIntro() {
                     <Image
                         src="/me.png"
                         alt="Vercel Logo"
+                        priority={true}
                         width={chosenSettings.imageWidth}
                         height={chosenSettings.imageHeight}
                         style={{ borderRadius: "100%" }}
