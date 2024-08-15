@@ -6,11 +6,7 @@ import {
     IconButton,
     Typography,
 } from "@mui/material";
-import {
-    DataGrid,
-    GridColDef,
-    GridRowsProp,
-} from "@mui/x-data-grid";
+import { DataGrid, GridColDef, GridRowsProp } from "@mui/x-data-grid";
 import { getServerSession } from "next-auth";
 import { useSession } from "next-auth/react";
 import { Blog } from "../../blog";
@@ -106,7 +102,7 @@ export default function Page({ blogs }: { blogs: Blog[] }) {
         return {
             id: blog.id,
             title: blog.title,
-            tags: blog.tags.join(", "),
+            tags: blog.tags.split(","),
             date: blog.date,
             author: blog.author,
         };

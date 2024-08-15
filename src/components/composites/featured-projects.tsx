@@ -6,15 +6,16 @@ import { containerVariants, itemVariants } from "../utils/animations";
 import ProjectContainer from "../ui/project-container";
 
 export type Project = {
-    id:string;
+    id: string;
     title: string;
     description: string;
     thumbnail: string;
     link: string;
-    tags: string[];
+    tags: string;
     content: string;
     date: string;
 };
+export type Blog = Project & { author: string };
 export type ProjectWithoutContent = Omit<Project, "content">;
 
 const FeaturedProjects = ({ projects }: { projects: Project[] }) => {

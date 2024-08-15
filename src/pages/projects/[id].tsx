@@ -1,10 +1,12 @@
 import ContentWrapper from "@/components/ui/content-wrapper";
 import { Box, Typography } from "@mui/material";
-import { Blog } from "../blog";
 import GradientText from "@/components/ui/gradient-text";
 import Image from "next/image";
-import { Project } from "@/components/composites/featured-projects";
-export default function Page({ data }: { data: Blog }) {
+import {
+    Project,
+    ProjectWithoutContent,
+} from "@/components/composites/featured-projects";
+export default function Page({ data }: { data: Project }) {
     console.log(data, "hello world");
     return (
         <>
@@ -13,7 +15,7 @@ export default function Page({ data }: { data: Blog }) {
                     <Typography mb={3} variant="h3">
                         {data.title}
                     </Typography>
-                    <GradientText>— By {data.author}</GradientText>
+                    <GradientText>— By Emirhan Kartal</GradientText>
                 </Box>
             </ContentWrapper>
             <Box width={"100%"} height={{ xs: 300 }}>

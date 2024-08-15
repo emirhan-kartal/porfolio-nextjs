@@ -2,14 +2,14 @@ import { getDatabase } from "@/lib/db";
 import { ObjectId } from "mongodb";
 import { NextApiRequest, NextApiResponse } from "next";
 import { getServerSession } from "next-auth";
-import { Blog } from "@/pages/blog";
 import { authOptions } from "../auth/[...nextauth]";
+import { Blog } from "@/components/composites/featured-projects";
 export default async function handler(
     req: NextApiRequest,
     res: NextApiResponse
 ) {
     const session = await getServerSession(req, res, authOptions);
-    console.log(session)
+    console.log(session);
     if (session || req.method === "GET") {
         console.log("Session", session);
     } else {
@@ -17,7 +17,7 @@ export default async function handler(
         res.status(401).json({ error: "Unauthorized" });
         return;
     }
-    console.log("çalışıyor")
+    console.log("çalışıyor");
 
     switch (req.method) {
         case "GET":
@@ -79,8 +79,8 @@ async function deleteHandler(req: NextApiRequest, res: NextApiResponse) {
     if (!req.query.id) {
         return res.status(400).send({ error: "ID is required" });
     }
-    console.log(req.query.id)
-    console.log("testpaosdjoapsdjop")
+    console.log(req.query.id);
+    console.log("testpaosdjoapsdjop");
     const mongo = await getDatabase();
     const result = await mongo
         .collection("blogs")

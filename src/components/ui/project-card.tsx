@@ -57,7 +57,7 @@ export default function ProjectCard({
                     {description}
                 </Typography>
                 <Box display={"flex"} flexWrap={"wrap"} gap={1} mt={2}>
-                    {tags.map((tag: any, index: number) => (
+                    {tags.split(",").map((tag: any, index: number) => (
                         <Typography
                             key={index}
                             variant={"body2"}

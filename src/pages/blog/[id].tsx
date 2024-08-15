@@ -1,11 +1,8 @@
 import ContentWrapper from "@/components/ui/content-wrapper";
 import { Box, Typography } from "@mui/material";
 import { Blog } from "../blog";
-import { getAllBlogIds, getBlogData } from "@/components/utils/blogs";
 import GradientText from "@/components/ui/gradient-text";
 import Image from "next/image";
-import { ObjectId } from "mongodb";
-
 export default function Page({ data }: { data: Blog }) {
     console.log(data, "hello world");
     return (
@@ -41,32 +38,34 @@ export default function Page({ data }: { data: Blog }) {
         </>
     );
 }
-interface MongoBlog extends Blog {
-    _id: ObjectId;
-}
-export async function getStaticPaths() {
-    const res = await fetch("api/blogs");
-    const data: MongoBlog[] = await res.json();
-    const paths = data.map((blog: Blog) => {
-        return {
-            params: {
-                id: blog.id,
-            },
-        };
-    });
 
-    return {
-        paths,
-        fallback: false,
-    };
-}
-export async function getStaticProps({ params }: { params: { id: string } }) {
-    const res = await fetch("api/blogs/" + params.id);
+export const getStaticProps = async ({
+    params,
+}: {
+    params: { id: string };
+}) => {
+    const res = await fetch("http://localhost:3000/api/blogs/" + params.id);
     const data = await res.json();
-
+    console.log("--------------------------------------------");
+    console.log(data);
     return {
         props: {
             data,
         },
+    };
+};
+export async function getStaticPaths() {
+    // Replace 'http://localhost:3000' with your actual domain or environment variable
+    const res = await fetch("http://localhost:3000/api/blogs/", {
+        method: "GET",
+    });
+    const data = await res.json(); // Await the JSON response
+    const paths = data.map((blog: any) => ({
+        params: { id: blog._id }, // Convert ID to string if it's a number
+    }));
+
+    return {
+        paths,
+        fallback: false,
     };
 }

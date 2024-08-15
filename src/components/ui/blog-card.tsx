@@ -54,7 +54,7 @@ export default function BlogCard({
                     ml={{ sm: 4 }}
                 >
                     <Box display={"flex"} gap={1.2}>
-                        {tags.map((tag, index) => (
+                        {tags.split(",").map((tag, index) => (
                             <Box
                                 key={index}
                                 bgcolor={"text.primary"}

@@ -1,8 +1,7 @@
 import { Box, Typography } from "@mui/material";
 import ContentWrapper from "../ui/content-wrapper";
 import GradientText from "../ui/gradient-text";
-import { Project } from "./featured-projects";
-import { Blog } from "@/pages/blog";
+import { Blog, Project } from "./featured-projects";
 import Image from "next/image";
 
 export default function ArticleLayout({ data }: { data: Blog | Project }) {
