@@ -9,10 +9,10 @@ import Link from "next/link";
 export default function ProjectCard({
     title,
     description,
-    image,
+    thumbnail,
     link,
     tags,
-    id
+    id,
 }: ProjectWithoutContent) {
     return (
         <Box display={"flex"} flexDirection={"column"}>
@@ -28,7 +28,7 @@ export default function ProjectCard({
                 }}
             >
                 <Image
-                    src={image}
+                    src={thumbnail}
                     alt={title}
                     width={0}
                     height={0}
@@ -57,7 +57,7 @@ export default function ProjectCard({
                     {description}
                 </Typography>
                 <Box display={"flex"} flexWrap={"wrap"} gap={1} mt={2}>
-                    {tags.split(",").map((tag, index) => (
+                    {tags.map((tag: any, index: number) => (
                         <Typography
                             key={index}
                             variant={"body2"}
@@ -70,8 +70,7 @@ export default function ProjectCard({
                         </Typography>
                     ))}
                 </Box>
-                {console.log(link)}
-                <Link href={"projects/"+id}>
+                <Link href={"projects/" + id}>
                     <EButton type="black" sx={{ mt: 2 }}>
                         View Project
                     </EButton>

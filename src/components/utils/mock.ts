@@ -12,7 +12,7 @@ mock.onGet("/api/projects", { params: { amount: 2 } }).reply(200, {
             title: "Project Title",
             description:
                 "lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-            image: "/project.jpeg",
+            thumbnail: "/project.jpeg",
             link: "",
             tags: ["React", "Next.js"],
         },
@@ -20,7 +20,7 @@ mock.onGet("/api/projects", { params: { amount: 2 } }).reply(200, {
             title: "Project Title",
             description:
                 "lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-            image: "/project.jpeg",
+            thumbnail: "/project.jpeg",
             link: "",
             tags: ["React", "Next.js"],
         },
@@ -32,7 +32,7 @@ mock.onGet("/api/projects").reply(200, {
             title: "Project Title",
             description:
                 "lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-            image: "/project.jpeg",
+            thumbnail: "/project.jpeg",
             link: "",
             tags: ["React", "Next.js"],
         },
@@ -40,7 +40,7 @@ mock.onGet("/api/projects").reply(200, {
             title: "Project Title",
             description:
                 "lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-            image: "/project.jpeg",
+            thumbnail: "/project.jpeg",
             link: "",
             tags: ["React", "Next.js"],
         },
@@ -48,7 +48,7 @@ mock.onGet("/api/projects").reply(200, {
             title: "Project Title",
             description:
                 "lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-            image: "/project.jpeg",
+            thumbnail: "/project.jpeg",
             link: "",
             tags: ["React", "Next.js"],
         },
@@ -60,7 +60,7 @@ mock.onGet("/api/blogs", { params: { content: false } }).reply(200, {
             title: "Blog 1",
             description:
                 "This is blog 1 lorem Allahsız kaplumbağa dolor sit amet consectetur adipiscing elit",
-            image: "https://via.placeholder.com/300",
+            thumbnail: "https://via.placeholder.com/300",
             link: "/blog/21",
             tags: ["tag1", "tag2"],
             date: "2021-01-01",
@@ -70,7 +70,7 @@ mock.onGet("/api/blogs", { params: { content: false } }).reply(200, {
         {
             title: "Blog 2",
             description: "This is blog 2",
-            image: "https://via.placeholder.com/300",
+            thumbnail: "https://via.placeholder.com/300",
             link: "https://google.com",
             tags: ["tag1", "tag2"],
             author: "Emirhan Kartal",
@@ -80,7 +80,7 @@ mock.onGet("/api/blogs", { params: { content: false } }).reply(200, {
         {
             title: "Blog 3",
             description: "This is blog 3",
-            image: "https://via.placeholder.com/300",
+            thumbnail: "https://via.placeholder.com/300",
             link: "https://google.com",
             tags: ["tag1", "Web Design"],
             author: "Emirhan Kartal",
@@ -93,7 +93,7 @@ mock.onGet("/api/blogs/21").reply(200, {
     title: "Blog 1",
     description:
         "This is blog 1 lorem Allahsız kaplumbağa dolor sit amet consectetur adipiscing elit",
-    image: "https://via.placeholder.com/300",
+    thumbnail: "https://via.placeholder.com/300",
     link: "/blog/21",
     author: "Emirhan Kartal",
     tags: ["tag1", "tag2"],
@@ -116,7 +116,7 @@ Whether you are a seasoned developer or just starting, keeping up with the lates
 mock.onGet("/api/blogs/22").reply(200, {
     title: "7 Tips to increase your UI/UX designs for your new projects",
     description: "This is blog 2",
-    image: "https://via.placeholder.com/500/300",
+    thumbnail: "https://via.placeholder.com/500/300",
     link: "https://google.com",
     tags: ["tag1", "tag2"],
     author: "Emirhan Kartal",
@@ -142,7 +142,7 @@ Whether you are a seasoned developer or just starting, keeping up with the lates
 mock.onGet("/api/blogs/23").reply(200, {
     title: "Blog 3",
     description: "This is blog 3",
-    image: "https://via.placeholder.com/300",
+    thumbnail: "https://via.placeholder.com/300",
     link: "https://google.com",
     author: "Emirhan Kartal",
     content: `# The Future of Web Development
