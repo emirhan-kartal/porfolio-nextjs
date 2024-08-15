@@ -1,8 +1,7 @@
-import { Box, Typography } from "@mui/material";
+import { Box } from "@mui/material";
 import ContentWrapper from "../../ui/content-wrapper";
 import ServiceCard from "../../ui/service-card";
 import GradientText from "../../ui/gradient-text";
-import AnimatedComponent from "../../ui/animated-component";
 
 export default function ServiceList() {
     const services = [
@@ -24,16 +23,14 @@ export default function ServiceList() {
     ];
     return (
         <ContentWrapper>
-            
-                <GradientText sx={{ mb: 1.5, fontSize: "3rem" }}>
-                    Our Services
-                </GradientText>
-                <Box display="flex" flexDirection="column" gap={10}>
-                    {services.map((service, index) => (
-                        <ServiceCard key={index} {...service} image="/me.png" />
-                    ))}
-                </Box>
-            
+            <GradientText sx={{ mb: 1.5, fontSize: "3rem" }}>
+                Our Services
+            </GradientText>
+            <Box display="flex" flexDirection="column" gap={10}>
+                {services.map((service, index) => (
+                    <ServiceCard key={index} {...service} image="/me.png" />
+                ))}
+            </Box>
         </ContentWrapper>
     );
 }

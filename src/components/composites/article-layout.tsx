@@ -1,6 +1,5 @@
 import { Box, Typography } from "@mui/material";
 import ContentWrapper from "../ui/content-wrapper";
-import GradientText from "../ui/gradient-text";
 import { Blog, Project } from "./featured-projects";
 import Image from "next/image";
 

@@ -1,10 +1,9 @@
-import { Box, duration, Grid, Typography } from "@mui/material";
+import { Box, Grid, Typography } from "@mui/material";
 import ContentWrapper from "../../ui/content-wrapper";
 import Gallery from "../../ui/gallery";
 import GradientIcon from "../../ui/gradient-icon";
 import GradientText from "../../ui/gradient-text";
-import AnimatedComponent from "../../ui/animated-component";
-import { delay, motion } from "framer-motion";
+import { motion } from "framer-motion";
 import {
     container,
     containerVariants,

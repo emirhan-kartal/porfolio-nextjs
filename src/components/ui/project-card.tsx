@@ -2,7 +2,6 @@ import { Box, Typography } from "@mui/material";
 import EButton from "./ebutton";
 import Image from "next/image";
 import {
-    Project,
     ProjectWithoutContent,
 } from "../composites/featured-projects";
 import Link from "next/link";

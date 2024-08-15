@@ -1,6 +1,6 @@
 import { Box, Grid, Pagination } from "@mui/material";
 import { motion } from "framer-motion";
-import { Project, ProjectWithoutContent } from "../composites/featured-projects";
+import { ProjectWithoutContent } from "../composites/featured-projects";
 import { containerVariants, itemVariants } from "../utils/animations";
 import { contentWrapperSx } from "./content-wrapper";
 import ProjectCard from "./project-card";
