@@ -17,7 +17,7 @@ export default function ArticleLayout({ data }: { data: Blog | Project }) {
             </ContentWrapper>
             <Box width={"100%"} height={{ xs: 300 }}>
                 <Image
-                    src={data.image}
+                    src={data.thumbnail}
                     alt={data.title}
                     height={350}
                     width={0}
