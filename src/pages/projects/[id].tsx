@@ -47,7 +47,7 @@ export const getStaticProps = async ({
 }: {
     params: { id: string };
 }) => {
-    const res = await fetch("http://localhost:3000/api/projects/" + params.id);
+    const res = await fetch("/api/projects/" + params.id);
     const data = await res.json();
     console.log("--------------------------------------------");
     console.log(data);
@@ -59,7 +59,7 @@ export const getStaticProps = async ({
 };
 export async function getStaticPaths() {
     // Replace 'http://localhost:3000' with your actual domain or environment variable
-    const res = await fetch("http://localhost:3000/api/projects/", {
+    const res = await fetch("/api/projects/", {
         method: "GET",
     });
     const data = await res.json(); // Await the JSON response
