@@ -6,6 +6,8 @@ import {
     Project,
     ProjectWithoutContent,
 } from "@/components/composites/featured-projects";
+import { getDatabase } from "@/lib/db";
+import { ObjectId } from "mongodb";
 export default function Page({ data }: { data: Project }) {
     console.log(data, "hello world");
     return (
@@ -47,24 +49,23 @@ export const getStaticProps = async ({
 }: {
     params: { id: string };
 }) => {
-    const res = await fetch("api/projects/" + params.id);
-    const data = await res.json();
-    console.log("--------------------------------------------");
-    console.log(data);
+    const mongo = await getDatabase();
+    const res = await mongo
+        .collection("projects")
+        .findOne({ _id: new ObjectId(params.id) });
+
     return {
         props: {
-            data,
+            res,
         },
     };
 };
 export async function getStaticPaths() {
     // Replace 'http://localhost:3000' with your actual domain or environment variable
-    const res = await fetch("api/projects/", {
-        method: "GET",
-    });
-    const data = await res.json(); // Await the JSON response
-    const paths = data.map((project: any) => ({
-        params: { id: project._id }, // Convert ID to string if it's a number
+    const mongo = await getDatabase();
+    const res = await mongo.collection("projects").find().toArray();
+    const paths = res.map((blog) => ({
+        params: { id: blog._id.toString() },
     }));
 
     return {
