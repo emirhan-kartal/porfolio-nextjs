@@ -35,7 +35,6 @@ export const getStaticProps: GetStaticProps<object> = async () => {
             title: blog.title,
             description: blog.description,
             image: blog.thumbnail,
-            link: blog.link,
             tags: blog.tags,
             id: blog._id.toString(),
             date: blog.date,

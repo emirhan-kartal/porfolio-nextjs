@@ -50,12 +50,13 @@ export const getStaticProps = async ({
     const res = await mongo
         .collection("blogs")
         .findOne({ _id: new ObjectId(params.id) });
+    console.log("Lütfen3", res);
     const data = {
         title: res?.title,
         content: res?.content,
         thumbnail: res?.thumbnail,
         author: res?.author,
-    };
+    } as Blog;
 
     return {
         props: {

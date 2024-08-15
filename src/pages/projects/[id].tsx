@@ -53,6 +53,7 @@ export const getStaticProps = async ({
     const res = await mongo
         .collection("projects")
         .findOne({ _id: new ObjectId(params.id) });
+    console.log("Lütfen",res)
     const data = {
         title: res?.title,
         content: res?.content,
