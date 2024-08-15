@@ -1,17 +1,19 @@
 import { Box, Typography } from "@mui/material";
 import EButton from "./ebutton";
 import Image from "next/image";
-import { Project } from "../layout/featured-projects";
-
-
-
+import {
+    Project,
+    ProjectWithoutContent,
+} from "../composites/featured-projects";
+import Link from "next/link";
 export default function ProjectCard({
     title,
     description,
     image,
     link,
     tags,
-}: Project) {
+    id
+}: ProjectWithoutContent) {
     return (
         <Box display={"flex"} flexDirection={"column"}>
             <Box
@@ -31,7 +33,11 @@ export default function ProjectCard({
                     width={0}
                     height={0}
                     sizes="100wv"
-                    style={{ height: "auto", width: "auto", objectFit: "cover" }}
+                    style={{
+                        height: "auto",
+                        width: "auto",
+                        objectFit: "cover",
+                    }}
                 />
             </Box>
             <Box
@@ -39,10 +45,19 @@ export default function ProjectCard({
                 p={2}
                 sx={{ borderBottomLeftRadius: 16, borderBottomRightRadius: 16 }}
             >
-                <Typography variant={"h5"} mb={1}>{title}</Typography>
-                <Typography variant={"body1"} height={40} fontSize={13} color={"lightgray"}>{description}</Typography>
+                <Typography variant={"h5"} mb={1}>
+                    {title}
+                </Typography>
+                <Typography
+                    variant={"body1"}
+                    height={40}
+                    fontSize={13}
+                    color={"lightgray"}
+                >
+                    {description}
+                </Typography>
                 <Box display={"flex"} flexWrap={"wrap"} gap={1} mt={2}>
-                    {tags.map((tag, index) => (
+                    {tags.split(",").map((tag, index) => (
                         <Typography
                             key={index}
                             variant={"body2"}
@@ -55,9 +70,12 @@ export default function ProjectCard({
                         </Typography>
                     ))}
                 </Box>
-                <EButton type="black" sx={{ mt: 2 }}>
-                    View Project
-                </EButton>
+                {console.log(link)}
+                <Link href={"projects/"+id}>
+                    <EButton type="black" sx={{ mt: 2 }}>
+                        View Project
+                    </EButton>
+                </Link>
             </Box>
         </Box>
     );

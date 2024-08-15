@@ -1,19 +1,21 @@
 import { Grid, Typography } from "@mui/material";
 import GradientText from "../ui/gradient-text";
-import ProjectCard from "../ui/project-card";
 import ContentWrapper, { contentWrapperSx } from "../ui/content-wrapper";
-import { motion, useInView } from "framer-motion";
+import { motion } from "framer-motion";
 import { containerVariants, itemVariants } from "../utils/animations";
-import { useRef } from "react";
 import ProjectContainer from "../ui/project-container";
 
 export type Project = {
+    id:string;
     title: string;
     description: string;
-    image: string;
+    thumbnail: string;
     link: string;
     tags: string[];
+    content: string;
+    date: string;
 };
+export type ProjectWithoutContent = Omit<Project, "content">;
 
 const FeaturedProjects = ({ projects }: { projects: Project[] }) => {
     return (

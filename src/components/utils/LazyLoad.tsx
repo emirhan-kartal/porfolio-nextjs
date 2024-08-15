@@ -1,5 +1,4 @@
-import { useInView } from "framer-motion";
-import React, { useEffect } from "react";
+import React from "react";
 import useIfInView from "../hooks/useIfInView";
 import { Box } from "@mui/material";
 

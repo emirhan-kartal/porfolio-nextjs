@@ -4,7 +4,6 @@ import ContentWrapper from "../../ui/content-wrapper";
 import Image from "next/image";
 import { Box, Theme } from "@mui/system";
 import GradientText from "../../ui/gradient-text";
-import AnimatedComponent from "../../ui/animated-component";
 import { containerVariants, itemVariants } from "@/components/utils/animations";
 import { motion } from "framer-motion";
 export default function FollowMe() {

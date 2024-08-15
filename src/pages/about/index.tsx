@@ -1,14 +1,15 @@
-import AboutIntro from "@/components/layout/about/intro";
+import AboutIntro from "@/components/composites/about/intro";
 import GradientColon from "@/components/ui/gradient-colon";
 import LazyLoad from "@/components/utils/LazyLoad";
 import dynamic from "next/dynamic";
 
-const DynamicTimeline = dynamic(import("@/components/layout/about/timeline"), {
+const DynamicTimeline = dynamic(import("@/components/composites/about/timeline"), {
     ssr: false,
 });
-const DynamicFollowMe = dynamic(import("@/components/layout/about/follow-me"), {
+const DynamicFollowMe = dynamic(import("@/components/composites/about/follow-me"), {
     ssr: false,
 });
+
 export default function Page() {
     return (
         <>
@@ -30,3 +31,4 @@ export default function Page() {
         </>
     );
 }
+

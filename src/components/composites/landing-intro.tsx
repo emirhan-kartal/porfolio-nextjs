@@ -1,15 +1,10 @@
-import { Box, Theme, Typography, useMediaQuery } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import EButton from "../ui/ebutton";
 import GradientText from "../ui/gradient-text";
 import Image from "next/image";
 import ContentWrapper from "../ui/content-wrapper";
-import SimpleFramer from "../ui/simple-framer";
 import { motion } from "framer-motion";
-import {
-    container,
-    containerVariants,
-    itemVariants,
-} from "../utils/animations";
+import { container, itemVariants } from "../utils/animations";
 import { useEffect, useState } from "react";
 
 export default function LandingIntro() {

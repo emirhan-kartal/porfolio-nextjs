@@ -1,11 +1,10 @@
-import BlogCard from "@/components/ui/blog-card";
 import BlogContainer from "@/components/ui/blog-container";
 import ContentWrapper from "@/components/ui/content-wrapper";
 import GradientText from "@/components/ui/gradient-text";
-import { Blog } from "@/pages/blog";
+import { BlogWithoutContent } from "@/pages/blog";
 import { Box, Typography } from "@mui/material";
 
-export default function BlogsTop({ blogs }: { blogs: Blog[] }) {
+export default function BlogsTop({ blogs }: { blogs: BlogWithoutContent[] }) {
     return (
         <ContentWrapper content>
             <Box display={"flex"} flexDirection={"column"}>

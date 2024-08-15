@@ -1,10 +1,14 @@
-import { Box, Grid, Typography } from "@mui/material";
+import { Grid, Typography } from "@mui/material";
 import GradientText from "../ui/gradient-text";
-import Image from "next/image";
-import Link from "next/link";
 import ContentWrapper from "../ui/content-wrapper";
 import { motion } from "framer-motion";
-import { container, containerVariants, itemVariants } from "../utils/animations";
+import {
+    container,
+    containerVariants,
+    itemVariants,
+} from "../utils/animations";
+import WhatIdoCard from "../ui/whatido-card";
+import CTA from "../ui/cta";
 
 export interface Skill {
     title: string;
@@ -95,62 +99,19 @@ const LandingAbout = ({ whatIdo }: { whatIdo: Skill[] }) => {
                     spacing={2}
                     rowGap={2}
                     component={motion.div}
-                    variants={container("w-delay",3.2)}
+                    variants={container("w-delay", 3.2)}
                     initial="hidden"
                     animate="visible"
                 >
                     {whatIdo ? (
                         whatIdo.map((skill, index) => (
-                            <Grid
-                                item
-                                xs={6}
-                                md={4}
-                                height={240}
-                                key={index}
-                                component={motion.div}
-                                variants={itemVariants}
-                            >
-                                <Box
-                                    display={"flex"}
-                                    bgcolor={"primary.main"}
-                                    flexDirection={"column"}
-                                    alignItems={"center"}
-                                    justifyContent={"center"}
-                                    height={240}
-                                >
-                                    <Image
-                                        src={skill.image}
-                                        alt={skill.title}
-                                        width={100}
-                                        height={100}
-                                    />
-                                    <Typography mt="32px" fontSize={"24px"}>
-                                        {skill.title}
-                                    </Typography>
-                                </Box>
-                            </Grid>
+                            <WhatIdoCard skill={skill} key={index} />
                         ))
                     ) : (
                         <div>Loading...</div>
                     )}
                 </Grid>
-                <Box mt={6} component={motion.div} variants={itemVariants}>
-                    <Typography fontSize={"29px"} mb={3}>
-                        See the impact of good development practices on your
-                        business.
-                    </Typography>
-                    <Link href={""}>
-                        <GradientText
-                            sx={{
-                                fontSize: { xs: 32, md: 72 },
-                                WebkitTextDecorationLine: "underline",
-                            }}
-                            underline={true}
-                        >
-                            Let&apos;s Work Together{" "}
-                        </GradientText>
-                    </Link>
-                </Box>
+                <CTA mt={6} />
             </Grid>
         </ContentWrapper>
     );

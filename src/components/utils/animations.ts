@@ -1,6 +1,3 @@
-import { duration } from "@mui/material";
-import { delay, stagger } from "framer-motion";
-
 export const containerVariants = {
     hidden: {
         opacity: 0,
@@ -38,7 +35,7 @@ export const container = (type?: string,delay?:number) => {
                 ...containerVariants.visible,
                 transition: {
                     ...containerVariants.visible.transition,
-                    delayChildren: delay ?? 0.5,
+                    delayChildren: delay ?? 0.8,
                 },
             },
         };

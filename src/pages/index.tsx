@@ -1,18 +1,19 @@
 import Head from "next/head";
 import { Inter } from "next/font/google";
-import LandingIntro from "@/components/layout/landing-intro";
+import LandingIntro from "@/components/composites/landing-intro";
 import GradientColon from "@/components/ui/gradient-colon";
-import { Project } from "@/components/layout/featured-projects";
-import LandingAbout, { Skill } from "@/components/layout/landing-about";
+import { Project } from "@/components/composites/featured-projects";
+import { Skill } from "@/components/composites/landing-about";
 import { GetStaticProps, GetStaticPropsResult } from "next";
 import dynamic from "next/dynamic";
 import LazyLoad from "@/components/utils/LazyLoad";
+import { getDatabase } from "@/lib/db";
 
 const DynamicFeaturedProjects = dynamic(
-    import("@/components/layout/featured-projects")
+    import("@/components/composites/featured-projects")
 );
 const DynamicLandingAbout = dynamic(
-    import("@/components/layout/landing-about"),
+    import("@/components/composites/landing-about"),
     { ssr: false }
 );
 const inter = Inter({ subsets: ["latin"] });
@@ -40,7 +41,7 @@ export default function Home({ whatIdo, projects }: HomePageProps) {
             <main>
                 <LandingIntro />
                 <GradientColon />
-                
+
                 <LazyLoad>
                     <DynamicFeaturedProjects projects={projects} />
                 </LazyLoad>
@@ -54,43 +55,27 @@ export default function Home({ whatIdo, projects }: HomePageProps) {
 export const getStaticProps: GetStaticProps<HomePageProps> = async (): Promise<
     GetStaticPropsResult<HomePageProps>
 > => {
-    const whatIdo = [
-        {
-            title: "Typescript",
-            image: "/images/ts-logo-128.png",
-        },
-        {
-            title: "React",
-            image: "/images/react2.png",
-        },
-        {
-            title: "Javascript",
-            image: "/me.png",
-        },
-        {
-            title: "CSS",
-            image: "/me.png",
-        },
-    ] as Skill[];
-
-    const projects = [
-        {
-            title: "Project Title",
-            description:
-                "lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-            image: "/project.jpeg",
-            link: "",
-            tags: ["React", "Next.js"],
-        },
-        {
-            title: "Project Title",
-            description:
-                "lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-            image: "/project.jpeg",
-            link: "",
-            tags: ["React", "Next.js"],
-        },
-    ] as Project[];
+    const mongo = await getDatabase();
+    const whatIdo = (await mongo.collection("whatIdo").find().toArray()).map(
+        (skill) => {
+            return {
+                title: skill.title,
+                image: skill.thumbnail,
+            } as Skill;
+        }
+    ) as Skill[];
+    const projects = (await mongo.collection("projects").find().toArray()).map(
+        (project) => {
+            return {
+                title: project.title,
+                description: project.description,
+                image: project.thumbnail,
+                link: project.link,
+                tags: project.tags,
+                date: project.date,
+            } as Project;
+        }
+    ) as Project[];
 
     return {
         props: {

@@ -1,36 +1,16 @@
 import ContentWrapper from "@/components/ui/content-wrapper";
 import ProjectContainer from "@/components/ui/project-container";
-import { Project } from "@/components/layout/featured-projects";
-import { Typography } from "@mui/material";
+import { ProjectWithoutContent } from "@/components/composites/featured-projects";
 import { motion } from "framer-motion";
 import GradientText from "@/components/ui/gradient-text";
-import { container, containerVariants } from "@/components/utils/animations";
-export default function Page() {
-    const projects: Project[] = [
-        {
-            title: "Project 1",
-            description: "This is project 1",
-            image: "https://via.placeholder.com/300",
-            link: "https://google.com",
-            tags: ["tag1", "tag2"],
-        },
-        {
-            title: "Project 2",
-            description: "This is project 2",
-            image: "https://via.placeholder.com/300",
-            link: "https://google.com",
-            tags: ["tag1", "tag2"],
-        },
-        {
-            title: "Project 3",
-
-            description: "This is project 3",
-            image: "https://via.placeholder.com/300",
-            link: "https://google.com",
-            tags: ["tag1", "tag2"],
-        },
-    ];
-
+import { container } from "@/components/utils/animations";
+import { GetStaticProps } from "next";
+import { getDatabase } from "@/lib/db";
+export default function Page({
+    projects,
+}: {
+    projects: ProjectWithoutContent[];
+}) {
     return (
         <ContentWrapper content>
             <motion.div
@@ -42,7 +22,29 @@ export default function Page() {
                     My Projects
                 </GradientText>
             </motion.div>
-            <ProjectContainer projects={projects} />
+            <ProjectContainer projects={projects ?? []} />
         </ContentWrapper>
     );
 }
+export const getStaticProps: GetStaticProps<object> = async () => {
+    const db = await getDatabase();
+    const query = await db
+        .collection("projects")
+        .find({}, { projection: { content: 0 } })
+        .toArray();
+    console.log("it runs bro");
+    const projects = query.map((project) => {
+        return {
+            title: project.title,
+            description: project.description,
+            image: project.thumbnail,
+            link: project.link,
+            tags: project.tags,
+            id: project._id.toString(),
+            date: project.date,
+        };
+    });
+    return {
+        props: { projects },
+    };
+};

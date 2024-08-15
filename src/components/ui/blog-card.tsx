@@ -1,23 +1,22 @@
 import { Box, Typography } from "@mui/material";
 import Image from "next/image";
-import { Project } from "../layout/featured-projects";
 import Link from "next/link";
+import { BlogWithoutContent } from "@/pages/blog";
 export default function BlogCard({
     tags,
-    title,
     description,
-    image,
     link,
-}: Project) {
+    id,
+}: BlogWithoutContent) {
+    console.log(link);
     return (
-        <Link href={link}>
+        <Link href={"/blog/" + id}>
             <Box
                 display={"flex"}
                 flexDirection={{ xs: "column", sm: "row" }}
                 bgcolor={"secondary.main"}
                 alignContent={"center"}
                 justifyContent={"center"}
-                
                 gap={4}
                 p={4}
                 sx={{
@@ -72,7 +71,9 @@ export default function BlogCard({
                         ))}
                     </Box>
 
-                    <Typography fontSize={"1.6rem"} mb={1.5}>{description}</Typography>
+                    <Typography fontSize={"1.6rem"} mb={1.5}>
+                        {description}
+                    </Typography>
                     <Typography>Read More</Typography>
                 </Box>
             </Box>

@@ -1,4 +1,4 @@
-import ServiceList from "@/components/layout/services/service-list";
+import ServiceList from "@/components/composites/services/service-list";
 
 export default function Page() {
     return (

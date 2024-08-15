@@ -7,16 +7,15 @@ import {
     ListItemText,
     Typography,
 } from "@mui/material";
-import GradientText from "../ui/gradient-text";
+import GradientText from "../../ui/gradient-text";
 import { Icon } from "@iconify/react/dist/iconify.js";
-import ContentWrapper from "../ui/content-wrapper";
+import ContentWrapper from "../../ui/content-wrapper";
 import Link from "next/link";
-import EButton from "../ui/ebutton";
-import styles from "@/styles/page.module.css";
-import { containerVariants } from "../utils/animations";
+import EButton from "../../ui/ebutton";
+import { containerVariants } from "../../utils/animations";
 import { motion } from "framer-motion";
 import { useState } from "react";
-
+import styles from "@/styles/page.module.css";
 export default function Header() {
     const links = [
         { title: "Home", link: "/" },

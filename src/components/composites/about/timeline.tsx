@@ -2,11 +2,10 @@ import { Box, Divider, Typography } from "@mui/material";
 import GradientText from "../../ui/gradient-text";
 import ContentWrapper from "../../ui/content-wrapper";
 import TimelineItem from "../../ui/timeline-item";
-import AnimatedComponent from "../../ui/animated-component";
 import { motion } from "framer-motion";
 import { containerVariants } from "@/components/utils/animations";
 
-export default function Timeline({type}:{type:string}) {
+export default function Timeline({ type }: { type: string }) {
     const educationInfo = [
         {
             title: "Akdeniz University",
@@ -37,19 +36,18 @@ export default function Timeline({type}:{type:string}) {
         },
     ];
 
-    const timelineData = type === "education-info" ? educationInfo : WorkExperience;
+    const timelineData =
+        type === "education-info" ? educationInfo : WorkExperience;
 
     return (
         <ContentWrapper>
-
-            
             <GradientText sx={{ fontSize: 32, mb: 1.2 }}>
                 {type === "education-info" ? "Education" : "Work Experience"}
             </GradientText>
             <Box
                 display={"flex"}
                 flexDirection={"column"}
-                gap={{xs:3,md:5}}
+                gap={{ xs: 3, md: 5 }}
                 width={{ xs: "auto", md: "60%" }}
                 component={motion.div}
                 initial="hidden"
@@ -67,7 +65,6 @@ export default function Timeline({type}:{type:string}) {
                     </>
                 ))}
             </Box>
-            
         </ContentWrapper>
     );
 }

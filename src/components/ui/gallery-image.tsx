@@ -1,4 +1,4 @@
-import { Box, Grid } from "@mui/material";
+import { Box } from "@mui/material";
 import Image from "next/image";
 
 interface GalleryImageProps {
@@ -25,6 +25,7 @@ export default function GalleryImage({
                 width={0}
                 height={0}
                 sizes="100wv"
+                priority={true}
                 style={{ height: "auto", width: "100%", objectFit: "cover" }}
             />
         </Box>

@@ -1,6 +1,6 @@
 import { Box, Grid, Pagination } from "@mui/material";
 import { motion } from "framer-motion";
-import { Project } from "../layout/featured-projects";
+import { Project, ProjectWithoutContent } from "../composites/featured-projects";
 import { containerVariants, itemVariants } from "../utils/animations";
 import { contentWrapperSx } from "./content-wrapper";
 import ProjectCard from "./project-card";
@@ -8,8 +8,9 @@ import ProjectCard from "./project-card";
 export default function ProjectContainer({
     projects,
 }: {
-    projects: Project[];
+    projects: ProjectWithoutContent[];
 }) {
+    console.log(projects, "projects");
     return (
         <>
             <Grid

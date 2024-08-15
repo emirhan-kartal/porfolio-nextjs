@@ -1,8 +1,7 @@
 import { Box, Divider, Grid, Typography } from "@mui/material";
-import GradientIcon from "../ui/gradient-icon";
+import GradientIcon from "../../ui/gradient-icon";
 import Link from "next/link";
-import ContentWrapper from "../ui/content-wrapper";
-import { Content } from "next/font/google";
+import ContentWrapper from "../../ui/content-wrapper";
 
 export default function Footer({ className = "" }: { className?: string }) {
     const navLinks = [
