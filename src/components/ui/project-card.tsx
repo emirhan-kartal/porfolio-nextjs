@@ -1,9 +1,7 @@
 import { Box, Typography } from "@mui/material";
 import EButton from "./ebutton";
 import Image from "next/image";
-import {
-    ProjectWithoutContent,
-} from "../composites/featured-projects";
+import { ProjectWithoutContent } from "../composites/featured-projects";
 import Link from "next/link";
 export default function ProjectCard({
     title,
@@ -11,7 +9,7 @@ export default function ProjectCard({
     thumbnail,
     link,
     tags,
-    id,
+    _id,
 }: ProjectWithoutContent) {
     return (
         <Box display={"flex"} flexDirection={"column"}>
@@ -69,7 +67,7 @@ export default function ProjectCard({
                         </Typography>
                     ))}
                 </Box>
-                <Link href={"projects/" + id}>
+                <Link href={"projects/" + _id}>
                     <EButton type="black" sx={{ mt: 2 }}>
                         View Project
                     </EButton>
