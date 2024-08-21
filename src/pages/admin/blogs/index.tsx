@@ -6,7 +6,7 @@ import {
     IconButton,
     Typography,
 } from "@mui/material";
-import { DataGrid, GridColDef, GridRowsProp } from "@mui/x-data-grid";
+import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import { getServerSession } from "next-auth";
 import { useSession } from "next-auth/react";
 import { Blog } from "../../blog";
@@ -15,13 +15,14 @@ import AdminLayout from "@/components/composites/admin/admin-layout";
 import { getDatabase } from "@/lib/db";
 import Link from "next/link";
 import { useState } from "react";
+import { useRouter } from "next/router";
 
 export default function Page({ blogs }: { blogs: Blog[] }) {
     const { data: session, status } = useSession();
     const [rows, setRows] = useState(
         blogs.map((blog) => {
             return {
-                id: blog.id,
+                _id: blog._id,
                 title: blog.title,
                 tags: blog.tags,
                 date: blog.date,
@@ -29,28 +30,34 @@ export default function Page({ blogs }: { blogs: Blog[] }) {
             };
         })
     );
+    const router = useRouter();
+
     if (status === "loading") {
         return <CircularProgress sx={{ color: "text.primary" }} />;
     }
     if (status === "unauthenticated") {
         return null;
     }
+
     const handleEdit = (params: any) => {
         console.log(params);
+        console.log("edit?id=" + params.id);
+        router.push("blogs/edit?id=" + params.id);
     };
     const handleDelete = async (params: any) => {
         console.log(params.id);
+        const rowsClone = [...rows];
+        setRows((prev) => {
+            return prev.filter((row) => row._id !== params.id);
+        });
         const result = await fetch("/api/blogs?id=" + params.id, {
             method: "DELETE",
         });
-        if (result.ok) {
-            setRows((prev) => {
-                return prev.filter((row) => row.id !== params.id);
-            });
-            alert("Success");
-        } else {
+        if (!result.ok) {
+            setRows(rowsClone);
             alert(result.statusText);
         }
+
         console.log(params);
     };
 
@@ -110,6 +117,7 @@ export default function Page({ blogs }: { blogs: Blog[] }) {
                 </Box>
             </Box>
             <DataGrid
+                getRowId={getRowId}
                 rows={rows}
                 columns={columns}
                 disableColumnSorting

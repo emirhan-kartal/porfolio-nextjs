@@ -14,7 +14,7 @@ export default function AdminNav() {
         <Box minHeight={"100vh"} height={"100%"}>
             <List
                 component={"nav"}
-                sx={{height:"100%"}}
+                sx={{ height: "100%" }}
                 aria-labelledby="nested-list-subheader"
                 subheader={
                     <ListSubheader
@@ -53,7 +53,15 @@ export default function AdminNav() {
                         <ListItemText>Projects</ListItemText>
                     </ListItemButton>
                 </ListItem>
-                <ListItem sx={{bottom:0}}>
+                <ListItem>
+                    <ListItemButton
+                        color="text.primary"
+                        onClick={() => router.push("/admin/skills")}
+                    >
+                        <ListItemText>What I Do List</ListItemText>
+                    </ListItemButton>
+                </ListItem>
+                <ListItem sx={{ bottom: 0 }}>
                     <ListItemButton
                         color="text.primary"
                         onClick={async () => await signOut()}

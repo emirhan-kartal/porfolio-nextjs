@@ -13,15 +13,18 @@ export default function AdminContentForm({
     const [formData, setFormData] = useState({
         title: content?.title || "",
         description: content?.description || "",
-        tags: "",
+        tags: content?.tags || "",
         thumbnail: content?.thumbnail || "",
         content: content?.content || "",
         author: "Emirhan Kartal",
+        id: content?._id.toString() || "",
         date: new Date().toISOString(),
     });
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
+        console.log(name,"name")
+        console.log(value,"value")
         setFormData((prevData) => ({
             ...prevData,
             [name]: value,
@@ -30,9 +33,8 @@ export default function AdminContentForm({
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        const apiRoute = content
-            ? `/api/${type}/${content.id}`
-            : `/api/${type}`;
+        const apiRoute = `/api/${type}`;
+        console.log(apiRoute);
         const result = await fetch(apiRoute, {
             method: content ? "PUT" : "POST",
             headers: {
@@ -43,9 +45,10 @@ export default function AdminContentForm({
         if (result.ok) {
             alert("Success");
         } else {
-            alert("Error");
+            alert(result.statusText);
         }
     };
+    console.log(content)
 
     return (
         <Box
@@ -101,7 +104,7 @@ export default function AdminContentForm({
                 required
                 multiline
                 rows={30}
-                name="contentArea"
+                name="content"
                 value={formData.content}
                 onChange={handleChange}
             />

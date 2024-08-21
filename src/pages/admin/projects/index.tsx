@@ -14,16 +14,21 @@ import { authOptions } from "../../api/auth/[...nextauth]";
 import AdminLayout from "@/components/composites/admin/admin-layout";
 import { getDatabase } from "@/lib/db";
 import Link from "next/link";
+import { useRouter } from "next/router";
 
 export default function Page({ blogs }: { blogs: Blog[] }) {
     const { data: session, status } = useSession();
+    const router = useRouter();
+
     if (status === "loading") {
         return <CircularProgress sx={{ color: "text.primary" }} />;
     }
     if (status === "unauthenticated") {
         return null;
     }
-
+    const handleEdit = (params: any) => {
+        router.push("edit?id=" + params.id);
+    };
     const columns: GridColDef[] = [
         { field: "title", headerName: "Title", minWidth: 250, flex: 1 },
         { field: "author", headerName: "Author", minWidth: 100, flex: 1 },
@@ -31,7 +36,7 @@ export default function Page({ blogs }: { blogs: Blog[] }) {
         {
             field: "date",
             headerName: "Date",
-            type: "date",
+            type: "string",
             minWidth: 100,
             flex: 1,
         },
@@ -61,52 +66,6 @@ export default function Page({ blogs }: { blogs: Blog[] }) {
             ],
         },
     ];
-    const rowsA: GridRowsProp = [
-        {
-            id: 1,
-            title: "Hello World",
-            author: "John Doe",
-            tags: "Hello",
-            date: "",
-        },
-        {
-            id: 2,
-            title: "Hello World",
-            author: "John Doe",
-            tags: "Hello",
-            date: "",
-        },
-        {
-            id: 3,
-            title: "Hello World",
-            author: "John Doe",
-            tags: "Hello",
-            date: "",
-        },
-        {
-            id: 4,
-            title: "Hello World",
-            author: "John Doe",
-            tags: "Hello",
-            date: "",
-        },
-        {
-            id: 5,
-            title: "Hello World",
-            author: "John Doe",
-            tags: "Hello",
-            date: "",
-        },
-    ];
-    const rows: GridRowsProp = blogs.map((blog) => {
-        return {
-            id: blog.id,
-            title: blog.title,
-            tags: blog.tags.split(","),
-            date: blog.date,
-            author: blog.author,
-        };
-    });
 
     return (
         <AdminLayout>
@@ -126,7 +85,8 @@ export default function Page({ blogs }: { blogs: Blog[] }) {
                 </Box>
             </Box>
             <DataGrid
-                rows={rows}
+                getRowId={getRowId}
+                rows={blogs}
                 columns={columns}
                 disableColumnSorting
                 disableColumnFilter
@@ -139,9 +99,7 @@ export default function Page({ blogs }: { blogs: Blog[] }) {
 const getRowId = (row: any) => {
     return row._id;
 };
-const handleEdit = (params: any) => {
-    console.log(params);
-};
+
 const handleDelete = (params: any) => {
     console.log(params);
 };
@@ -162,7 +120,17 @@ export async function getServerSideProps(context: any) {
         };
     }
     const mongo = await getDatabase();
-    const blogs = await mongo.collection("projects").find({}).toArray();
+    const query = await mongo.collection("projects").find({}).toArray();
+    const blogs = query.map((blog) => {
+        console.log(blog);
+        return {
+            id: blog._id.toString(),
+            title: blog.title,
+            tags: blog.tags.split(","),
+            date: blog.date,
+            author: "Emirhan Kartal",
+        };
+    });
 
     return {
         props: { blogs, session },

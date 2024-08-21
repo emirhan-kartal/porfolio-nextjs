@@ -48,10 +48,10 @@ async function postHandler(req: NextApiRequest, res: NextApiResponse) {
         return res.status(400).send({ error: "project data is required" });
     }
     const mongo = await getDatabase();
-    project.link = `projects/${project.id}`;
+    project.link = `projects/${project._id}`;
 
     const result = await mongo.collection("projects").insertOne(project);
-    project.id = result.insertedId.toString();
+    project._id = result.insertedId;
 
     res.status(201).send(project);
 }
@@ -64,7 +64,7 @@ async function putHandler(req: NextApiRequest, res: NextApiResponse) {
 
     const result = await mongo
         .collection("projects")
-        .updateOne({ _id: new ObjectId(project.id) }, { $set: project });
+        .updateOne({ _id: new ObjectId(project._id) }, { $set: project });
     if (result.modifiedCount === 0) {
         return res.status(404).send({ error: "project not found" });
     }

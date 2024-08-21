@@ -4,9 +4,10 @@ import ContentWrapper, { contentWrapperSx } from "../ui/content-wrapper";
 import { motion } from "framer-motion";
 import { containerVariants, itemVariants } from "../utils/animations";
 import ProjectContainer from "../ui/project-container";
+import { ObjectId } from "mongodb";
 
 export type Project = {
-    id: string;
+    _id: ObjectId;
     title: string;
     description: string;
     thumbnail: string;

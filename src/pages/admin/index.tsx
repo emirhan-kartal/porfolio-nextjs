@@ -1,5 +1,5 @@
 import AdminLayout from "@/components/composites/admin/admin-layout";
-import { CircularProgress, Typography } from "@mui/material";
+import { Typography } from "@mui/material";
 import { getServerSession } from "next-auth";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";

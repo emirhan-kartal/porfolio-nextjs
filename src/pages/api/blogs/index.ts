@@ -56,19 +56,23 @@ async function postHandler(req: NextApiRequest, res: NextApiResponse) {
     }
     const mongo = await getDatabase();
     const result = await mongo.collection("blogs").insertOne(blog);
-    blog.id = result.insertedId.toString();
+    if (!result) {
+        return res.status(500).send({ error: "Error inserting blog" });
+    }
     res.status(201).send(blog);
 }
 async function putHandler(req: NextApiRequest, res: NextApiResponse) {
     const blog: Blog = req.body;
+    console.log(blog, "işte u dostum");
+
     if (!blog) {
         return res.status(400).send({ error: "Blog data is required" });
     }
     const mongo = await getDatabase();
-
     const result = await mongo
         .collection("blogs")
-        .updateOne({ _id: new ObjectId(blog.id) }, { $set: blog });
+        .updateOne({ _id: blog._id }, { $set: blog });
+
     if (result.modifiedCount === 0) {
         return res.status(404).send({ error: "Blog not found" });
     }

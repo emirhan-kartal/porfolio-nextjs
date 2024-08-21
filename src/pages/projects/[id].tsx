@@ -4,12 +4,13 @@ import GradientText from "@/components/ui/gradient-text";
 import Image from "next/image";
 import {
     Project,
-    ProjectWithoutContent,
 } from "@/components/composites/featured-projects";
 import { getDatabase } from "@/lib/db";
 import { ObjectId } from "mongodb";
+import markdownToHtml from "@/lib/markdownToHtml";
 export default function Page({ data }: { data: Project }) {
     console.log(data, "hello world");
+
     return (
         <>
             <ContentWrapper content sx={{ pt: 15 }}>
@@ -36,7 +37,9 @@ export default function Page({ data }: { data: Project }) {
                     <Typography
                         variant="body1"
                         component={"div"}
-                        dangerouslySetInnerHTML={{ __html: data.content }}
+                        dangerouslySetInnerHTML={{
+                            __html: data.content,
+                        }}
                     ></Typography>
                 </Box>
             </ContentWrapper>
@@ -53,12 +56,17 @@ export const getStaticProps = async ({
     const res = await mongo
         .collection("projects")
         .findOne({ _id: new ObjectId(params.id) });
-    console.log("Lütfen",res)
+    if (!res) {
+        return {
+            notFound: true,
+        };
+    }
+    const markdownContent = await markdownToHtml(res.content);
     const data = {
-        title: res?.title,
-        content: res?.content,
-        thumbnail: res?.thumbnail,
-        author: res?.author,
+        title: res.title,
+        content: markdownContent,
+        thumbnail: res.thumbnail,
+        author: res.author,
     };
 
     return {

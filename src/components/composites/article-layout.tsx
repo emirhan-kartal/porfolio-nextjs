@@ -3,7 +3,11 @@ import ContentWrapper from "../ui/content-wrapper";
 import { Blog, Project } from "./featured-projects";
 import Image from "next/image";
 
-export default function ArticleLayout({ data }: { data: Blog | Project }) {
+export default async function ArticleLayout({
+    data,
+}: {
+    data: Blog | Project;
+}) {
     return (
         <>
             <ContentWrapper content sx={{ pt: 15 }}>
@@ -29,7 +33,9 @@ export default function ArticleLayout({ data }: { data: Blog | Project }) {
                     <Typography
                         variant="body1"
                         component={"div"}
-                        dangerouslySetInnerHTML={{ __html: data.content }}
+                        dangerouslySetInnerHTML={{
+                            __html: data.content,
+                        }}
                     ></Typography>
                 </Box>
             </ContentWrapper>

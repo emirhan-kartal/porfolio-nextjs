@@ -6,11 +6,11 @@ export default function BlogCard({
     tags,
     description,
     link,
-    id,
+    _id,
 }: BlogWithoutContent) {
-    console.log(link);
+    console.log(_id);
     return (
-        <Link href={"/blog/" + id}>
+        <Link href={"/blog/" + _id}>
             <Box
                 display={"flex"}
                 flexDirection={{ xs: "column", sm: "row" }}

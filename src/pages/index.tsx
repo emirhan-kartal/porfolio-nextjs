@@ -56,14 +56,15 @@ export const getStaticProps: GetStaticProps<HomePageProps> = async (): Promise<
     GetStaticPropsResult<HomePageProps>
 > => {
     const mongo = await getDatabase();
-    const whatIdo = (await mongo.collection("whatIdo").find().toArray()).map(
+    const whatIdo = (await mongo.collection("skills").find().toArray()).map(
         (skill) => {
             return {
-                title: skill.title,
-                image: skill.thumbnail,
+                title: skill.name,
+                image: skill.image,
             } as Skill;
         }
     ) as Skill[];
+    console.log("this is whatIdo", whatIdo);
     const projects = (await mongo.collection("projects").find().toArray()).map(
         (project) => {
             return {

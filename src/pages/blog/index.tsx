@@ -5,7 +5,6 @@ import ContentWrapper from "@/components/ui/content-wrapper";
 import CTA from "@/components/ui/cta";
 import GradientColon from "@/components/ui/gradient-colon";
 import { getDatabase } from "@/lib/db";
-import { GetStaticProps, GetStaticPropsResult } from "next";
 
 export type Blog = Project & { author: string };
 export type BlogWithoutContent = Omit<Blog, "content">;
@@ -23,7 +22,7 @@ export default function Page({ blogs }: { blogs: BlogWithoutContent[] }) {
     );
 }
 
-export const getStaticProps: GetStaticProps<object> = async () => {
+export async function getServerSideProps(context: any) {
     const db = await getDatabase();
     const query = await db
         .collection("blogs")
@@ -36,11 +35,11 @@ export const getStaticProps: GetStaticProps<object> = async () => {
             description: blog.description,
             image: blog.thumbnail,
             tags: blog.tags,
-            id: blog._id.toString(),
+            _id: blog._id.toString(),
             date: blog.date,
         };
     });
     return {
         props: { blogs },
     };
-};
+}

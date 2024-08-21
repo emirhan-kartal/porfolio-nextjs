@@ -1,5 +1,5 @@
 import { passwordCheck } from "@/lib/auth";
-import { addUser, findUserByEmail, UserWithId } from "@/models/user-model";
+import { addUser, findUserByEmail} from "@/models/user-model";
 import { NextAuthOptions, User } from "next-auth";
 import NextAuth from "next-auth/next";
 import CredentialsProvider from "next-auth/providers/credentials";
