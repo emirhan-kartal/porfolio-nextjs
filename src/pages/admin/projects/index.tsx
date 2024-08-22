@@ -38,7 +38,7 @@ export default function Page() {
     }
 
     const handleEdit = (params: any) => {
-        router.push("edit?id=" + params.id);
+        router.push("projects/edit?id=" + params.id);
     };
     const columns: GridColDef[] = [
         { field: "title", headerName: "Title", minWidth: 250, flex: 1 },
