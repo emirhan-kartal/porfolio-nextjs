@@ -6,17 +6,17 @@ import {
     IconButton,
     Typography,
 } from "@mui/material";
-import { DataGrid, GridColDef, GridRowsProp } from "@mui/x-data-grid";
+import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import { getServerSession } from "next-auth";
 import { useSession } from "next-auth/react";
-import { Blog } from "../../blog";
 import { authOptions } from "../../api/auth/[...nextauth]";
 import AdminLayout from "@/components/composites/admin/admin-layout";
 import { getDatabase } from "@/lib/db";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import { Project } from "@/components/composites/featured-projects";
 
-export default function Page({ blogs }: { blogs: Blog[] }) {
+export default function Page({ projects }: { projects: Project[] }) {
     const { data: session, status } = useSession();
     const router = useRouter();
 
@@ -86,7 +86,7 @@ export default function Page({ blogs }: { blogs: Blog[] }) {
             </Box>
             <DataGrid
                 getRowId={getRowId}
-                rows={blogs}
+                rows={projects}
                 columns={columns}
                 disableColumnSorting
                 disableColumnFilter
