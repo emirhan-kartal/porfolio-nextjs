@@ -7,14 +7,14 @@ import { ObjectId } from "mongodb";
 import { getServerSession } from "next-auth";
 import { useSession } from "next-auth/react";
 
-export default function Page({ blog }: { blog: any }) {
+export default function Page({ project }: { project: any }) {
     const { data: session } = useSession();
     return (
         <AdminLayout>
             <Typography component={"h1"} variant="h5">
-                Edit the blog post, {session?.user?.email}
+                Edit the project post, {session?.user?.email}
             </Typography>
-            <AdminContentForm content={blog} type="blogs"/>
+            <AdminContentForm content={project} type="projects" />
         </AdminLayout>
     );
 }
@@ -36,12 +36,22 @@ export async function getServerSideProps(context: any) {
     if (context.query.id) {
         const id = context.query.id;
         const mongo = await getDatabase();
-        const blog = await mongo
+        const result = await mongo
             .collection("projects")
             .findOne({ _id: new ObjectId(id) });
+        if (!result) {
+            return {
+                notFound: true,
+            };
+        }
+        const project = {
+            ...result,
+            _id: result._id.toString(),
+        };
+
         return {
             props: {
-                blog,
+                project,
             },
         };
     }

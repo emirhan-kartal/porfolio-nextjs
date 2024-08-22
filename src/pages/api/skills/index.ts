@@ -56,7 +56,7 @@ async function postHandler(req: NextApiRequest, res: NextApiResponse) {
     }
 }
 async function putHandler(req: NextApiRequest, res: NextApiResponse) {
-    console.log("PUT", req.body.id);
+    console.log("PUT", req.body._id);
     console.log("PUT", req.body.name);
     console.log("PUT", req.body.image);
 
@@ -65,7 +65,7 @@ async function putHandler(req: NextApiRequest, res: NextApiResponse) {
         console.error("Skill data is required");
         return;
     }
-    if (!req.body.id || !req.body.name || !req.body.image) {
+    if (!req.body._id || !req.body.name || !req.body.image) {
         res.status(400).json({ error: "Skill is required" });
         console.error("Skill is required");
         return;
@@ -75,7 +75,7 @@ async function putHandler(req: NextApiRequest, res: NextApiResponse) {
         const query = mongo
             .collection("skills")
             .updateOne(
-                { _id: new ObjectId(req.body.id) },
+                { _id: new ObjectId(req.body._id) },
                 { $set: { name: req.body.name, image: req.body.image } }
             );
         res.status(200).json(query);

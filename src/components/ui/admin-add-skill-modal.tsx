@@ -1,5 +1,5 @@
 import { SkillRow, SkillRowWithoutId } from "@/pages/admin/skills";
-import { Box, Button, Input, Modal, TextField } from "@mui/material";
+import { Box, Button, Modal, TextField } from "@mui/material";
 import React, { useEffect, useRef, useState } from "react";
 
 interface AddSkillModalProps {
@@ -19,8 +19,8 @@ export default function AddSkillModal({
     const [skill, setSkill] = useState<SkillRow>(selectedRow);
     useEffect(() => {
         setSkill(selectedRow);
+        console.log("useEffect triggered SeletectedRow", selectedRow);
     }, [selectedRow]);
-    console.log(skill.id);
     const ref = useRef<HTMLInputElement>(null);
     const handleFileClick = () => {
         if (ref.current) {
@@ -36,15 +36,16 @@ export default function AddSkillModal({
     const handleSave = async (rowState: SkillRow) => {
         console.time("fetch");
         console.time("optimistic");
+        const rowsClone = [...rows];
+
         setRows((prev: any) => {
             return prev.map((row: any) => {
-                if (row.id === rowState.id) {
+                if (row._id === rowState._id) {
                     return rowState;
                 }
                 return row;
             });
         });
-        closeCallback();
         console.timeEnd("optimistic");
         const result = await fetch("/api/skills", {
             method: "PUT",
@@ -54,11 +55,11 @@ export default function AddSkillModal({
             },
         });
         console.timeEnd("fetch");
-        const rowsClone = [...rows];
         if (!result.ok) {
             setRows(rowsClone);
             alert("Edit failed");
         }
+        closeCallback();
     };
     const handleAdd = async (skillObject: SkillRowWithoutId) => {
         console.log(skillObject);
@@ -78,35 +79,39 @@ export default function AddSkillModal({
     };
     const handleFileChange = async () => {
         if (!ref.current?.files?.[0]) {
+            console.log("No file selected");
             return;
         }
         const formData = new FormData();
-        formData.append("id", skill.id);
+        formData.append("_id", skill._id);
         formData.append("name", skill.name);
         formData.append("image", ref.current?.files?.[0] as Blob);
+        const newFilePath = ref.current?.files?.[0].name;
 
-        const result = await fetch("/api/skills/photo", {
-            method: skill.id === "" ? "POST" : "PUT",
-            body: formData,
-        });
-        //optimistic approach
         const rowsClone = [...rows];
 
-        const newFilePath = ref.current?.files?.[0].name;
-    
-
-        setSkill({ ...skill, image: newFilePath });
+        setSkill({ ...skill, image: "/skills/" + newFilePath });
         setRows((prev: SkillRow[]) => {
-            return prev.map((row: any) => {
-                if (row.id === skill.id) {
+            console.log("STATE DEĞİŞTİRİLDİ(FONKSİYON ÇAĞIRILDI)");
+            const newRows = prev.map((row: any) => {
+                if (row._id === skill._id) {
                     return { ...row, image: "/skills/" + newFilePath };
                 }
                 return row;
             });
+            console.log(newRows);
+            return newRows;
         });
+        const result = await fetch("/api/skills/photo", {
+            method: skill._id === "" ? "POST" : "PUT",
+            body: formData,
+        });
+        //optimistic approach
+        console.log("rowsClone", rowsClone);
+
         if (!result.ok) {
-            setRows(rowsClone);
-            setSkill(selectedRow);
+            console.log("failed")
+
 
             alert("Edit failed");
         }
@@ -154,13 +159,13 @@ export default function AddSkillModal({
                 </Button>
                 <Button
                     onClick={
-                        skill.id === ""
+                        skill._id === ""
                             ? () => handleAdd(skill)
                             : () => handleSave(skill)
                     }
                     variant="contained"
                 >
-                    {skill.id === "" ? "Add" : "Save"}
+                    {skill._id === "" ? "Add" : "Save"}
                 </Button>
             </Box>
         </Modal>

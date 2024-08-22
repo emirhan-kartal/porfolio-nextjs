@@ -9,6 +9,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { Project } from "@/components/composites/featured-projects";
 import useSWR from "swr";
+import { useEffect, useState } from "react";
 
 function sleep(ms: number) {
     return new Promise((resolve) => setTimeout(resolve, ms));
@@ -26,6 +27,12 @@ export default function Page() {
     const router = useRouter();
 
     const { data, error, isLoading } = useSWR("/api/projects", fetcher);
+    const [rows, setRows] = useState<Project[]>(data);
+    useEffect(() => {
+        if (!data) return;
+        setRows(data);
+    }, [data]);
+
     if (error) {
         return <div>Error</div>;
     }
@@ -88,10 +95,7 @@ export default function Page() {
                     </Button>
                 </Box>
             </Box>
-            <Box
-            width={"100%"}
-            height={"600px"}
-            > 
+            <Box width={"100%"} height={"600px"}>
                 <DataGrid
                     loading={isLoading}
                     pageSizeOptions={[10, 15, 20]}
@@ -103,7 +107,7 @@ export default function Page() {
                         },
                     }}
                     getRowId={getRowId}
-                    rows={data}
+                    rows={rows}
                     columns={columns}
                     disableColumnSorting
                     disableColumnFilter

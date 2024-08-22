@@ -17,11 +17,11 @@ import AddSkillModal from "@/components/ui/admin-add-skill-modal";
 import useSWR from "swr";
 
 export interface SkillRow {
-    id: string;
+    _id: string;
     name: string;
     image: string;
 }
-export type SkillRowWithoutId = Omit<SkillRow, "id">;
+export type SkillRowWithoutId = Omit<SkillRow, "_id">;
 const fetcher = async (url: string) => {
     const response = await fetch(url);
     if (!response.ok) {
@@ -30,17 +30,18 @@ const fetcher = async (url: string) => {
     return response.json();
 };
 export default function Page() {
-    const { data: session, status } = useSession();
     const { data, error, isLoading } = useSWR("/api/skills", fetcher);
 
-    const [rows, setRows] = useState<SkillRow[]>(data);
+    const [rows, setRows] = useState<SkillRow[]>([]);
+
     useEffect(() => {
-        if (!data) return;
-        setRows(data);
+        if (!data || rows.length !== 0) return;
+        console.log("data useEffect Triggered", data);
+        setRows([...data]);
     }, [data]);
     const [open, setOpen] = useState(false);
     const [selectedRow, setSelectedRow] = useState<SkillRow>({
-        id: "",
+        _id: "",
         name: "",
         image: "",
     });
@@ -52,7 +53,7 @@ export default function Page() {
         });
         if (result.ok) {
             setRows((prev: any) => {
-                return prev.filter((row: any) => row.id !== params.id);
+                return prev.filter((row: SkillRow) => row._id !== params.id);
             });
             alert("Success");
         } else {
@@ -60,16 +61,18 @@ export default function Page() {
         }
         console.log(params);
     };
-    const handleEdit = (e: React.MouseEvent, id: string) => {
+    const handleEdit = (e: React.MouseEvent, _id: string) => {
         e.stopPropagation();
+        console.log("handleEdit id", _id);
         const rowObject: SkillRow = rows.find(
-            (row: { id: string; name: string; image: string }) => row.id === id
+            (row: SkillRow) => row._id === _id
         ) as SkillRow;
+        console.log("handleEdit rOWS", rows);
         setOpen(true);
         setSelectedRow(rowObject);
     };
     const handleClose = () => {
-        setSelectedRow({ id: "", name: "", image: "" });
+        setSelectedRow({ _id: "", name: "", image: "" });
         setOpen(false);
     };
 
@@ -94,6 +97,9 @@ export default function Page() {
         ],
         [rows]
     );
+    if (error) {
+        return <div>Error</div>;
+    }
     const columns: GridColDef[] = [
         { field: "name", headerName: "Name", minWidth: 100, flex: 1 },
         { field: "image", headerName: "Image", minWidth: 250, flex: 1 },
@@ -141,7 +147,7 @@ export default function Page() {
                         },
                     }}
                     getRowId={getRowId}
-                    rows={data}
+                    rows={rows}
                     columns={columns}
                     disableColumnSorting
                     disableColumnFilter

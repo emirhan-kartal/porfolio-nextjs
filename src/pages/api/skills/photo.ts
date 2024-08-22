@@ -128,7 +128,7 @@ async function putHandler(req: NextApiRequest, res: NextApiResponse) {
         const mongo = await getDatabase();
         // formidable parses all the thinhs as arrays i guess.
         const data = await mongo.collection("skills").findOneAndUpdate(
-            { _id: new ObjectId(req.body.id[0] as string) },
+            { _id: new ObjectId(req.body._id[0] as string) },
             {
                 $set: {
                     name: req.body.name[0],
