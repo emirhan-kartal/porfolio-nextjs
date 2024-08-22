@@ -14,29 +14,31 @@ import { authOptions } from "../../api/auth/[...nextauth]";
 import AdminLayout from "@/components/composites/admin/admin-layout";
 import { getDatabase } from "@/lib/db";
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
+import useSWR from "swr";
 
-export default function Page({ blogs }: { blogs: Blog[] }) {
-    const { data: session, status } = useSession();
-    const [rows, setRows] = useState(
-        blogs.map((blog) => {
-            return {
-                _id: blog._id,
-                title: blog.title,
-                tags: blog.tags,
-                date: blog.date,
-                author: blog.author,
-            };
-        })
-    );
+const fetcher = async (url: string) => {
+    const response = await fetch(url);
+    if (!response.ok) {
+        throw new Error("Failed to fetch");
+    }
+    return response.json();
+};
+
+export default function Page() {
+    const { data, error, isLoading } = useSWR("/api/blogs", fetcher);
+
+    const [rows, setRows] = useState([]);
+    useEffect(() => {
+        if (!data) return;
+        setRows(data);
+    }, [data]);
     const router = useRouter();
 
-    if (status === "loading") {
-        return <CircularProgress sx={{ color: "text.primary" }} />;
-    }
-    if (status === "unauthenticated") {
-        return null;
+    console.log(data);
+    if (error) {
+        return <div>Error</div>;
     }
 
     const handleEdit = (params: any) => {
@@ -47,8 +49,8 @@ export default function Page({ blogs }: { blogs: Blog[] }) {
     const handleDelete = async (params: any) => {
         console.log(params.id);
         const rowsClone = [...rows];
-        setRows((prev) => {
-            return prev.filter((row) => row._id !== params.id);
+        setRows((prev: any) => {
+            return prev.filter((row: any) => row._id !== params.id);
         });
         const result = await fetch("/api/blogs?id=" + params.id, {
             method: "DELETE",
@@ -116,15 +118,26 @@ export default function Page({ blogs }: { blogs: Blog[] }) {
                     </Button>
                 </Box>
             </Box>
-            <DataGrid
-                getRowId={getRowId}
-                rows={rows}
-                columns={columns}
-                disableColumnSorting
-                disableColumnFilter
-                disableColumnMenu
-                disableColumnResize
-            />
+            <Box width={"100%"} height={"600px"}>
+                <DataGrid
+                    loading={isLoading}
+                    pageSizeOptions={[10, 15, 20]}
+                    slotProps={{
+                        loadingOverlay: {
+                            variant: "skeleton",
+                            noRowsVariant: "skeleton",
+                            color: "secondary.main",
+                        },
+                    }}
+                    getRowId={getRowId}
+                    rows={rows}
+                    columns={columns}
+                    disableColumnSorting
+                    disableColumnFilter
+                    disableColumnMenu
+                    disableColumnResize
+                />
+            </Box>
         </AdminLayout>
     );
 }

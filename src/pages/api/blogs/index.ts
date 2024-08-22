@@ -36,16 +36,33 @@ export default async function handler(
 async function getHandler(req: NextApiRequest, res: NextApiResponse) {
     const mongo = await getDatabase();
     if (req.query.id) {
-        const blog = await mongo
+        const result = await mongo
             .collection("blogs")
             .findOne({ _id: new ObjectId(req.query.id as string) });
-        if (!blog) {
+        if (!result) {
             return res.status(404).send({ error: "Blog not found" });
         }
+        const blog = {
+            ...result,
+            _id: result._id.toString(),
+        };
 
         res.status(200).send(blog);
     } else {
-        const blogs = await mongo.collection("blogs").find().toArray();
+        const result = await mongo
+            .collection("blogs")
+            .find({}, { projection: { content: 0 } })
+            .toArray();
+        if (!result) {
+            return res.status(500).send({ error: "Error fetching blogs" });
+        }
+        console.log("------------sending---------------");
+        const blogs = result.map((blog) => {
+            return {
+                ...blog,
+                _id: blog._id.toString(),
+            };
+        });
         res.status(200).send(blogs);
     }
 }

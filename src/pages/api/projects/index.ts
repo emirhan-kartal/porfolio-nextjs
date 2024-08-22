@@ -36,10 +36,19 @@ async function getHandler(req: NextApiRequest, res: NextApiResponse) {
     const mongo = await getDatabase();
     console.log(req.body);
     console.log(req.body);
-    console.log("--------queryt");
 
-    const projects = await mongo.collection("projects").find().toArray();
-    console.log("sent11");
+    const result = await mongo.collection("projects").find().toArray();
+    if (!result) {
+        return res.status(500).send({ error: "Error fetching projects" });
+    }
+    const projects = result.map((project) => {
+        return {
+            ...project,
+            _id: project._id.toString(),
+        };
+    });
+
+
     res.status(200).send(projects);
 }
 async function postHandler(req: NextApiRequest, res: NextApiResponse) {

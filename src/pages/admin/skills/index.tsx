@@ -12,8 +12,9 @@ import { useSession } from "next-auth/react";
 import { authOptions } from "../../api/auth/[...nextauth]";
 import AdminLayout from "@/components/composites/admin/admin-layout";
 import { getDatabase } from "@/lib/db";
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import AddSkillModal from "@/components/ui/admin-add-skill-modal";
+import useSWR from "swr";
 
 export interface SkillRow {
     id: string;
@@ -21,18 +22,22 @@ export interface SkillRow {
     image: string;
 }
 export type SkillRowWithoutId = Omit<SkillRow, "id">;
-
-export default function Page({ skills }: { skills: any }) {
+const fetcher = async (url: string) => {
+    const response = await fetch(url);
+    if (!response.ok) {
+        throw new Error("Failed to fetch");
+    }
+    return response.json();
+};
+export default function Page() {
     const { data: session, status } = useSession();
-    const [rows, setRows] = useState<SkillRow[]>(
-        skills.map((skill: any) => {
-            return {
-                id: skill._id.toString(),
-                name: skill.name,
-                image: skill.image,
-            } as SkillRow;
-        })
-    );
+    const { data, error, isLoading } = useSWR("/api/skills", fetcher);
+
+    const [rows, setRows] = useState<SkillRow[]>(data);
+    useEffect(() => {
+        if (!data) return;
+        setRows(data);
+    }, [data]);
     const [open, setOpen] = useState(false);
     const [selectedRow, setSelectedRow] = useState<SkillRow>({
         id: "",
@@ -103,13 +108,6 @@ export default function Page({ skills }: { skills: any }) {
         },
     ];
 
-    if (status === "loading") {
-        return <CircularProgress sx={{ color: "text.primary" }} />;
-    }
-    if (status === "unauthenticated") {
-        return null;
-    }
-
     return (
         <AdminLayout>
             <AddSkillModal
@@ -131,14 +129,26 @@ export default function Page({ skills }: { skills: any }) {
                     </Button>
                 </Box>
             </Box>
-            <DataGrid
-                rows={rows}
-                columns={columns}
-                disableColumnSorting
-                disableColumnFilter
-                disableColumnMenu
-                disableColumnResize
-            />
+            <Box width={"100%"} height={"600px"}>
+                <DataGrid
+                    loading={isLoading}
+                    pageSizeOptions={[10, 15, 20]}
+                    slotProps={{
+                        loadingOverlay: {
+                            variant: "skeleton",
+                            noRowsVariant: "skeleton",
+                            color: "secondary.main",
+                        },
+                    }}
+                    getRowId={getRowId}
+                    rows={data}
+                    columns={columns}
+                    disableColumnSorting
+                    disableColumnFilter
+                    disableColumnMenu
+                    disableColumnResize
+                />
+            </Box>
         </AdminLayout>
     );
 }

@@ -1,31 +1,35 @@
 import { Icon } from "@iconify/react/dist/iconify.js";
-import {
-    Box,
-    Button,
-    CircularProgress,
-    IconButton,
-    Typography,
-} from "@mui/material";
+import { Box, Button, IconButton, Typography } from "@mui/material";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import { getServerSession } from "next-auth";
-import { useSession } from "next-auth/react";
 import { authOptions } from "../../api/auth/[...nextauth]";
 import AdminLayout from "@/components/composites/admin/admin-layout";
 import { getDatabase } from "@/lib/db";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { Project } from "@/components/composites/featured-projects";
+import useSWR from "swr";
 
-export default function Page({ projects }: { projects: Project[] }) {
-    const { data: session, status } = useSession();
+function sleep(ms: number) {
+    return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
+const fetcher = async (url: string) => {
+    const response = await fetch(url);
+    if (!response.ok) {
+        throw new Error("Failed to fetch");
+    }
+    return response.json();
+};
+
+export default function Page() {
     const router = useRouter();
 
-    if (status === "loading") {
-        return <CircularProgress sx={{ color: "text.primary" }} />;
+    const { data, error, isLoading } = useSWR("/api/projects", fetcher);
+    if (error) {
+        return <div>Error</div>;
     }
-    if (status === "unauthenticated") {
-        return null;
-    }
+
     const handleEdit = (params: any) => {
         router.push("edit?id=" + params.id);
     };
@@ -84,15 +88,29 @@ export default function Page({ projects }: { projects: Project[] }) {
                     </Button>
                 </Box>
             </Box>
-            <DataGrid
-                getRowId={getRowId}
-                rows={projects}
-                columns={columns}
-                disableColumnSorting
-                disableColumnFilter
-                disableColumnMenu
-                disableColumnResize
-            />
+            <Box
+            width={"100%"}
+            height={"600px"}
+            > 
+                <DataGrid
+                    loading={isLoading}
+                    pageSizeOptions={[10, 15, 20]}
+                    slotProps={{
+                        loadingOverlay: {
+                            variant: "skeleton",
+                            noRowsVariant: "skeleton",
+                            color: "secondary.main",
+                        },
+                    }}
+                    getRowId={getRowId}
+                    rows={data}
+                    columns={columns}
+                    disableColumnSorting
+                    disableColumnFilter
+                    disableColumnMenu
+                    disableColumnResize
+                />
+            </Box>
         </AdminLayout>
     );
 }

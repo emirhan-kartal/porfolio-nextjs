@@ -15,7 +15,7 @@ export default function BlogsTop({ blogs }: { blogs: BlogWithoutContent[] }) {
                     </GradientText>
                 </Box>
 
-                <BlogContainer blogs={blogs.slice(0, 2)} />
+                <BlogContainer blogs={blogs?.slice(0, 2)} />
             </Box>
         </ContentWrapper>
     );

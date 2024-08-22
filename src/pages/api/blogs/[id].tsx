@@ -29,15 +29,15 @@ export default async function handler(
 }
 async function getHandler(req: NextApiRequest, res: NextApiResponse) {
     const mongo = await getDatabase();
-    const project = await mongo
-        .collection("projects")
+    const blog = await mongo
+        .collection("blogs")
         .findOne({ _id: new ObjectId(req.query.id as string) });
-    if (!project) {
-        return res.status(404).send({ error: "project not found" });
+    if (!blog) {
+        return res.status(404).send({ error: "blog not found" });
     }
     console.log("------------sending---------------");
-    console.log(project);
-    res.status(200).send(project);
+    console.log(blog);
+    res.status(200).send(blog);
 }
 
 async function deleteHandler(req: NextApiRequest, res: NextApiResponse) {
@@ -48,38 +48,38 @@ async function deleteHandler(req: NextApiRequest, res: NextApiResponse) {
     console.log("testpaosdjoapsdjop");
     const mongo = await getDatabase();
     const result = await mongo
-        .collection("projects")
+        .collection("blogs")
         .deleteOne({ _id: new ObjectId(req.query.id as string) });
     if (result.deletedCount === 0) {
-        return res.status(404).send({ error: "project not found" });
+        return res.status(404).send({ error: "blog not found" });
     }
 
     res.status(200).json({ name: "Emirhan Kartal deleteHandler" });
 }
 async function postHandler(req: NextApiRequest, res: NextApiResponse) {
     if (!req.body) {
-        return res.status(400).send({ error: "project data is required" });
+        return res.status(400).send({ error: "blog data is required" });
     }
-    const project = req.body;
+    const blog = req.body;
     const mongo = await getDatabase();
-    const result = await mongo.collection("projects").insertOne(project);
-    project._id = result.insertedId.toString();
+    const result = await mongo.collection("blogs").insertOne(blog);
+    blog._id = result.insertedId.toString();
     if (!result) {
-        return res.status(500).send({ error: "Error inserting project" });
+        return res.status(500).send({ error: "Error inserting blog" });
     }
-    res.status(201).send(project);
+    res.status(201).send(blog);
 }
 async function putHandler(req: NextApiRequest, res: NextApiResponse) {
     if (!req.body) {
-        return res.status(400).send({ error: "project data is required" });
+        return res.status(400).send({ error: "blog data is required" });
     }
-    const project = req.body;
+    const blog = req.body;
     const mongo = await getDatabase();
     const result = await mongo
-        .collection("projects")
-        .updateOne({ _id: new ObjectId(project._id) }, { $set: project });
+        .collection("blogs")
+        .updateOne({ _id: new ObjectId(blog._id) }, { $set: blog });
     if (result.modifiedCount === 0) {
-        return res.status(404).send({ error: "project not found" });
+        return res.status(404).send({ error: "blog not found" });
     }
     res.status(200).send({ success: true });
     

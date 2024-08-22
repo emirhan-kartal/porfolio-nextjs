@@ -8,7 +8,7 @@ export default function BlogCard({
     link,
     _id,
 }: BlogWithoutContent) {
-    console.log(_id);
+    console.log(tags);
     return (
         <Link href={"/blog/" + _id}>
             <Box
