@@ -4,17 +4,11 @@ import { getServerSession } from "next-auth";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
+import { authOptions } from "../api/auth/[...nextauth]";
 
 export default function Page() {
     const { data: session } = useSession();
-    const router = useRouter();
 
-    useEffect(() => {
-        if (!session) {
-            router.push("/login");
-        }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [router]);
     if (typeof window === null) return null;
 
     return (
@@ -28,10 +22,17 @@ export default function Page() {
 }
 export async function getServerSideProps(context: any) {
     console.log("getServerSession STARTED");
-    const serverSession = await getServerSession(context.req, context.res, {});
-    return {
-        props: {
-            session: serverSession,
-        },
-    };
+    const serverSession = await getServerSession(
+        context.req,
+        context.res,
+        authOptions
+    );
+    if (!serverSession) {
+        return {
+            redirect: {
+                destination: "/login",
+                permanent: false,
+            },
+        };
+    }
 }
