@@ -1,15 +1,60 @@
-import { Box, CircularProgress } from "@mui/material";
+import { Box, CircularProgress, Pagination } from "@mui/material";
 import BlogCard from "./blog-card";
 import { BlogWithoutContent } from "@/pages/blog";
 import { motion } from "framer-motion";
 import { container, itemVariants } from "../utils/animations";
+import { useEffect, useState } from "react";
+import { fetcher } from "../utils/fetcher";
+import useSWR from "swr";
 
 export default function BlogContainer({
     blogs,
+    paginate,
 }: {
-    blogs: BlogWithoutContent[];
+    blogs: BlogWithoutContent[]; //blogs sent by doing -2 in the slice because the first 2 blogs are displayed in the top
+    paginate?: number;
 }) {
-    console.log(blogs);
+    //YOU SHOULD -2 TO THE PAGINATE BECAUSE LATEST 2 BLOGS ARE DISPLAYED IN THE BLOGS TOP
+    console.log();
+    console.log(Math.ceil((paginate! - 2) / 5));
+    const [receivedBlogs, setReceivedBlogs] = useState<
+        BlogWithoutContent[] | undefined
+    >();
+    const [page, setPage] = useState(1);
+    useEffect(() => {
+        if (blogs && receivedBlogs === undefined) {
+            setReceivedBlogs(blogs);
+        }
+    }, [blogs]);
+
+    const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
+        if (Math.ceil((paginate! - 2) / 5) === page) return;
+
+        if (receivedBlogs) {
+            const receivedBlogsPageCount = Math.ceil(receivedBlogs.length / 5);
+            if (value > page) {
+                if (receivedBlogsPageCount === page) {
+                    const lastBlogId =
+                        receivedBlogs?.[receivedBlogs.length - 1]._id;
+                    const { data, error, isLoading } = useSWR(
+                        "/api/blogs/next?id=" + lastBlogId + page,
+                        fetcher
+                    );
+                    if (error) {
+                        return <div>Error</div>;
+                    }
+                    if (data) {
+                        setReceivedBlogs([...receivedBlogs, ...data]);
+                    }
+                }
+
+                setPage(page + 1);
+            } else {
+                setPage(page - 1);
+            }
+        }
+    };
+
     return (
         <>
             <Box
@@ -21,11 +66,13 @@ export default function BlogContainer({
                 animate="visible"
                 variants={container("wo-delay")}
             >
-                {blogs?.map((blog) => (
-                    <motion.div key={blog.title} variants={itemVariants}>
-                        <BlogCard {...blog} />
-                    </motion.div>
-                ))}
+                {receivedBlogs
+                    ?.slice((page - 1) * 5, (page - 1) * 5 + 5)
+                    .map((blog) => (
+                        <motion.div key={blog.title} variants={itemVariants}>
+                            <BlogCard {...blog} />
+                        </motion.div>
+                    ))}
                 {blogs === undefined && (
                     <Box
                         p={4}
@@ -41,6 +88,17 @@ export default function BlogContainer({
                             <CircularProgress sx={{ color: "text.primary" }} />
                         </Box>
                     </Box>
+                )}
+                {paginate && (
+                    <Pagination
+                        count={Math.ceil((paginate - 2) / 5)} //checkout the comment above to understand why -2
+                        color="primary"
+                        sx={{
+                            mx: "auto",
+                        }}
+                        onChange={handleChange}
+                        aria-label="pagination"
+                    />
                 )}
             </Box>
         </>

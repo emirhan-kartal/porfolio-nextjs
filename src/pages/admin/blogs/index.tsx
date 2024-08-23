@@ -17,14 +17,9 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import useSWR from "swr";
+import { fetcher } from "@/components/utils/fetcher";
 
-const fetcher = async (url: string) => {
-    const response = await fetch(url);
-    if (!response.ok) {
-        throw new Error("Failed to fetch");
-    }
-    return response.json();
-};
+
 
 export default function Page() {
     const { data, error, isLoading } = useSWR("/api/blogs", fetcher);
@@ -38,6 +33,7 @@ export default function Page() {
 
     console.log(data);
     if (error) {
+        console.log(error)
         return <div>Error</div>;
     }
 
@@ -160,18 +156,7 @@ export async function getServerSideProps(context: any) {
             },
         };
     }
-    const mongo = await getDatabase();
-    const blogs = (await mongo.collection("blogs").find().toArray()).map(
-        (blog) => {
-            return {
-                ...blog,
-                id: blog._id.toString(),
-                _id: blog._id.toString(),
-            };
-        }
-    );
-    console.log(blogs);
     return {
-        props: { blogs, session },
+        props: { session },
     };
 }

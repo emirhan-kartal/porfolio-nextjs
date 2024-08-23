@@ -71,7 +71,6 @@ export const getStaticProps: GetStaticProps<HomePageProps> = async (): Promise<
                 title: project.title,
                 description: project.description,
                 thumbnail: project.thumbnail,
-                link: project.link,
                 tags: project.tags,
                 date: project.date,
             } as Project;

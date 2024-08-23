@@ -8,15 +8,14 @@ const useIfInView = (
 
     useEffect(() => {
         if (!ref.current) return;
-        const observerOptions = {...options, threshold: 0.2};
+        const refVal = ref.current;
+        const observerOptions = { ...options, threshold: 0.2 };
         const observer = new IntersectionObserver((entries) => {
             entries.forEach((entry) => {
-                if (entry.isIntersecting ) {
+                if (entry.isIntersecting) {
                     setIsInView(true);
                     observer.unobserve(ref.current as Element);
                     console.log("unobserved element", ref.current);
-
-
                 }
             });
         }, observerOptions);
@@ -24,8 +23,8 @@ const useIfInView = (
         observer.observe(ref.current);
 
         return () => {
-            if (ref.current) {
-                observer.unobserve(ref.current);
+            if (refVal) {
+                observer.unobserve(refVal);
             }
         };
     }, [ref, options]);

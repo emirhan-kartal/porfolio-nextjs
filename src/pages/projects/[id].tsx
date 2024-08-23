@@ -2,9 +2,7 @@ import ContentWrapper from "@/components/ui/content-wrapper";
 import { Box, Typography } from "@mui/material";
 import GradientText from "@/components/ui/gradient-text";
 import Image from "next/image";
-import {
-    Project,
-} from "@/components/composites/featured-projects";
+import { Project } from "@/components/composites/featured-projects";
 import { getDatabase } from "@/lib/db";
 import { ObjectId } from "mongodb";
 import markdownToHtml from "@/lib/markdownToHtml";
@@ -21,14 +19,26 @@ export default function Page({ data }: { data: Project }) {
                     <GradientText>— By Emirhan Kartal</GradientText>
                 </Box>
             </ContentWrapper>
-            <Box width={"100%"} height={{ xs: 300 }}>
+
+            <Box
+                width={"100%"}
+                height={{ xs: 300, sm: 350, md: 400 }}
+                position={"relative"}
+                display={"flex"}
+                alignItems={"center"}
+                justifyContent={"center"}
+                bgcolor={"text.primary"}
+            >
                 <Image
                     src={data.thumbnail}
                     alt={data.title}
-                    height={350}
+                    height={0}
                     width={0}
+                    sizes="100wv"
                     style={{
-                        width: "100%",
+                        width: "auto",
+                        objectFit: "cover",
+                        height: "100%",
                     }}
                 />
             </Box>

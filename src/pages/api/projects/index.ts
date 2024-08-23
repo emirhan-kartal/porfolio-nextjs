@@ -31,13 +31,21 @@ export default async function handler(
             return res.status(405).end();
     }
 }
-
+interface ProjectGetResponse {
+    projects: any[]; //project but _id is string
+    projectCount: number;
+}
 async function getHandler(req: NextApiRequest, res: NextApiResponse) {
     const mongo = await getDatabase();
     console.log(req.body);
     console.log(req.body);
 
-    const result = await mongo.collection("projects").find().toArray();
+    const result = await mongo
+        .collection("projects")
+        .find()
+        .sort({ _id: 1 })
+        .limit(7)
+        .toArray();
     if (!result) {
         return res.status(500).send({ error: "Error fetching projects" });
     }
@@ -47,9 +55,16 @@ async function getHandler(req: NextApiRequest, res: NextApiResponse) {
             _id: project._id.toString(),
         };
     });
+    const projectCount = await mongo.collection("projects").countDocuments();
+    if (!projectCount) {
+        return res.status(500).send({ error: "Error fetching project count" });
+    }
+    const response: ProjectGetResponse = {
+        projects: projects,
+        projectCount,
+    };
 
-
-    res.status(200).send(projects);
+    res.status(200).send(response);
 }
 async function postHandler(req: NextApiRequest, res: NextApiResponse) {
     const project: Project = req.body;
@@ -57,26 +72,31 @@ async function postHandler(req: NextApiRequest, res: NextApiResponse) {
         return res.status(400).send({ error: "project data is required" });
     }
     const mongo = await getDatabase();
-    project.link = `projects/${project._id}`;
 
     const result = await mongo.collection("projects").insertOne(project);
-    project._id = result.insertedId;
+    if (!result) {
+        return res.status(500).send({ error: "Error inserting project" });
+    }
 
+    project._id = result.insertedId;
+    res.revalidate("/projects/" + project._id.toString());
     res.status(201).send(project);
 }
+type ProjectWithoutId = Omit<Project, "_id">;
 async function putHandler(req: NextApiRequest, res: NextApiResponse) {
     const project: Project = req.body;
     if (!project) {
         return res.status(400).send({ error: "project data is required" });
     }
     const mongo = await getDatabase();
+    const { _id, ...rest } = project;
 
     const result = await mongo
         .collection("projects")
-        .updateOne({ _id: new ObjectId(project._id) }, { $set: project });
+        .updateOne({ _id: new ObjectId(project._id) }, { $set: rest });
     if (result.modifiedCount === 0) {
         return res.status(404).send({ error: "project not found" });
     }
-
+    res.revalidate("/projects/" + project._id);
     res.status(200).json({ name: "Emirhan Kartal putHandler" });
 }

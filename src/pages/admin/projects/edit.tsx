@@ -1,20 +1,34 @@
 import AdminLayout from "@/components/composites/admin/admin-layout";
 import AdminContentForm from "@/components/ui/admin-content-form";
+import { fetcher } from "@/components/utils/fetcher";
 import { getDatabase } from "@/lib/db";
 import { authOptions } from "@/pages/api/auth/[...nextauth]";
 import { Typography } from "@mui/material";
 import { ObjectId } from "mongodb";
 import { getServerSession } from "next-auth";
 import { useSession } from "next-auth/react";
+import { useRouter } from "next/router";
+import useSWR from "swr";
 
-export default function Page({ project }: { project: any }) {
+export default function Page() {
     const { data: session } = useSession();
+
+    const router = useRouter();
+    const { query } = router;
+
+    const { data, error, isLoading } = useSWR(
+        "/api/projects/" + query.id,
+        fetcher
+    );
+    if (error) {
+        return <div>Error</div>;
+    }
     return (
         <AdminLayout>
             <Typography component={"h1"} variant="h5">
                 Edit the project post, {session?.user?.email}
             </Typography>
-            <AdminContentForm content={project} type="projects" />
+            <AdminContentForm content={data} type="projects" />
         </AdminLayout>
     );
 }

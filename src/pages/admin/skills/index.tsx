@@ -15,6 +15,7 @@ import { getDatabase } from "@/lib/db";
 import React, { useCallback, useEffect, useState } from "react";
 import AddSkillModal from "@/components/ui/admin-add-skill-modal";
 import useSWR from "swr";
+import { fetcher } from "@/components/utils/fetcher";
 
 export interface SkillRow {
     _id: string;
@@ -22,13 +23,7 @@ export interface SkillRow {
     image: string;
 }
 export type SkillRowWithoutId = Omit<SkillRow, "_id">;
-const fetcher = async (url: string) => {
-    const response = await fetch(url);
-    if (!response.ok) {
-        throw new Error("Failed to fetch");
-    }
-    return response.json();
-};
+
 export default function Page() {
     const { data, error, isLoading } = useSWR("/api/skills", fetcher);
 
@@ -95,6 +90,7 @@ export default function Page() {
                 <Icon icon="material-symbols:delete-outline" />
             </IconButton>,
         ],
+        // eslint-disable-next-line react-hooks/exhaustive-deps
         [rows]
     );
     if (error) {

@@ -141,19 +141,7 @@ export async function getServerSideProps(context: any) {
             },
         };
     }
-    const mongo = await getDatabase();
-    const query = await mongo.collection("projects").find({}).toArray();
-    const projects = query.map((projects) => {
-        return {
-            _id: projects._id.toString(),
-            title: projects.title,
-            tags: projects.tags.split(","),
-            date: projects.date,
-            author: "Emirhan Kartal",
-        };
-    });
-
     return {
-        props: { projects, session },
+        props: { session },
     };
 }

@@ -40,7 +40,7 @@ export const getStaticProps: GetStaticProps<object> = async () => {
             image: project.thumbnail,
             link: project.link,
             tags: project.tags,
-            id: project._id.toString(),
+            _id: project._id.toString(),
             date: project.date,
         };
     });

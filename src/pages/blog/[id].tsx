@@ -6,10 +6,21 @@ import Image from "next/image";
 import { getDatabase } from "@/lib/db";
 import { ObjectId } from "mongodb";
 import markdownToHtml from "@/lib/markdownToHtml";
+import Head from "next/head";
 export default function Page({ data }: { data: Blog }) {
     console.log(data, "hello world");
     return (
         <>
+            <Head>
+                <title>{data.title}</title>
+                <meta name="description" content={data.title} />
+                <meta name="keywords" content={data.tags} />
+                <meta name="author" content={data.author} />
+                <meta property="og:type" content="website" />
+                <meta property="og:title" content={data.title} />
+                <meta property="og:description" content={data.description} />
+                <meta property="og:image" content={data.thumbnail} />
+            </Head>
             <ContentWrapper content sx={{ pt: 15 }}>
                 <Box>
                     <Typography mb={3} variant="h3">

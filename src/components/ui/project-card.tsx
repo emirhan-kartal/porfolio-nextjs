@@ -11,10 +11,12 @@ export default function ProjectCard({
     tags,
     _id,
 }: ProjectWithoutContent) {
+    console.log("hello this is project card", _id);
     return (
         <Box display={"flex"} flexDirection={"column"}>
             <Box
                 height={{ xs: 300, sm: 350, md: 400 }}
+                width={"100%"}
                 display={"flex"}
                 justifyContent={"center"}
                 bgcolor={"text.primary"}
@@ -22,6 +24,7 @@ export default function ProjectCard({
                     borderTopLeftRadius: 16,
                     borderTopRightRadius: 16,
                     overflow: "hidden",
+                    flexShrink: 0,
                 }}
             >
                 <Image
@@ -32,8 +35,8 @@ export default function ProjectCard({
                     sizes="100wv"
                     style={{
                         height: "auto",
-                        width: "auto",
                         objectFit: "cover",
+                        width: "auto",
                     }}
                 />
             </Box>

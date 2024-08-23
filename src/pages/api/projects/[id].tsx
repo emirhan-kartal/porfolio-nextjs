@@ -3,6 +3,7 @@ import { ObjectId } from "mongodb";
 import { NextApiRequest, NextApiResponse } from "next";
 import { getServerSession } from "next-auth";
 import { authOptions } from "../auth/[...nextauth]";
+import { Project } from "@/components/composites/featured-projects";
 
 export default async function handler(
     req: NextApiRequest,
@@ -60,20 +61,21 @@ async function postHandler(req: NextApiRequest, res: NextApiResponse) {
     if (!req.body) {
         return res.status(400).send({ error: "project data is required" });
     }
-    const project = req.body;
+    const project: Project = req.body;
     const mongo = await getDatabase();
     const result = await mongo.collection("projects").insertOne(project);
-    project._id = result.insertedId.toString();
+    project._id = result.insertedId;
     if (!result) {
         return res.status(500).send({ error: "Error inserting project" });
     }
+    res.revalidate("/projects/" + project._id.toString());
     res.status(201).send(project);
 }
 async function putHandler(req: NextApiRequest, res: NextApiResponse) {
     if (!req.body) {
         return res.status(400).send({ error: "project data is required" });
     }
-    const project = req.body;
+    const project: Project = req.body;
     const mongo = await getDatabase();
     const result = await mongo
         .collection("projects")
@@ -81,6 +83,7 @@ async function putHandler(req: NextApiRequest, res: NextApiResponse) {
     if (result.modifiedCount === 0) {
         return res.status(404).send({ error: "project not found" });
     }
+    res.revalidate("/projects/" + project._id.toString());
+
     res.status(200).send({ success: true });
-    
 }

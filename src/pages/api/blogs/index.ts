@@ -32,39 +32,40 @@ export default async function handler(
             return res.status(405).end();
     }
 }
-
+interface BlogGetResponse {
+    blogs: any[]; //blog but _id is string
+    blogCount: number;
+}
 async function getHandler(req: NextApiRequest, res: NextApiResponse) {
     const mongo = await getDatabase();
-    if (req.query.id) {
-        const result = await mongo
-            .collection("blogs")
-            .findOne({ _id: new ObjectId(req.query.id as string) });
-        if (!result) {
-            return res.status(404).send({ error: "Blog not found" });
-        }
-        const blog = {
-            ...result,
-            _id: result._id.toString(),
-        };
+    console.log(req.body);
+    console.log(req.body);
 
-        res.status(200).send(blog);
-    } else {
-        const result = await mongo
-            .collection("blogs")
-            .find({}, { projection: { content: 0 } })
-            .toArray();
-        if (!result) {
-            return res.status(500).send({ error: "Error fetching blogs" });
-        }
-        console.log("------------sending---------------");
-        const blogs = result.map((blog) => {
-            return {
-                ...blog,
-                _id: blog._id.toString(),
-            };
-        });
-        res.status(200).send(blogs);
+    const result = await mongo
+        .collection("blogs")
+        .find()
+        .sort({ _id: 1 })
+        .limit(7)
+        .toArray();
+    if (!result) {
+        return res.status(500).send({ error: "Error fetching blogs" });
     }
+    const blogs = result.map((project) => {
+        return {
+            ...project,
+            _id: project._id.toString(),
+        };
+    });
+    const blogCount = await mongo.collection("blogs").countDocuments();
+    if (!blogCount) {
+        return res.status(500).send({ error: "Error fetching project count" });
+    }
+    const response: BlogGetResponse = {
+        blogs: blogs,
+        blogCount: blogCount,
+    };
+
+    res.status(200).send(response);
 }
 async function postHandler(req: NextApiRequest, res: NextApiResponse) {
     const blog: Blog = req.body;
@@ -76,6 +77,7 @@ async function postHandler(req: NextApiRequest, res: NextApiResponse) {
     if (!result) {
         return res.status(500).send({ error: "Error inserting blog" });
     }
+    res.revalidate("/blogs/" + blog._id.toString());
     res.status(201).send(blog);
 }
 async function putHandler(req: NextApiRequest, res: NextApiResponse) {
@@ -93,7 +95,7 @@ async function putHandler(req: NextApiRequest, res: NextApiResponse) {
     if (result.modifiedCount === 0) {
         return res.status(404).send({ error: "Blog not found" });
     }
-
+    res.revalidate("/blogs/" + blog._id);
     res.status(200).json({ name: "Emirhan Kartal putHandler" });
 }
 async function deleteHandler(req: NextApiRequest, res: NextApiResponse) {

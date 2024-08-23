@@ -145,6 +145,7 @@ async function putHandler(req: NextApiRequest, res: NextApiResponse) {
             console.error("Error fetching data");
             return;
         }
+        res.revalidate("/")
         const newImage = path.join(process.cwd(), "public/skills/" + fileName);
 
         const writeFile = promisify(fs.writeFile);

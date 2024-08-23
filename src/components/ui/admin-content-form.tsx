@@ -1,14 +1,16 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Blog } from "@/pages/blog";
-import { Box, TextField, Button } from "@mui/material";
+import { Box, TextField, Button, CircularProgress } from "@mui/material";
 import { Project } from "../composites/featured-projects";
 
 export default function AdminContentForm({
     content,
     type,
+    isLoading,
 }: {
     content?: Blog | Project;
     type: "blogs" | "projects";
+    isLoading?: boolean;
 }) {
     const [formData, setFormData] = useState({
         title: content?.title || "",
@@ -17,14 +19,28 @@ export default function AdminContentForm({
         thumbnail: content?.thumbnail || "",
         content: content?.content || "",
         author: "Emirhan Kartal",
-        id: content?._id.toString() || "",
+        _id: content?._id.toString() || "",
         date: new Date().toISOString(),
     });
+    useEffect(() => {
+        if (content) {
+            setFormData({
+                title: content.title,
+                description: content.description,
+                tags: content.tags,
+                thumbnail: content.thumbnail,
+                content: content.content,
+                author: "Emirhan Kartal",
+                _id: content._id.toString(),
+                date: content.date,
+            });
+        }
+    }, [content]);
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
-        console.log(name,"name")
-        console.log(value,"value")
+        console.log(name, "name");
+        console.log(value, "value");
         setFormData((prevData) => ({
             ...prevData,
             [name]: value,
@@ -48,7 +64,7 @@ export default function AdminContentForm({
             alert(result.statusText);
         }
     };
-    console.log(content)
+    console.log(content);
 
     return (
         <Box
@@ -60,7 +76,19 @@ export default function AdminContentForm({
             height="100%"
             p={2}
             onSubmit={handleSubmit}
+            sx={{ opacity: isLoading ? 0.5 : 1 }}
         >
+            <CircularProgress
+                sx={{
+                    visibility: isLoading ? "visible" : "hidden",
+                    color: "white",
+                    position: "absolute",
+                    zIndex: 1000,
+                    top: "50vh",
+                    left: "50vw",
+                    transform: "translate(-50%, -50%)",
+                }}
+            />
             <TextField
                 label="Title"
                 variant="outlined"
@@ -69,6 +97,7 @@ export default function AdminContentForm({
                 name="title"
                 value={formData.title}
                 onChange={handleChange}
+                disabled={isLoading}
             />
             <TextField
                 label="Description"
@@ -78,6 +107,7 @@ export default function AdminContentForm({
                 name="description"
                 value={formData.description}
                 onChange={handleChange}
+                disabled={isLoading}
             />
             <TextField
                 label="Tags"
@@ -87,6 +117,7 @@ export default function AdminContentForm({
                 name="tags"
                 value={formData.tags}
                 onChange={handleChange}
+                disabled={isLoading}
             />
             <TextField
                 label="Thumbnail"
@@ -96,6 +127,7 @@ export default function AdminContentForm({
                 name="thumbnail"
                 value={formData.thumbnail}
                 onChange={handleChange}
+                disabled={isLoading}
             />
             <TextField
                 label="Content"
@@ -107,8 +139,14 @@ export default function AdminContentForm({
                 name="content"
                 value={formData.content}
                 onChange={handleChange}
+                disabled={isLoading}
             />
-            <Button variant="contained" color="primary" type="submit">
+            <Button
+                variant="contained"
+                color="primary"
+                type="submit"
+                disabled={isLoading}
+            >
                 {content ? "Update" : "Create"}
             </Button>
         </Box>

@@ -15,6 +15,7 @@ export type Project = {
     tags: string;
     content: string;
     date: string;
+
 };
 export type Blog = Project & { author: string };
 export type ProjectWithoutContent = Omit<Project, "content">;

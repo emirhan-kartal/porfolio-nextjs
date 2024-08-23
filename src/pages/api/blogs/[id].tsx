@@ -67,6 +67,7 @@ async function postHandler(req: NextApiRequest, res: NextApiResponse) {
     if (!result) {
         return res.status(500).send({ error: "Error inserting blog" });
     }
+    res.revalidate("/blog/" + blog._id);
     res.status(201).send(blog);
 }
 async function putHandler(req: NextApiRequest, res: NextApiResponse) {
@@ -81,6 +82,7 @@ async function putHandler(req: NextApiRequest, res: NextApiResponse) {
     if (result.modifiedCount === 0) {
         return res.status(404).send({ error: "blog not found" });
     }
+    res.revalidate("/projects/" + blog._id);
+
     res.status(200).send({ success: true });
-    
 }

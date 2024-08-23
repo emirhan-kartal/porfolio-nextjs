@@ -17,7 +17,7 @@ const nextConfig = {
             },
             {
                 protocol: "https",
-                hostname: "hizliresim.com",
+                hostname: "i.hizliresim.com",
                 port: "",
                 pathname: "/**",
             },
