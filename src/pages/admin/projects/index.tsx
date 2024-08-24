@@ -30,7 +30,7 @@ export default function Page() {
     const [rows, setRows] = useState<Project[]>(data);
     useEffect(() => {
         if (!data) return;
-        setRows(data);
+        setRows(data.projects);
     }, [data]);
 
     if (error) {

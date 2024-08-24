@@ -27,7 +27,7 @@ export default function Page() {
     const [rows, setRows] = useState([]);
     useEffect(() => {
         if (!data) return;
-        setRows(data);
+        setRows(data.blogs);
     }, [data]);
     const router = useRouter();
 

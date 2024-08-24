@@ -51,12 +51,13 @@ export default function AdminContentForm({
         e.preventDefault();
         const apiRoute = `/api/${type}`;
         console.log(apiRoute);
+        const {_id,...formDataWOId} = formData;
         const result = await fetch(apiRoute, {
             method: content ? "PUT" : "POST",
             headers: {
                 "Content-Type": "application/json",
             },
-            body: JSON.stringify(formData),
+            body: JSON.stringify(content ? formData : formDataWOId),
         });
         if (result.ok) {
             alert("Success");
