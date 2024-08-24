@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 import { container, itemVariants } from "../utils/animations";
 import { useEffect, useState } from "react";
 import { fetcher } from "../utils/fetcher";
-import useSWR from "swr";
+import useSWR, { mutate } from "swr";
 
 export default function BlogContainer({
     blogs,
@@ -26,25 +26,24 @@ export default function BlogContainer({
             setReceivedBlogs(blogs);
         }
     }, [blogs]);
+    const lastBlogId = receivedBlogs?.[receivedBlogs.length - 1]._id;
 
-    const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
+    const handleChange = async (
+        event: React.ChangeEvent<unknown>,
+        value: number
+    ) => {
         if (Math.ceil((paginate! - 2) / 5) === page) return;
 
         if (receivedBlogs) {
             const receivedBlogsPageCount = Math.ceil(receivedBlogs.length / 5);
             if (value > page) {
                 if (receivedBlogsPageCount === page) {
-                    const lastBlogId =
-                        receivedBlogs?.[receivedBlogs.length - 1]._id;
-                    const { data, error, isLoading } = useSWR(
-                        "/api/blogs/next?id=" + lastBlogId + page,
-                        fetcher
+                    const data = await fetch(
+                        "/api/blogs/next?id=" + lastBlogId
                     );
-                    if (error) {
-                        return <div>Error</div>;
-                    }
+                    const response = await data.json();
                     if (data) {
-                        setReceivedBlogs([...receivedBlogs, ...data]);
+                        setReceivedBlogs([...receivedBlogs, ...response]);
                     }
                 }
 
