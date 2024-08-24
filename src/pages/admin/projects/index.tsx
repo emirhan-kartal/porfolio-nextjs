@@ -40,6 +40,23 @@ export default function Page() {
     const handleEdit = (params: any) => {
         router.push("projects/edit?id=" + params.id);
     };
+    const handleDelete = async (params: any) => {
+        console.log(params.id);
+        const rowsClone = [...rows];
+        setRows((prev: any) => {
+            return prev.filter((row: any) => row._id !== params.id);
+        });
+        const result = await fetch("/api/projects?id=" + params.id, {
+            method: "DELETE",
+        });
+        if (!result.ok) {
+            setRows(rowsClone);
+            alert(result.statusText);
+        }
+
+        console.log(params);
+    };
+
     const columns: GridColDef[] = [
         { field: "title", headerName: "Title", minWidth: 250, flex: 1 },
         { field: "author", headerName: "Author", minWidth: 100, flex: 1 },
@@ -120,10 +137,6 @@ export default function Page() {
 }
 const getRowId = (row: any) => {
     return row._id;
-};
-
-const handleDelete = (params: any) => {
-    console.log(params);
 };
 
 export async function getServerSideProps(context: any) {
