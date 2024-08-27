@@ -74,15 +74,21 @@ async function putHandler(req: NextApiRequest, res: NextApiResponse) {
     if (!req.body) {
         return res.status(400).send({ error: "blog data is required" });
     }
+    if (!req.query.id) {
+        return res.status(400).send({ error: "ID is required" });
+    }
     const blog = req.body;
     const mongo = await getDatabase();
     const result = await mongo
         .collection("blogs")
-        .updateOne({ _id: new ObjectId(blog._id) }, { $set: blog });
+        .updateOne(
+            { _id: new ObjectId(req.query.id as string) },
+            { $set: blog }
+        );
     if (result.modifiedCount === 0) {
         return res.status(404).send({ error: "blog not found" });
     }
-    res.revalidate("/projects/" + blog._id);
+    res.revalidate("/blog/" + blog._id);
 
     res.status(200).send({ success: true });
 }

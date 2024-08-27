@@ -56,9 +56,7 @@ async function getHandler(req: NextApiRequest, res: NextApiResponse) {
         };
     });
     const projectCount = await mongo.collection("projects").countDocuments();
-    if (!projectCount) {
-        return res.status(500).send({ error: "Error fetching project count" });
-    }
+
     const response: ProjectGetResponse = {
         projects: projects,
         projectCount,

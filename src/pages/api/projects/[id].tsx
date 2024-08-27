@@ -75,15 +75,19 @@ async function putHandler(req: NextApiRequest, res: NextApiResponse) {
     if (!req.body) {
         return res.status(400).send({ error: "project data is required" });
     }
+    if (!req.query.id) {
+        return res.status(400).send({ error: "ID is required" });
+    }
     const project: Project = req.body;
+    const idString = req.query.id as string;
     const mongo = await getDatabase();
     const result = await mongo
         .collection("projects")
-        .updateOne({ _id: new ObjectId(project._id) }, { $set: project });
+        .updateOne({ _id: new ObjectId(idString) }, { $set: project });
     if (result.modifiedCount === 0) {
         return res.status(404).send({ error: "project not found" });
     }
-    res.revalidate("/projects/" + project._id.toString());
+    res.revalidate("/projects/" + idString);
 
     res.status(200).send({ success: true });
 }

@@ -38,15 +38,14 @@ interface BlogGetResponse {
 }
 async function getHandler(req: NextApiRequest, res: NextApiResponse) {
     const mongo = await getDatabase();
-    console.log(req.body);
-    console.log(req.body);
-
+    console.log("getHandler 1");
     const result = await mongo
         .collection("blogs")
         .find()
         .sort({ _id: 1 })
         .limit(7)
         .toArray();
+    console.log("getHandler 2");
     if (!result) {
         return res.status(500).send({ error: "Error fetching blogs" });
     }
@@ -57,9 +56,7 @@ async function getHandler(req: NextApiRequest, res: NextApiResponse) {
         };
     });
     const blogCount = await mongo.collection("blogs").countDocuments();
-    if (!blogCount) {
-        return res.status(500).send({ error: "Error fetching project count" });
-    }
+
     const response: BlogGetResponse = {
         blogs: blogs,
         blogCount: blogCount,

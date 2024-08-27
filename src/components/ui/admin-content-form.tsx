@@ -49,15 +49,16 @@ export default function AdminContentForm({
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        const apiRoute = `/api/${type}`;
+        const apiRoute =
+            `/api/${type}` + (content ? `?id=${formData._id}` : "");
         console.log(apiRoute);
-        const {_id,...formDataWOId} = formData;
+        const { _id, ...formDataWOId } = formData;
         const result = await fetch(apiRoute, {
             method: content ? "PUT" : "POST",
             headers: {
                 "Content-Type": "application/json",
             },
-            body: JSON.stringify(content ? formData : formDataWOId),
+            body: JSON.stringify(formDataWOId),
         });
         if (result.ok) {
             alert("Success");
