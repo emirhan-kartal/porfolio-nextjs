@@ -13,7 +13,7 @@ export type BlogWithoutContent = Omit<Blog, "content">;
 
 export default function Page() {
     const { data, error, isLoading } = useSWR("/api/blogs", fetcher);
-    console.log(data)
+    console.log(data);
 
     if (error) {
         return <div>Error</div>;
@@ -22,7 +22,9 @@ export default function Page() {
         <>
             <BlogsTop blogs={data?.blogs} />
             <GradientColon />
-            <BlogsAll data={data} />
+            {data && data.blogs && data.blogs.length > 0 && (
+                <BlogsAll data={data} />
+            )}
             <ContentWrapper content>
                 <CTA mt={0} />
             </ContentWrapper>

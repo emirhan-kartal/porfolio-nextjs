@@ -1,4 +1,4 @@
-import { Box, Grid, Pagination } from "@mui/material";
+import { Box, Grid, Pagination, Typography } from "@mui/material";
 import { motion } from "framer-motion";
 import { ProjectWithoutContent } from "../composites/featured-projects";
 import { containerVariants, itemVariants } from "../utils/animations";
@@ -7,8 +7,10 @@ import ProjectCard from "./project-card";
 
 export default function ProjectContainer({
     projects,
+    paginate,
 }: {
     projects: ProjectWithoutContent[];
+    paginate?: number;
 }) {
     console.log(projects, "projects");
     return (
@@ -22,6 +24,7 @@ export default function ProjectContainer({
                 animate="visible"
                 variants={containerVariants}
                 rowGap={2}
+                justifyContent={"start"}
             >
                 {projects.map((project, index) => (
                     <Grid
@@ -37,10 +40,20 @@ export default function ProjectContainer({
                         </motion.div>
                     </Grid>
                 ))}
+                {projects.length === 0 && (
+                    <Typography>
+                        There are no projects in this category
+                    </Typography>
+                )}
             </Grid>
-            <Box width="100%" display="flex" justifyContent="center" >
-                <Pagination count={1} color="primary" />
-            </Box>
+            {paginate && (
+                <Box width="100%" display="flex" justifyContent="center">
+                    <Pagination
+                        count={Math.ceil((paginate - 2) / 5)}
+                        color="primary"
+                    />
+                </Box>
+            )}
         </>
     );
 }

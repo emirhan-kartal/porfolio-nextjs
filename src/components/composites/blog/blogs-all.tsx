@@ -11,6 +11,7 @@ export default function BlogsAll({
 }) {
     console.log(data, "asdasdasd");
     return (
+        
         <ContentWrapper content>
             <GradientText sx={{ fontSize: "3rem", mb: 2 }}>
                 Recent Insights

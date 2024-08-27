@@ -1,4 +1,4 @@
-import { Box, CircularProgress, Pagination } from "@mui/material";
+import { Box, CircularProgress, Pagination, Typography } from "@mui/material";
 import BlogCard from "./blog-card";
 import { BlogWithoutContent } from "@/pages/blog";
 import { motion } from "framer-motion";
@@ -26,7 +26,7 @@ export default function BlogContainer({
             setReceivedBlogs(blogs);
         }
     }, [blogs]);
-    const lastBlogId = receivedBlogs?.[receivedBlogs.length - 1]._id;
+    const lastBlogId = receivedBlogs?.[receivedBlogs.length - 1]?._id;
 
     const handleChange = async (
         event: React.ChangeEvent<unknown>,
@@ -72,6 +72,9 @@ export default function BlogContainer({
                             <BlogCard {...blog} />
                         </motion.div>
                     ))}
+                {receivedBlogs?.length === 0 && (
+                    <Typography>There are no blogs in this category</Typography>
+                )}
                 {blogs === undefined && (
                     <Box
                         p={4}
