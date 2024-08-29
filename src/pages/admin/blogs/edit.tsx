@@ -1,11 +1,8 @@
 import AdminLayout from "@/components/composites/admin/admin-layout";
 import AdminContentForm from "@/components/ui/admin-content-form";
 import { fetcher } from "@/components/utils/fetcher";
-import { getDatabase } from "@/lib/db";
 import { authOptions } from "@/pages/api/auth/[...nextauth]";
-import { Blog } from "@/pages/blog";
-import { Box, CircularProgress, Typography } from "@mui/material";
-import { ObjectId } from "mongodb";
+import { Typography } from "@mui/material";
 import { getServerSession } from "next-auth";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";

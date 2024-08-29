@@ -69,7 +69,7 @@ export default function LandingIntro() {
                     }}
                 >
                     <Image
-                        src="/me.png"
+                        src="/me.jpg"
                         alt="Vercel Logo"
                         priority={true}
                         width={chosenSettings.imageWidth}
@@ -91,7 +91,7 @@ export default function LandingIntro() {
                         Hi I&apos;m Emirhan,
                     </GradientText>
                     <Typography fontSize={chosenSettings.fontSize}>
-                        a Frontend Developer
+                        a Fullstack Developer
                     </Typography>
                     <Typography
                         fontSize={chosenSettings.fontSize}

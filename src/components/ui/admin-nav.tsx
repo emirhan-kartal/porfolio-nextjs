@@ -58,10 +58,10 @@ export default function AdminNav() {
                         color="text.primary"
                         onClick={() => router.push("/admin/skills")}
                     >
-                        <ListItemText>What I Do List</ListItemText>
+                        <ListItemText>Skills</ListItemText>
                     </ListItemButton>
                 </ListItem>
-                <ListItem sx={{ bottom: 0 }}>
+                <ListItem sx={{ mt: "full", position: "relative" }}>
                     <ListItemButton
                         color="text.primary"
                         onClick={async () => await signOut()}

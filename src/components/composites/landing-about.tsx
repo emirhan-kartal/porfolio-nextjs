@@ -59,13 +59,12 @@ const LandingAbout = ({ whatIdo }: { whatIdo: Skill[] }) => {
                     variants={itemVariants}
                 >
                     <Typography fontSize={18}>
-                        Lorem ipsum, dolor sit amet consectetur adipisicing
-                        elit. Saepe optio dicta at fugit porro officia pariatur.
-                        Saepe vero beatae tenetur vitae, praesentium deleniti
-                        eos deserunt ipsum repellat cumque similique hic. Lorem,
-                        ipsum dolor sit amet consectetur adipisicing elit. Iure
-                        dolore soluta expedita qui eligendi vel suscipit tempore
-                        veniam, facere harum.
+                        Striving to become a successful Developer, his journey
+                        commenced in 2014 at the age of 12, experimenting with
+                        &apos;Skript&apos; a Python-like scripting language for
+                        Minecraft. Addressing performance concerns, he
+                        transitioned to Java, mastering the Bukkit API, a
+                        Minecraft-specific interface.
                     </Typography>
                 </Grid>
                 <Grid
@@ -76,10 +75,10 @@ const LandingAbout = ({ whatIdo }: { whatIdo: Skill[] }) => {
                     variants={itemVariants}
                 >
                     <Typography fontSize={18}>
-                        Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                        Pariatur deleniti ipsa quis iste ea? Porro, veritatis,
-                        ad omnis tempora deleniti unde maxime dolorem nostrum
-                        sequi numquam quas veniam totam delectus.
+                        He published free plugins in the community.With a
+                        passion for programming as a longtime hobby, he aspires
+                        to excel as developer. Presently, he&apos;s immersed in
+                        Fullstack projects
                     </Typography>
                 </Grid>
 

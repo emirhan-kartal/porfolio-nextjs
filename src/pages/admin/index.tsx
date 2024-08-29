@@ -1,10 +1,9 @@
 import AdminLayout from "@/components/composites/admin/admin-layout";
-import { Typography } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import { getServerSession } from "next-auth";
 import { useSession } from "next-auth/react";
-import { useRouter } from "next/router";
-import { useEffect } from "react";
 import { authOptions } from "../api/auth/[...nextauth]";
+import AdminDashboardStats from "@/components/ui/admin-dashboard-stats";
 
 export default function Page() {
     const { data: session } = useSession();
@@ -13,10 +12,23 @@ export default function Page() {
 
     return (
         <AdminLayout>
-            <Typography>
-                Welcome to the admin panel, {session?.user?.email}
-                This is for projects
+            <Typography component={"h1"} variant="h5">
+                Admin Dashboard, {session?.user?.email} Welcome
             </Typography>
+            <Box display={"flex"} gap={2} width={"100%"}>
+                <AdminDashboardStats
+                    title="Skills"
+                    apiRoute="/api/skills/count"
+                />
+                <AdminDashboardStats
+                    title="Blogs"
+                    apiRoute="/api/blogs/count"
+                />
+                <AdminDashboardStats
+                    title="Projects"
+                    apiRoute="/api/projects/count"
+                />
+            </Box>
         </AdminLayout>
     );
 }

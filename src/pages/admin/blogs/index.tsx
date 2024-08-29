@@ -2,24 +2,18 @@ import { Icon } from "@iconify/react/dist/iconify.js";
 import {
     Box,
     Button,
-    CircularProgress,
     IconButton,
     Typography,
 } from "@mui/material";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import { getServerSession } from "next-auth";
-import { useSession } from "next-auth/react";
-import { Blog } from "../../blog";
 import { authOptions } from "../../api/auth/[...nextauth]";
 import AdminLayout from "@/components/composites/admin/admin-layout";
-import { getDatabase } from "@/lib/db";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import useSWR from "swr";
 import { fetcher } from "@/components/utils/fetcher";
-
-
 
 export default function Page() {
     const { data, error, isLoading } = useSWR("/api/blogs", fetcher);
@@ -33,7 +27,7 @@ export default function Page() {
 
     console.log(data);
     if (error) {
-        console.log(error)
+        console.log(error);
         return <div>Error</div>;
     }
 
@@ -157,6 +151,6 @@ export async function getServerSideProps(context: any) {
         };
     }
     return {
-        props: { session },
+        props: {},
     };
 }

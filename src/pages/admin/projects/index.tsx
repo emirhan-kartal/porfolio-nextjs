@@ -4,7 +4,6 @@ import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import { getServerSession } from "next-auth";
 import { authOptions } from "../../api/auth/[...nextauth]";
 import AdminLayout from "@/components/composites/admin/admin-layout";
-import { getDatabase } from "@/lib/db";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { Project } from "@/components/composites/featured-projects";

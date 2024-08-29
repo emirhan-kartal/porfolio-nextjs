@@ -1,4 +1,4 @@
-import { Box, Typography } from "@mui/material";
+import { Box } from "@mui/material";
 import ContentWrapper from "../../ui/content-wrapper";
 import ServiceCard from "../../ui/service-card";
 import GradientText from "../../ui/gradient-text";
@@ -12,19 +12,10 @@ import {
 export default function ServiceList() {
     const services = [
         {
-            title: "Service 1",
+            title: "Web Development",
             description:
-                "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-        },
-        {
-            title: "Service 2",
-            description:
-                "lorem ipsum dolor sit amet, consectetur adipiscing elit.lorem ipsum dolor sit amet, consectetur adipiscing elit.lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-        },
-        {
-            title: "Service 3",
-            description:
-                "lorem ipsum dolor sit amet, consectetur adipiscing elit.lorem ipsum dolor sit amet, consectetur adipiscing elit.lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+                "I build websites that are fast, secure, and easy to use. I use the latest technologies to create websites that are responsive and accessible.",
+            image: "https://i.hizliresim.com/4t4hifc.jpg",
         },
     ];
     return (
@@ -49,7 +40,7 @@ export default function ServiceList() {
                     variants={containerVariants}
                 >
                     {services.map((service, index) => (
-                        <ServiceCard key={index} {...service} image="/me.png" />
+                        <ServiceCard key={index} {...service} />
                     ))}
                 </Box>
             </motion.div>

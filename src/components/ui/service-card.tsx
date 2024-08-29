@@ -37,7 +37,7 @@ export default function ServiceCard({
                 width={0}
                 height={0}
                 sizes="100wv"
-                style={{ height: "auto", width: "auto", objectFit: "cover" }}
+                style={{ height: "auto", width: "500px", objectFit: "cover" }}
             />
         </Box>
     );

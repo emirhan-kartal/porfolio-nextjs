@@ -2,16 +2,13 @@ import { Icon } from "@iconify/react/dist/iconify.js";
 import {
     Box,
     Button,
-    CircularProgress,
     IconButton,
     Typography,
 } from "@mui/material";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import { getServerSession } from "next-auth";
-import { useSession } from "next-auth/react";
 import { authOptions } from "../../api/auth/[...nextauth]";
 import AdminLayout from "@/components/composites/admin/admin-layout";
-import { getDatabase } from "@/lib/db";
 import React, { useCallback, useEffect, useState } from "react";
 import AddSkillModal from "@/components/ui/admin-add-skill-modal";
 import useSWR from "swr";
@@ -33,6 +30,7 @@ export default function Page() {
         if (!data || rows.length !== 0) return;
         console.log("data useEffect Triggered", data);
         setRows([...data]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [data]);
     const [open, setOpen] = useState(false);
     const [selectedRow, setSelectedRow] = useState<SkillRow>({
@@ -173,19 +171,8 @@ export async function getServerSideProps(context: any) {
             },
         };
     }
-    const mongo = await getDatabase();
-    const query = await mongo.collection("skills").find({}).toArray();
-    const skills = query.map((skill) => {
-        return {
-            _id: skill._id.toString(),
-            name: skill.name,
-            image: skill.image,
-        };
-    });
-    console.log(skills);
-    console.log("------------------------------");
 
     return {
-        props: { skills, session },
+        props: {},
     };
 }

@@ -1,7 +1,9 @@
 import { SkillRow, SkillRowWithoutId } from "@/pages/admin/skills";
+import { yupResolver } from "@hookform/resolvers/yup";
 import { Box, Button, Modal, TextField } from "@mui/material";
 import React, { useEffect, useRef, useState } from "react";
-
+import { useForm } from "react-hook-form";
+import * as yup from "yup";
 interface AddSkillModalProps {
     rows: SkillRow[];
     setRows: React.Dispatch<React.SetStateAction<SkillRow[]>>;
@@ -33,9 +35,17 @@ export default function AddSkillModal({
             return { ...prev, [e.target.name]: e.target.value };
         });
     };
+    const [errors, setErrors] = useState({
+        name: "",
+        image: "",
+    });
+
     const handleSave = async (rowState: SkillRow) => {
         console.time("fetch");
         console.time("optimistic");
+        if (!checkFields()) {
+            return;
+        }
         const rowsClone = [...rows];
 
         setRows((prev: any) => {
@@ -61,8 +71,28 @@ export default function AddSkillModal({
         }
         closeCallback();
     };
+    const checkFields = () => {
+        let toReturn = true;
+        if (skill.name === "") {
+            setErrors((prev) => {
+                return { ...prev, name: "Name is required" };
+            });
+            toReturn = false;
+        }
+        if (skill.image === "") {
+            setErrors((prev) => {
+                return { ...prev, image: "Image is required" };
+            });
+            toReturn = false;
+        }
+        return toReturn;
+    };
     const handleAdd = async (skillObject: SkillRowWithoutId) => {
         console.log(skillObject);
+        if (!checkFields()) {
+            return;
+        }
+
         const result = await fetch("/api/skills", {
             method: "POST",
             body: JSON.stringify(skillObject),
@@ -110,17 +140,25 @@ export default function AddSkillModal({
         console.log("rowsClone", rowsClone);
 
         if (!result.ok) {
-            console.log("failed")
-
+            console.log("failed");
 
             alert("Edit failed");
         }
-        closeCallback();
+        if (skill.name !== "") {
+            closeCallback();
+            setErrors({ name: "", image: "" });
+        }
         console.log(result);
     };
 
     return (
-        <Modal open={open} onClose={closeCallback}>
+        <Modal
+            open={open}
+            onClose={() => {
+                setErrors({ name: "", image: "" });
+                closeCallback();
+            }}
+        >
             <Box
                 display={"flex"}
                 flexDirection={"column"}
@@ -138,9 +176,11 @@ export default function AddSkillModal({
             >
                 <TextField
                     value={skill.name}
-                    name="name"
                     placeholder="Name"
+                    error={!!errors.name}
+                    helperText={errors.name ? errors.name : ""}
                     onChange={handleChange}
+                    name="name"
                 />
                 <input
                     type="file"
@@ -148,13 +188,25 @@ export default function AddSkillModal({
                     style={{ display: "none" }}
                     onChange={handleFileChange}
                 />
-                <TextField value={skill.image} name="image" disabled />
+                <TextField
+                    value={skill.image}
+                    disabled
+                    helperText={errors.image ? errors.image : ""}
+                    error={!!errors.image}
+                    name="image"
+                />
 
                 <Button onClick={handleFileClick} variant="contained">
                     {skill.image ? "Change Image" : "Add Image"}
                 </Button>
 
-                <Button onClick={closeCallback} variant="contained">
+                <Button
+                    onClick={() => {
+                        setErrors({ name: "", image: "" });
+                        closeCallback();
+                    }}
+                    variant="contained"
+                >
                     Cancel
                 </Button>
                 <Button
@@ -163,6 +215,7 @@ export default function AddSkillModal({
                             ? () => handleAdd(skill)
                             : () => handleSave(skill)
                     }
+                    type="submit"
                     variant="contained"
                 >
                     {skill._id === "" ? "Add" : "Save"}

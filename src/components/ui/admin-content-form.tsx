@@ -30,7 +30,10 @@ export default function AdminContentForm({
         description: yup.string().required("Description is required"),
         tags: yup.string().required("Tags are required"),
         thumbnail: yup.string().url("Must be an URL").required(),
-        content: yup.string().required("Content is required"),
+        content: yup
+            .string()
+            .required("Content is required")
+            .min(50, "Content must be at least 50 characters long."),
         author: yup.string().required(),
         _id: yup.string().required(),
         date: yup.string().required(),
@@ -120,6 +123,9 @@ export default function AdminContentForm({
                 value={formData.title}
                 {...register("title")}
                 disabled={isLoading}
+                onChange={handleChange}
+                error={!!errors.title}
+                helperText={errors.title ? errors.title.message : ""}
             />
             <TextField
                 label="Description"
@@ -129,6 +135,11 @@ export default function AdminContentForm({
                 value={formData.description}
                 disabled={isLoading}
                 {...register("description")}
+                onChange={handleChange}
+                error={!!errors.description}
+                helperText={
+                    errors.description ? errors.description.message : ""
+                }
             />
             <TextField
                 label="Tags"
@@ -138,6 +149,9 @@ export default function AdminContentForm({
                 value={formData.tags}
                 disabled={isLoading}
                 {...register("tags")}
+                onChange={handleChange}
+                error={!!errors.tags}
+                helperText={errors.tags ? errors.tags.message : ""}
             />
             <TextField
                 label="Thumbnail"
@@ -147,6 +161,9 @@ export default function AdminContentForm({
                 value={formData.thumbnail}
                 disabled={isLoading}
                 {...register("thumbnail")}
+                onChange={handleChange}
+                error={!!errors.thumbnail}
+                helperText={errors.thumbnail ? errors.thumbnail.message : ""}
             />
             <TextField
                 label="Content"
@@ -158,6 +175,9 @@ export default function AdminContentForm({
                 value={formData.content}
                 disabled={isLoading}
                 {...register("content")}
+                onChange={handleChange}
+                error={!!errors.content}
+                helperText={errors.content ? errors.content.message : ""}
             />
             <Button
                 variant="contained"

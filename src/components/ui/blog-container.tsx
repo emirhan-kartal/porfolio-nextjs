@@ -4,8 +4,7 @@ import { BlogWithoutContent } from "@/pages/blog";
 import { motion } from "framer-motion";
 import { container, itemVariants } from "../utils/animations";
 import { useEffect, useState } from "react";
-import { fetcher } from "../utils/fetcher";
-import useSWR, { mutate } from "swr";
+
 
 export default function BlogContainer({
     blogs,
