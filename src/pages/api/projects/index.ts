@@ -78,6 +78,7 @@ async function postHandler(req: NextApiRequest, res: NextApiResponse) {
 
     project._id = result.insertedId;
     res.revalidate("/projects/" + project._id.toString());
+    res.revalidate("/projects");
     res.status(201).send(project);
 }
 type ProjectWithoutId = Omit<Project, "_id">;
@@ -96,5 +97,6 @@ async function putHandler(req: NextApiRequest, res: NextApiResponse) {
         return res.status(404).send({ error: "project not found" });
     }
     res.revalidate("/projects/" + project._id);
+    res.revalidate("/projects");
     res.status(200).json({ name: "Emirhan Kartal putHandler" });
 }

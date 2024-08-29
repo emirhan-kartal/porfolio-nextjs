@@ -54,6 +54,8 @@ async function deleteHandler(req: NextApiRequest, res: NextApiResponse) {
     if (result.deletedCount === 0) {
         return res.status(404).send({ error: "project not found" });
     }
+    res.revalidate("/projects");
+    res.revalidate("/projects/" + req.query.id);
 
     res.status(200).json({ name: "Emirhan Kartal deleteHandler" });
 }
@@ -69,6 +71,7 @@ async function postHandler(req: NextApiRequest, res: NextApiResponse) {
         return res.status(500).send({ error: "Error inserting project" });
     }
     res.revalidate("/projects/" + project._id.toString());
+    res.revalidate("/projects");
     res.status(201).send(project);
 }
 async function putHandler(req: NextApiRequest, res: NextApiResponse) {
@@ -88,6 +91,7 @@ async function putHandler(req: NextApiRequest, res: NextApiResponse) {
         return res.status(404).send({ error: "project not found" });
     }
     res.revalidate("/projects/" + idString);
+    res.revalidate("/projects");
 
     res.status(200).send({ success: true });
 }

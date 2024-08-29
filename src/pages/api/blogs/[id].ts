@@ -53,7 +53,9 @@ async function deleteHandler(req: NextApiRequest, res: NextApiResponse) {
     if (result.deletedCount === 0) {
         return res.status(404).send({ error: "blog not found" });
     }
-
+    res.revalidate("/");
+    res.revalidate("/blog");
+    res.revalidate("/blog/" + req.query.id);
     res.status(200).json({ name: "Emirhan Kartal deleteHandler" });
 }
 async function postHandler(req: NextApiRequest, res: NextApiResponse) {
@@ -68,6 +70,8 @@ async function postHandler(req: NextApiRequest, res: NextApiResponse) {
         return res.status(500).send({ error: "Error inserting blog" });
     }
     res.revalidate("/blog/" + blog._id);
+    res.revalidate("/blog");
+    res.revalidate("/");
     res.status(201).send(blog);
 }
 async function putHandler(req: NextApiRequest, res: NextApiResponse) {
@@ -89,6 +93,8 @@ async function putHandler(req: NextApiRequest, res: NextApiResponse) {
         return res.status(404).send({ error: "blog not found" });
     }
     res.revalidate("/blog/" + blog._id);
+    res.revalidate("/blog");
+    res.revalidate("/");
 
     res.status(200).send({ success: true });
 }

@@ -50,6 +50,7 @@ async function postHandler(req: NextApiRequest, res: NextApiResponse) {
     const mongo = await getDatabase();
     try {
         const data = await mongo.collection("skills").insertOne(body);
+        res.revalidate("/")
         res.status(200).json(data);
     } catch (error) {
         res.status(500).json({ error: error });
@@ -78,6 +79,7 @@ async function putHandler(req: NextApiRequest, res: NextApiResponse) {
                 { _id: new ObjectId(req.body._id) },
                 { $set: { name: req.body.name, image: req.body.image } }
             );
+            res.revalidate("/")
         res.status(200).json(query);
     } catch (error) {
         console.log(error);
@@ -99,5 +101,6 @@ async function deleteHandler(req: NextApiRequest, res: NextApiResponse) {
         res.status(500).json({ error: "Error deleting data" });
         return;
     }
+    res.revalidate("/")
     res.status(200).json({ success: true });
 }
