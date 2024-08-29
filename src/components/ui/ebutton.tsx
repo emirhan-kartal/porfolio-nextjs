@@ -8,6 +8,7 @@ interface ButtonProps {
     height?: string;
     href?: string;
     sx?: object;
+    submit?: boolean;
 }
 export default function EButton({
     type,
@@ -16,6 +17,7 @@ export default function EButton({
     height,
     sx,
     href,
+    submit,
 }: ButtonProps) {
     const toReturn = (
         <>
@@ -39,6 +41,7 @@ export default function EButton({
                     },
                     ...sx,
                 }}
+                type={submit ? "submit" : "button"}
             >
                 <Typography
                     color={

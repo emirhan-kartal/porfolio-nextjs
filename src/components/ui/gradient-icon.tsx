@@ -1,15 +1,19 @@
 import { Box } from "@mui/material";
 import { Icon } from "@iconify/react";
 import Link from "next/link";
+
+interface GradientIconProps {
+    icon: string;
+    link?: string;
+    height?: number;
+}
 export default function GradientIcon({
     icon,
     link,
-}: {
-    icon: string;
-    link: string;
-}) {
+    height,
+}: GradientIconProps) {
     return (
-        <Link href={link} target="_blank" passHref legacyBehavior>
+        <Link href={link ?? ""} target="_blank" passHref legacyBehavior>
             <Box
                 sx={{
                     background:
@@ -26,8 +30,8 @@ export default function GradientIcon({
                         bgcolor: "primary.main",
                         position: "absolute",
                         borderRadius: "37px",
-                        top:"50%",
-                        left:"50%",
+                        top: "50%",
+                        left: "50%",
                         transform: "translate(-50%, -50%)",
                     }}
                     width={37}
@@ -36,7 +40,7 @@ export default function GradientIcon({
                     justifyContent={"center"}
                     alignItems={"center"}
                 >
-                    <Icon icon={icon} color={"#fff"} height={20} />
+                    <Icon icon={icon} color={"#fff"} height={height ?? 20} />
                 </Box>
             </Box>
         </Link>

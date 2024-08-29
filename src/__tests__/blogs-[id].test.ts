@@ -4,6 +4,8 @@ import { NextApiRequest, NextApiResponse } from "next";
 import handler from "../pages/api/blogs/[id]";
 import { createMocks } from "node-mocks-http";
 import { Blog } from "@/components/composites/featured-projects";
+import { getServerSession } from "next-auth";
+jest.mock("next-auth/next");
 
 let mongoServer: MongoMemoryServer;
 let client: any;
@@ -29,7 +31,18 @@ afterAll(async () => {
 });
 type BlogWithoutId = Omit<Blog, "_id">;
 describe("API Integration Tests", () => {
+    beforeEach(() => {
+        (getServerSession as jest.Mock).mockResolvedValue({
+            user: {
+                email: "e.kartal115@gmail.com",
+                name: "Emirhan Kartal",
+                image: "none",
+            },
+            expires: new Date().getTime() + 1000,
+        });
+    });
     it("GET /blog/[id] should return a blog post", async () => {
+
         // Insert a test blog post
         const blogData: BlogWithoutId = {
             title: "Test Blog",
@@ -65,6 +78,7 @@ describe("API Integration Tests", () => {
     });
 
     it("POST /blog should create a blog post", async () => {
+
         const newBlog: BlogWithoutId = {
             title: "Test Blog",
             content: "This is a test blog post.",
@@ -100,6 +114,7 @@ describe("API Integration Tests", () => {
     });
 
     it("PUT /blog/[id] should update a blog post", async () => {
+
         const blogData: BlogWithoutId = {
             title: "Test Blog",
             content: "This is a test blog post.",
@@ -141,11 +156,14 @@ describe("API Integration Tests", () => {
             .findOne({ _id: insertedId });
 
         expect(modifiedBlog!.title).toBe("Updated Blog");
-        expect(modifiedBlog!.content).toBe("This is a test blo123123123g post.");
+        expect(modifiedBlog!.content).toBe(
+            "This is a test blo123123123g post."
+        );
         require("@/lib/db").getDatabase = originalGetDatabase;
     });
 
     it("DELETE /blog/[id] should delete a blog post", async () => {
+
         const blogData = {
             title: "Blog to Delete",
             content: "This blog will be deleted.",

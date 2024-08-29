@@ -2,7 +2,9 @@ import { useEffect, useState } from "react";
 import { Blog } from "@/pages/blog";
 import { Box, TextField, Button, CircularProgress } from "@mui/material";
 import { Project } from "../composites/featured-projects";
-
+import * as yup from "yup";
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
 export default function AdminContentForm({
     content,
     type,
@@ -22,6 +24,26 @@ export default function AdminContentForm({
         _id: content?._id.toString() || "",
         date: new Date().toISOString(),
     });
+
+    const yupSchema = yup.object().shape({
+        title: yup.string().required("Title is required"),
+        description: yup.string().required("Description is required"),
+        tags: yup.string().required("Tags are required"),
+        thumbnail: yup.string().url("Must be an URL").required(),
+        content: yup.string().required("Content is required"),
+        author: yup.string().required(),
+        _id: yup.string().required(),
+        date: yup.string().required(),
+    });
+    const {
+        register,
+        handleSubmit,
+        formState: { errors },
+    } = useForm({
+        resolver: yupResolver(yupSchema),
+        defaultValues: formData,
+    });
+
     useEffect(() => {
         if (content) {
             setFormData({
@@ -47,12 +69,10 @@ export default function AdminContentForm({
         }));
     };
 
-    const handleSubmit = async (e: React.FormEvent) => {
-        e.preventDefault();
+    const onSubmit = async (data: typeof formData) => {
         const apiRoute =
             `/api/${type}` + (content ? `?id=${formData._id}` : "");
-        console.log(apiRoute);
-        const { _id, ...formDataWOId } = formData;
+        const { _id, ...formDataWOId } = data;
         const result = await fetch(apiRoute, {
             method: content ? "PUT" : "POST",
             headers: {
@@ -66,6 +86,7 @@ export default function AdminContentForm({
             alert(result.statusText);
         }
     };
+
     console.log(content);
 
     return (
@@ -77,7 +98,7 @@ export default function AdminContentForm({
             width="100%"
             height="100%"
             p={2}
-            onSubmit={handleSubmit}
+            onSubmit={handleSubmit(onSubmit)}
             sx={{ opacity: isLoading ? 0.5 : 1 }}
         >
             <CircularProgress
@@ -96,9 +117,8 @@ export default function AdminContentForm({
                 variant="outlined"
                 fullWidth
                 required
-                name="title"
                 value={formData.title}
-                onChange={handleChange}
+                {...register("title")}
                 disabled={isLoading}
             />
             <TextField
@@ -106,30 +126,27 @@ export default function AdminContentForm({
                 variant="outlined"
                 fullWidth
                 required
-                name="description"
                 value={formData.description}
-                onChange={handleChange}
                 disabled={isLoading}
+                {...register("description")}
             />
             <TextField
                 label="Tags"
                 variant="outlined"
                 fullWidth
                 required
-                name="tags"
                 value={formData.tags}
-                onChange={handleChange}
                 disabled={isLoading}
+                {...register("tags")}
             />
             <TextField
                 label="Thumbnail"
                 variant="outlined"
                 fullWidth
                 required
-                name="thumbnail"
                 value={formData.thumbnail}
-                onChange={handleChange}
                 disabled={isLoading}
+                {...register("thumbnail")}
             />
             <TextField
                 label="Content"
@@ -138,10 +155,9 @@ export default function AdminContentForm({
                 required
                 multiline
                 rows={30}
-                name="content"
                 value={formData.content}
-                onChange={handleChange}
                 disabled={isLoading}
+                {...register("content")}
             />
             <Button
                 variant="contained"

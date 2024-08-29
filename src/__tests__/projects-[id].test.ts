@@ -4,7 +4,8 @@ import { NextApiRequest, NextApiResponse } from "next";
 import handler from "../pages/api/projects/[id]";
 import { createMocks } from "node-mocks-http";
 import { Blog, Project } from "@/components/composites/featured-projects";
-
+import { getServerSession } from "next-auth/next";
+jest.mock("next-auth/next");
 let mongoServer: MongoMemoryServer;
 let client: any;
 let db: Db;
@@ -29,7 +30,18 @@ afterAll(async () => {
 });
 type ProjectWithoutId = Omit<Project, "_id">;
 describe("API Integration Tests", () => {
+    beforeEach( () => {
+        (getServerSession as jest.Mock).mockResolvedValue({
+            user: {
+                email: "e.kartal115@gmail.com",
+                name: "Emirhan Kartal",
+                image: "none",
+            },
+            expires: new Date().getTime() + 1000,
+        });
+    })
     it("GET /projects/[id] should return a blog post", async () => {
+
         // Insert a test blog post
         const blogData: ProjectWithoutId = {
             title: "Test Blog",
@@ -66,6 +78,7 @@ describe("API Integration Tests", () => {
     });
 
     it("POST /projects should create a blog post", async () => {
+ 
         const newBlog: ProjectWithoutId = {
             title: "Test Blog",
             content: "This is a test blog post.",
@@ -100,6 +113,7 @@ describe("API Integration Tests", () => {
     });
 
     it("PUT /projects/[id] should update a blog post", async () => {
+
         const blogData: ProjectWithoutId = {
             title: "Test Blog",
             content: "This is a test blog post.",
@@ -149,6 +163,7 @@ describe("API Integration Tests", () => {
     });
 
     it("DELETE /projects/[id] should delete a blog post", async () => {
+
         const blogData = {
             title: "Blog to Delete",
             content: "This blog will be deleted.",

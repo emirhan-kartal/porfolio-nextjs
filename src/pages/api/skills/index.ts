@@ -80,7 +80,7 @@ async function putHandler(req: NextApiRequest, res: NextApiResponse) {
             );
         res.status(200).json(query);
     } catch (error) {
-        console.log(error)
+        console.log(error);
         res.status(500).json({ error: error });
     }
 }
@@ -99,5 +99,5 @@ async function deleteHandler(req: NextApiRequest, res: NextApiResponse) {
         res.status(500).json({ error: "Error deleting data" });
         return;
     }
-    res.status(200).json({ name: "Emirhan Kartal deleteHandler" });
+    res.status(200).json({ success: true });
 }
