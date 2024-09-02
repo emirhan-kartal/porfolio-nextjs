@@ -6,11 +6,14 @@ import GradientText from "@/components/ui/gradient-text";
 import { container } from "@/components/utils/animations";
 import { GetStaticProps } from "next";
 import { getDatabase } from "@/lib/db";
+import { useTranslations } from "next-intl";
 export default function Page({
     projects,
 }: {
     projects: ProjectWithoutContent[];
 }) {
+    const t = useTranslations("projects");
+    console.log(t("title"),"selamke")
     return (
         <ContentWrapper content>
             <motion.div
@@ -19,14 +22,14 @@ export default function Page({
                 animate="visible"
             >
                 <GradientText sx={{ fontSize: "3rem", mb: 2 }}>
-                    My Projects
+                    {t("title")}
                 </GradientText>
             </motion.div>
             <ProjectContainer projects={projects ?? []} />
         </ContentWrapper>
     );
 }
-export const getStaticProps: GetStaticProps<object> = async () => {
+export const getStaticProps: GetStaticProps<object> = async (ctx) => {
     const db = await getDatabase();
     const query = await db
         .collection("projects")
@@ -45,6 +48,9 @@ export const getStaticProps: GetStaticProps<object> = async () => {
         };
     });
     return {
-        props: { projects },
+        props: {
+            projects,
+            messages: (await import(`../../../messages/${ctx.locale}`)).default,
+        },
     };
 };

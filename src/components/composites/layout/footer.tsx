@@ -2,12 +2,17 @@ import { Box, Divider, Grid, Typography } from "@mui/material";
 import GradientIcon from "../../ui/gradient-icon";
 import Link from "next/link";
 import ContentWrapper from "../../ui/content-wrapper";
+import { useTranslations } from "next-intl";
+import { useRouter } from "next/router";
 
 export default function Footer({ className = "" }: { className?: string }) {
+    const t = useTranslations("header");
+    const tFooter = useTranslations("footer");
+    const { locale } = useRouter();
     const navLinks = [
-        { title: "Home", link: "/" },
-        { title: "About", link: "/about" },
-        { title: "Contact", link: "/contact" },
+        { title: t("home"), link: `/` },
+        { title: t("about"), link: `/about` },
+        { title: t("contact"), link: `/contact` },
     ];
     return (
         <ContentWrapper sx={{ pb: 0, pt: 0 }}>
@@ -45,7 +50,7 @@ export default function Footer({ className = "" }: { className?: string }) {
                         sx={{ order: { md: 3 } }}
                         mt={{ xs: 0, md: "auto" }} // because it doesnt align with the cross element
                     >
-                        Developed by Emirhan.
+                        {tFooter("developed-by")}
                     </Grid>
 
                     <Grid

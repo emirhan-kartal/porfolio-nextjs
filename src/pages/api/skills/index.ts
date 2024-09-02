@@ -39,20 +39,36 @@ async function getHandler(req: NextApiRequest, res: NextApiResponse) {
         res.status(500).json({ error: "Error fetching data" });
         return;
     }
-    res.status(200).json(data);
+    const formattedData = data.map((skill) => {
+        return {
+            _id: skill._id.toString(),
+            name: skill.name,
+            image: skill.image,
+        };
+    });
+    res.status(200).json(formattedData);
 }
 async function postHandler(req: NextApiRequest, res: NextApiResponse) {
     if (!req.body) {
         res.status(400).json({ error: "Skill data is required" });
         return;
     }
+    console.log("here is the thing bro");
+    console.log(req.body);
     const body = JSON.parse(req.body);
+    const toInsert = {
+        name: body.name,
+        image: body.image,
+    };
+
     const mongo = await getDatabase();
     try {
-        const data = await mongo.collection("skills").insertOne(body);
-        res.revalidate("/")
+        const data = await mongo.collection("skills").insertOne(toInsert);
+        res.revalidate("/");
         res.status(200).json(data);
     } catch (error) {
+        console.log(error);
+
         res.status(500).json({ error: error });
     }
 }
@@ -79,7 +95,7 @@ async function putHandler(req: NextApiRequest, res: NextApiResponse) {
                 { _id: new ObjectId(req.body._id) },
                 { $set: { name: req.body.name, image: req.body.image } }
             );
-            res.revalidate("/")
+        res.revalidate("/");
         res.status(200).json(query);
     } catch (error) {
         console.log(error);
@@ -101,6 +117,6 @@ async function deleteHandler(req: NextApiRequest, res: NextApiResponse) {
         res.status(500).json({ error: "Error deleting data" });
         return;
     }
-    res.revalidate("/")
+    res.revalidate("/");
     res.status(200).json({ success: true });
 }

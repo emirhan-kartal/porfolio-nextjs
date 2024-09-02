@@ -3,15 +3,17 @@ import ContentWrapper from "@/components/ui/content-wrapper";
 import GradientText from "@/components/ui/gradient-text";
 import { BlogWithoutContent } from "@/pages/blog";
 import { Box, Typography } from "@mui/material";
+import { useTranslations } from "next-intl";
 
 export default function BlogsTop({ blogs }: { blogs: BlogWithoutContent[] }) {
+    const t = useTranslations("blogs");
     return (
         <ContentWrapper content>
             <Box display={"flex"} flexDirection={"column"}>
                 <Box mb={4}>
-                    <Typography variant="h2">Blogs & articles for</Typography>
+                    <Typography variant="h2">{t("top-1")}</Typography>
                     <GradientText sx={{ fontSize: "4rem" }}>
-                        Developers
+                        {t("top-2")}
                     </GradientText>
                 </Box>
 

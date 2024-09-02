@@ -35,3 +35,11 @@ function sleep(arg0: number) {
     //make the app sleep for a while
     return new Promise((resolve) => setTimeout(resolve, arg0));
 }
+export const getStaticProps = async (ctx: any) => {
+    return {
+        props: {
+            messages: (await import(`../../../messages/${ctx.locale}.json`))
+                .default,
+        },
+    };
+};

@@ -9,6 +9,7 @@ import {
 } from "../utils/animations";
 import WhatIdoCard from "../ui/whatido-card";
 import CTA from "../ui/cta";
+import { useTranslations } from "next-intl";
 
 export interface Skill {
     title: string;
@@ -16,6 +17,7 @@ export interface Skill {
 }
 
 const LandingAbout = ({ whatIdo }: { whatIdo: Skill[] }) => {
+    const t = useTranslations("landing-about");
     return (
         <ContentWrapper sx={{ bgcolor: "secondary.main" }}>
             <Grid
@@ -45,9 +47,7 @@ const LandingAbout = ({ whatIdo }: { whatIdo: Skill[] }) => {
                     component={motion.div}
                     variants={itemVariants}
                 >
-                    <Typography variant="h4">
-                        A Solution Oriented Developer
-                    </Typography>
+                    <Typography variant="h4">{t("who-am-i")}</Typography>
                 </Grid>
 
                 <Grid
@@ -59,12 +59,7 @@ const LandingAbout = ({ whatIdo }: { whatIdo: Skill[] }) => {
                     variants={itemVariants}
                 >
                     <Typography fontSize={18}>
-                        Striving to become a successful Developer, his journey
-                        commenced in 2014 at the age of 12, experimenting with
-                        &apos;Skript&apos; a Python-like scripting language for
-                        Minecraft. Addressing performance concerns, he
-                        transitioned to Java, mastering the Bukkit API, a
-                        Minecraft-specific interface.
+                        {t("who-am-i-desc-1")}
                     </Typography>
                 </Grid>
                 <Grid
@@ -75,10 +70,7 @@ const LandingAbout = ({ whatIdo }: { whatIdo: Skill[] }) => {
                     variants={itemVariants}
                 >
                     <Typography fontSize={18}>
-                        He published free plugins in the community.With a
-                        passion for programming as a longtime hobby, he aspires
-                        to excel as developer. Presently, he&apos;s immersed in
-                        Fullstack projects
+                        {t("who-am-i-desc-2")}
                     </Typography>
                 </Grid>
 
@@ -88,7 +80,7 @@ const LandingAbout = ({ whatIdo }: { whatIdo: Skill[] }) => {
                     component={motion.div}
                     variants={itemVariants}
                 >
-                    <Typography variant="h4">What I Do</Typography>
+                    <Typography variant="h4">{t('what-i-do-title')}</Typography>
                 </Grid>
                 <Grid
                     item

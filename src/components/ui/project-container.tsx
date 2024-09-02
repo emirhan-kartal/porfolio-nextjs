@@ -4,6 +4,7 @@ import { ProjectWithoutContent } from "../composites/featured-projects";
 import { containerVariants, itemVariants } from "../utils/animations";
 import { contentWrapperSx } from "./content-wrapper";
 import ProjectCard from "./project-card";
+import { useTranslations } from "next-intl";
 
 export default function ProjectContainer({
     projects,
@@ -13,6 +14,7 @@ export default function ProjectContainer({
     paginate?: number;
 }) {
     console.log(projects, "projects");
+    const t = useTranslations("project-container");
     return (
         <>
             <Grid
@@ -42,7 +44,7 @@ export default function ProjectContainer({
                 ))}
                 {projects.length === 0 && (
                     <Typography>
-                        There are no projects in this category
+                        {t("no-projects")}
                     </Typography>
                 )}
             </Grid>

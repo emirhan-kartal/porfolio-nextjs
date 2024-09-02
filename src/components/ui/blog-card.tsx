@@ -2,6 +2,7 @@ import { Box, Typography } from "@mui/material";
 import Image from "next/image";
 import Link from "next/link";
 import { BlogWithoutContent } from "@/pages/blog";
+import { useTranslations } from "next-intl";
 export default function BlogCard({
     tags,
     description,
@@ -9,6 +10,7 @@ export default function BlogCard({
     _id,
 }: BlogWithoutContent) {
     console.log(tags);
+    const t = useTranslations("blog-card")
     return (
         <Link href={"/blog/" + _id}>
             <Box
@@ -74,7 +76,7 @@ export default function BlogCard({
                     <Typography fontSize={"1.6rem"} mb={1.5}>
                         {description}
                     </Typography>
-                    <Typography>Read More</Typography>
+                    <Typography>{t("view")}</Typography>
                 </Box>
             </Box>
         </Link>

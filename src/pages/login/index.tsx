@@ -60,11 +60,13 @@ const SignIn = ({ csrfToken }: { csrfToken: any }) => {
     );
 };
 
-export async function getServerSideProps(context: any) {
+export async function getServerSideProps(ctx: any) {
     return {
         props: {
-            csrfToken: await getCsrfToken(context),
-            session: await getServerSession(context.req, context.res, {}),
+            csrfToken: await getCsrfToken(ctx),
+            session: await getServerSession(ctx.req, ctx.res, {}),
+            messages: (await import(`../../../messages/${ctx.locale}.json`))
+                .default,
         },
     };
 }

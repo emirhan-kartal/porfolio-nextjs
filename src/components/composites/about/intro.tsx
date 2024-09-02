@@ -10,8 +10,10 @@ import {
     itemVariants,
     itemWithDelay,
 } from "@/components/utils/animations";
+import { useTranslations } from "next-intl";
 
 export default function AboutIntro() {
+    const t= useTranslations("about")
     return (
         <ContentWrapper content>
             <Box
@@ -41,7 +43,7 @@ export default function AboutIntro() {
                                 },
                             }}
                         >
-                            Hi, I Am
+                            {t('me')}
                         </Typography>
                         <Box component={motion.div} variants={itemVariants}>
                             <GradientText
@@ -61,12 +63,7 @@ export default function AboutIntro() {
                             component={motion.div}
                             variants={itemVariants}
                         >
-                            Over the past years, I have been working as a
-                            software developer. I have experience in developing
-                            web applications using React, Next.js, and Node.js.
-                            I have also worked on mobile applications using
-                            React Native. I am a self-taught developer and I am
-                            always eager to learn new technologies.
+                            {t('detail')}
                         </Typography>
 
                         <Box

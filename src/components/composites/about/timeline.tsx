@@ -4,34 +4,39 @@ import ContentWrapper from "../../ui/content-wrapper";
 import TimelineItem from "../../ui/timeline-item";
 import { motion } from "framer-motion";
 import { containerVariants } from "@/components/utils/animations";
-
-export default function Timeline({ type }: { type: string }) {
+import { useTranslations } from "next-intl";
+interface TimelineProps {
+    type: "work-info" | "education-info";
+}
+export default function Timeline({ type }: TimelineProps) {
+    const t = useTranslations("education");
+    const t2 = useTranslations("work");
     const educationInfo = [
         {
-            title: "Akdeniz University",
-            subtitle: "Computer Programming",
+            title: t("university"),
+            subtitle: t("degree"),
             date: "2021-2025",
         },
         {
-            title: "Sinav Private High School",
-            subtitle: "Science",
+            title: t("high-school"),
+            subtitle: t("high-school-degree"),
             date: "2018-2020",
         },
         {
-            title: "Kircilar High School",
-            subtitle: "Information Technologies",
+            title: t("high-school-2"),
+            subtitle: t("high-school-degree-2"),
             date: "2016-2018",
         },
     ];
     const WorkExperience = [
         {
-            title: "Frontend Developer",
+            title: t2('experience-1'),
             subtitle: "Gosocial Development",
             date: "05/2024 - 07/2024",
         },
         {
-            title: "Personal Trainer",
-            subtitle: "Self Employed",
+            title: t2('experience-2'),
+            subtitle: t2('experience-2-detail'),
             date: "2021 - 2022",
         },
     ];
@@ -42,7 +47,7 @@ export default function Timeline({ type }: { type: string }) {
     return (
         <ContentWrapper>
             <GradientText sx={{ fontSize: 32, mb: 1.2 }}>
-                {type === "education-info" ? "Education" : "Work Experience"}
+                {type === "education-info" ? t("title") : t2("title")}
             </GradientText>
             <Box
                 display={"flex"}

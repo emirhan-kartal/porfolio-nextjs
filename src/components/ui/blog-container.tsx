@@ -4,7 +4,7 @@ import { BlogWithoutContent } from "@/pages/blog";
 import { motion } from "framer-motion";
 import { container, itemVariants } from "../utils/animations";
 import { useEffect, useState } from "react";
-
+import { useTranslations } from "next-intl";
 
 export default function BlogContainer({
     blogs,
@@ -14,8 +14,7 @@ export default function BlogContainer({
     paginate?: number;
 }) {
     //YOU SHOULD -2 TO THE PAGINATE BECAUSE LATEST 2 BLOGS ARE DISPLAYED IN THE BLOGS TOP
-    console.log();
-    console.log(Math.ceil((paginate! - 2) / 5));
+    const t = useTranslations("blog-container");
     const [receivedBlogs, setReceivedBlogs] = useState<
         BlogWithoutContent[] | undefined
     >();
@@ -72,7 +71,7 @@ export default function BlogContainer({
                         </motion.div>
                     ))}
                 {receivedBlogs?.length === 0 && (
-                    <Typography>There are no blogs in this category</Typography>
+                    <Typography>{t("no-blogs")}</Typography>
                 )}
                 {blogs === undefined && (
                     <Box

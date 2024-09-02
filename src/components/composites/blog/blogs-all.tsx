@@ -1,19 +1,18 @@
 import BlogContainer from "@/components/ui/blog-container";
 import ContentWrapper from "@/components/ui/content-wrapper";
 import GradientText from "@/components/ui/gradient-text";
-
+import { useTranslations } from "next-intl";
 
 export default function BlogsAll({
     data,
 }: {
     data: { blogs: any[]; blogCount: number };
 }) {
-    console.log(data, "asdasdasd");
+    const t = useTranslations("blogs");
     return (
-        
         <ContentWrapper content>
             <GradientText sx={{ fontSize: "3rem", mb: 2 }}>
-                Recent Insights
+                {t("recent")}
             </GradientText>
             <BlogContainer
                 blogs={data?.blogs?.slice(2)}

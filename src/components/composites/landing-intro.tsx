@@ -6,8 +6,17 @@ import ContentWrapper from "../ui/content-wrapper";
 import { motion } from "framer-motion";
 import { container, itemVariants } from "../utils/animations";
 import { useEffect, useState } from "react";
+import { useTranslations } from "next-intl";
+import { useRouter } from "next/router";
 
 export default function LandingIntro() {
+
+    const t = useTranslations("landing-intro");
+    const { locale, locales, route } = useRouter();
+    const otherLocale = locales?.find((loc) => loc !== locale);
+    
+
+
     const settings = {
         small: {
             fontSize: { xs: "2.5rem", md: "3rem" },
@@ -88,16 +97,16 @@ export default function LandingIntro() {
                             fontWeight: "bold",
                         }}
                     >
-                        Hi I&apos;m Emirhan,
+                       {t('hi-1')}
                     </GradientText>
                     <Typography fontSize={chosenSettings.fontSize}>
-                        a Fullstack Developer
+                        {t('hi-2')}
                     </Typography>
                     <Typography
                         fontSize={chosenSettings.fontSize}
                         display={{ xs: "none", sm: "block" }}
                     >
-                        based in Turkiye
+                        {t('hi-3')}
                     </Typography>
                 </Box>
                 <Typography
@@ -105,7 +114,7 @@ export default function LandingIntro() {
                     component={motion.div}
                     variants={itemVariants}
                 >
-                    I help businesses to build their digital products.
+                    {t('what-i-do')}
                 </Typography>
 
                 <Box
@@ -123,7 +132,7 @@ export default function LandingIntro() {
                         height="4rem"
                         href="/contact"
                     >
-                        GET IN TOUCH
+                        {t('contact')}
                     </EButton>
                     <EButton
                         type="black"
@@ -131,7 +140,7 @@ export default function LandingIntro() {
                         height="4rem"
                         href="/projects"
                     >
-                        VIEW ALL WORKS
+                        {t('projects')}
                     </EButton>
                 </Box>
             </Box>

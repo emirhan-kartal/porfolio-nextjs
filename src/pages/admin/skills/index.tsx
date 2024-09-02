@@ -1,10 +1,5 @@
 import { Icon } from "@iconify/react/dist/iconify.js";
-import {
-    Box,
-    Button,
-    IconButton,
-    Typography,
-} from "@mui/material";
+import { Box, Button, IconButton, Typography } from "@mui/material";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import { getServerSession } from "next-auth";
 import { authOptions } from "../../api/auth/[...nextauth]";
@@ -30,7 +25,7 @@ export default function Page() {
         if (!data || rows.length !== 0) return;
         console.log("data useEffect Triggered", data);
         setRows([...data]);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [data]);
     const [open, setOpen] = useState(false);
     const [selectedRow, setSelectedRow] = useState<SkillRow>({
@@ -41,15 +36,16 @@ export default function Page() {
 
     const handleDelete = async (e: any, params: any) => {
         console.log(params.id);
+        const rowsClone = [...rows];
+        setRows((prev: any) => {
+            return prev.filter((row: SkillRow) => row._id !== params.id);
+        });
         const result = await fetch("/api/skills?id=" + params.id, {
             method: "DELETE",
         });
-        if (result.ok) {
-            setRows((prev: any) => {
-                return prev.filter((row: SkillRow) => row._id !== params.id);
-            });
-            alert("Success");
-        } else {
+
+        if (!result.ok) {
+            setRows(rowsClone);
             alert(result.statusText);
         }
         console.log(params);
@@ -147,6 +143,7 @@ export default function Page() {
                     disableColumnFilter
                     disableColumnMenu
                     disableColumnResize
+                    
                 />
             </Box>
         </AdminLayout>

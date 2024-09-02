@@ -6,12 +6,13 @@ import { Box, Theme } from "@mui/system";
 import GradientText from "../../ui/gradient-text";
 import { containerVariants, itemVariants } from "@/components/utils/animations";
 import { motion } from "framer-motion";
+import { useTranslations } from "next-intl";
 export default function FollowMe() {
     const mediaQuery = useMediaQuery((theme: Theme) =>
         theme.breakpoints.up("md")
     );
     const width = mediaQuery ? 640 : "100%";
-
+    const t = useTranslations("follow-me");
     return (
         <ContentWrapper content>
             <Box
@@ -31,7 +32,7 @@ export default function FollowMe() {
                         style={{
                             height: "auto",
                             width: width,
-                            objectFit:"cover",
+                            objectFit: "cover",
                         }}
                     />
                 </Box>
@@ -59,7 +60,7 @@ export default function FollowMe() {
                         animate="visible"
                     >
                         <Box component={motion.div} variants={itemVariants}>
-                            <GradientText>Follow me</GradientText>
+                            <GradientText>{t("title")}</GradientText>
                         </Box>
                         <Typography
                             color={"darkgray"}
@@ -67,8 +68,7 @@ export default function FollowMe() {
                             component={motion.div}
                             variants={itemVariants}
                         >
-                            I&apos;m Emirhan, a developer who builds digital
-                            products.
+                            {t("about")}
                         </Typography>
                         <Divider
                             sx={{
@@ -96,7 +96,7 @@ export default function FollowMe() {
                                     variant={"h5"}
                                     color={"primary.main"}
                                 >
-                                    Social Media
+                                    {t("about")}
                                 </Typography>
                                 <Box display={"flex"} gap={1}></Box>
                             </Box>

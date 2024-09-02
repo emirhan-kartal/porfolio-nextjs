@@ -21,8 +21,11 @@ const nextConfig = {
                 port: "",
                 pathname: "/**",
             },
-            
         ],
+    },
+    i18n: {
+        locales: ["en", "tr"],
+        defaultLocale: "tr",
     },
 };
 

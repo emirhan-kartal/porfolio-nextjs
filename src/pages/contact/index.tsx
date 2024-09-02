@@ -5,7 +5,15 @@ export default function Page() {
     return (
         <>
             <ContactForm />
-            <FAQ/>
+            <FAQ />
         </>
     );
 }
+export const getStaticProps = async (ctx: any) => {
+    return {
+        props: {
+            messages: (await import(`../../../messages/${ctx.locale}.json`))
+                .default,
+        },
+    };
+};

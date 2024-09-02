@@ -3,6 +3,7 @@ import EButton from "./ebutton";
 import Image from "next/image";
 import { ProjectWithoutContent } from "../composites/featured-projects";
 import Link from "next/link";
+import { useTranslations } from "next-intl";
 export default function ProjectCard({
     title,
     description,
@@ -12,6 +13,7 @@ export default function ProjectCard({
     _id,
 }: ProjectWithoutContent) {
     console.log("hello this is project card", _id);
+    const t = useTranslations("project-card")
     return (
         <Box display={"flex"} flexDirection={"column"}>
             <Box
@@ -72,7 +74,7 @@ export default function ProjectCard({
                 </Box>
                 <Link href={"projects/" + _id}>
                     <EButton type="black" sx={{ mt: 2 }}>
-                        View Project
+                        {t("view")}
                     </EButton>
                 </Link>
             </Box>

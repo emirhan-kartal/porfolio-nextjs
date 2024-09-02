@@ -7,7 +7,7 @@ import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
-
+import { useTranslations } from "next-intl";
 const validationSchema = yup.object().shape({
     name: yup.string().required("Name is required"),
     email: yup.string().email().required("Email is required"),
@@ -19,6 +19,8 @@ const validationSchema = yup.object().shape({
 });
 
 export default function ContactForm() {
+    const t = useTranslations("contact-form");
+
     const resolver = yupResolver(validationSchema);
     const {
         register,
@@ -76,14 +78,13 @@ export default function ContactForm() {
     console.log(errors);
     return (
         <ContentWrapper content sx={{}}>
-            <GradientText sx={{ fontSize: 40 }}>Get In Touch</GradientText>
+            <GradientText sx={{ fontSize: 40 }}>{t('get-in-touch')}</GradientText>
             <Typography py={1}>
-                Have a project in mind? Looking for a collaborator? Reach out to
-                me using the form below. I will get back to you under 48 hours.
+                {t("have-in-mind")}
             </Typography>
-            <Box display={"flex"} gap={3} mt={3} alignItems={"center"}>
+            <Box display={"flex"} gap={2} mt={3} alignItems={"center"}>
                 <GradientIcon icon="ic:outline-email" height={24} />
-                <Typography variant="h6">e.kartal115@gmail.com</Typography>
+                <Typography variant="h6" fontSize={16}>e.kartal115@gmail.com</Typography>
             </Box>
 
             <Box
@@ -96,7 +97,7 @@ export default function ContactForm() {
             >
                 <TextField
                     error={!!errors.name}
-                    label="Name"
+                    label={t('name')}
                     fullWidth
                     {...register("name")}
                     value={formData.name}
@@ -106,7 +107,7 @@ export default function ContactForm() {
 
                 <TextField
                     error={!!errors.email}
-                    label="Email"
+                    label={t("email")}
                     fullWidth
                     {...register("email")}
                     value={formData.email}
@@ -115,7 +116,7 @@ export default function ContactForm() {
                 />
                 <TextField
                     error={!!errors.budget}
-                    label="Budget"
+                    label={t('budget')}
                     fullWidth
                     {...register("budget")}
                     value={formData.budget}
@@ -123,7 +124,7 @@ export default function ContactForm() {
                     helperText={errors.budget ? errors.budget.message : ""}
                 />
                 <TextField
-                    label="Your Project's Description"
+                    label={t('description')}
                     multiline
                     rows={8}
                     fullWidth
@@ -134,7 +135,7 @@ export default function ContactForm() {
                     helperText={
                         errors.description ? errors.description.message : ""
                     }
-                    FormHelperTextProps={{ sx: { borderRadius:"1rem"} }}
+                    FormHelperTextProps={{ sx: { borderRadius: "1rem" } }}
                 />
 
                 <EButton

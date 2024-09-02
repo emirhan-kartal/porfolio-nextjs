@@ -69,6 +69,7 @@ async function postHandler(req: NextApiRequest, res: NextApiResponse) {
             const readFileAsync = promisify(fs.readFile);
             const fileData = await readFileAsync(filePath);
             await writeFile(newImage, fileData);
+            res.status(200).json({ success: true });
         } catch (error) {
             console.error(error);
             res.status(500).json({ error: "Failed to save the image" });
@@ -76,23 +77,6 @@ async function postHandler(req: NextApiRequest, res: NextApiResponse) {
         }
 
         // Insert the skill data into MongoDB
-        const mongo = await getDatabase();
-        try {
-            const data = await mongo.collection("skills").insertOne({
-                name: req.body.name[0],
-                image: "/skills/" + fileName,
-            });
-
-            if (!data) {
-                res.status(500).json({ error: "Error saving skill data" });
-                return;
-            }
-
-            res.status(200).json({ success: true });
-        } catch (error) {
-            console.error(error);
-            res.status(500).json({ error: "Failed to save skill data" });
-        }
     });
 }
 
@@ -145,7 +129,7 @@ async function putHandler(req: NextApiRequest, res: NextApiResponse) {
             console.error("Error fetching data");
             return;
         }
-        res.revalidate("/")
+        res.revalidate("/");
         const newImage = path.join(process.cwd(), "public/skills/" + fileName);
 
         const writeFile = promisify(fs.writeFile);

@@ -8,13 +8,14 @@ import {
     containerVariants,
     itemVariants,
 } from "@/components/utils/animations";
+import { useTranslations } from "next-intl";
 
 export default function ServiceList() {
+    const t = useTranslations("services");
     const services = [
         {
-            title: "Web Development",
-            description:
-                "I build websites that are fast, secure, and easy to use. I use the latest technologies to create websites that are responsive and accessible.",
+            title: t("service-1-title"),
+            description: t("service-1-description"),
             image: "https://i.hizliresim.com/4t4hifc.jpg",
         },
     ];

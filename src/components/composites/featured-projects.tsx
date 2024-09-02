@@ -5,6 +5,8 @@ import { motion } from "framer-motion";
 import { containerVariants, itemVariants } from "../utils/animations";
 import ProjectContainer from "../ui/project-container";
 import { ObjectId } from "mongodb";
+import { useRouter } from "next/router";
+import { useTranslations } from "next-intl";
 
 export type Project = {
     _id: ObjectId;
@@ -15,12 +17,14 @@ export type Project = {
     tags: string;
     content: string;
     date: string;
-
 };
 export type Blog = Project & { author: string };
 export type ProjectWithoutContent = Omit<Project, "content">;
 
 const FeaturedProjects = ({ projects }: { projects: Project[] }) => {
+    const t = useTranslations("featured-projects");
+    const { locale, locales, route } = useRouter();
+
     return (
         <ContentWrapper sx={{ pt: { xs: 3, md: 8 }, pb: 0 }} content>
             <Grid
@@ -38,9 +42,9 @@ const FeaturedProjects = ({ projects }: { projects: Project[] }) => {
                     component={motion.div}
                     variants={itemVariants}
                 >
-                    <Typography variant="h4">Look at My</Typography>
+                    <Typography variant="h4">{t('look-at-1')}</Typography>
                     <GradientText sx={{ fontSize: { xs: 32, sm: 40 } }}>
-                        Selected Works
+                        {t('look-at-2')}
                     </GradientText>
                 </Grid>
                 <Grid
@@ -51,8 +55,7 @@ const FeaturedProjects = ({ projects }: { projects: Project[] }) => {
                     variants={itemVariants}
                 >
                     <Typography>
-                        I make projects that will enhance my skillset into
-                        reality.
+                        {t('look-at-3')}
                     </Typography>
                 </Grid>
 

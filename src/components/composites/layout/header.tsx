@@ -16,13 +16,21 @@ import { containerVariants } from "../../utils/animations";
 import { motion } from "framer-motion";
 import { useState } from "react";
 import styles from "@/styles/page.module.css";
+import { useTranslations } from "next-intl";
+import { useRouter } from "next/router";
+
 export default function Header() {
+    const t = useTranslations("header");
+    const { locale, locales, route } = useRouter();
+    const otherLocale = locales?.find((loc) => loc !== locale);
+    console.log(t("home"));
+
     const links = [
-        { title: "Home", link: "/" },
-        { title: "Services", link: "/services" },
-        { title: "Projects", link: "/projects" },
-        { title: "About", link: "/about" },
-        { title: "Blog", link: "/blog" },
+        { title: t("home"), link: `/` },
+        { title: t("services"), link: `/services` },
+        { title: t("projects"), link: `/projects` },
+        { title: t("about"), link: `/about` },
+        { title: t("blog"), link: `/blog` },
     ];
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const drawerMenu = (
@@ -62,11 +70,9 @@ export default function Header() {
                         width: 200,
                         padding: 2,
                     },
-                }}  
+                }}
                 onClose={() => setIsMenuOpen(false)}
-
-
->
+            >
                 {drawerMenu}
             </Drawer>
             <Box
@@ -126,7 +132,7 @@ export default function Header() {
                     color="text.primary"
                 >
                     <EButton type="white" href="/contact">
-                        Let&apos;s Talk
+                        {t("lets-talk")}
                     </EButton>
                 </Box>
                 <Box
