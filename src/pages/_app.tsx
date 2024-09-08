@@ -12,7 +12,7 @@ import SnackbarProvider from "@/components/context/snackbarContext";
 import SnackBarFeedback from "@/components/ui/snackbar-feedback";
 import LoadingProvider from "@/components/context/loadingContext";
 import LoadingScreen from "@/components/ui/loading-screen";
-
+import { Analytics } from "@vercel/analytics/react";
 export default function App({
     Component,
     pageProps: { session, ...pageProps },
@@ -31,6 +31,7 @@ export default function App({
                             <Header />
                             <SnackbarProvider>
                                 <Component {...pageProps} />
+                                <Analytics />
                                 <SnackBarFeedback />
                                 <LoadingScreen />
                             </SnackbarProvider>
