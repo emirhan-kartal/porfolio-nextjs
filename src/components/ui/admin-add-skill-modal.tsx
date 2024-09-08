@@ -1,11 +1,8 @@
-import { SkillRow, SkillRowWithoutId } from "@/pages/admin/skills";
-import { yupResolver } from "@hookform/resolvers/yup";
 import { Box, Button, Modal, TextField } from "@mui/material";
 import React, { useEffect, useRef, useState } from "react";
-import { useForm } from "react-hook-form";
-import * as yup from "yup";
 import useFileUpload from "../hooks/useFileUpload";
 import useSkillForm from "../hooks/useSkillForm";
+import { SkillRow } from "@/types";
 interface AddSkillModalProps {
     rows: SkillRow[];
     setRows: React.Dispatch<React.SetStateAction<SkillRow[]>>;

@@ -7,6 +7,15 @@ export const jamjuree = Bai_Jamjuree({
 });
 
 const darkTheme = createTheme({
+    breakpoints:{
+        values: {
+            xs: 0,
+            sm: 600,
+            md: 1000,
+            lg: 1200,
+            xl: 1536,
+        },
+    },
     components: {
         MuiButton: {
             styleOverrides: {
@@ -50,6 +59,15 @@ const darkTheme = createTheme({
                         margin: 0,
                         padding: "0.2rem 0.5rem 0.2rem 0.5rem",
                         borderRadius: "0 0 0.25rem 0.25rem",
+                    },
+                },
+            },
+        },
+        MuiTab: {
+            styleOverrides: {
+                root: {
+                    "&.Mui-selected": {
+                        color: "#F0F2F5",
                     },
                 },
             },

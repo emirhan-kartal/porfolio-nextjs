@@ -2,8 +2,7 @@ import Head from "next/head";
 import { Inter } from "next/font/google";
 import LandingIntro from "@/components/composites/landing-intro";
 import GradientColon from "@/components/ui/gradient-colon";
-import { Project } from "@/components/composites/featured-projects";
-import { Skill } from "@/components/composites/landing-about";
+
 import {
     GetStaticProps,
     GetStaticPropsContext,
@@ -12,6 +11,7 @@ import {
 import dynamic from "next/dynamic";
 import LazyLoad from "@/components/utils/LazyLoad";
 import { getDatabase } from "@/lib/db";
+import { Skill, Project } from "@/types";
 
 const DynamicFeaturedProjects = dynamic(
     import("@/components/composites/featured-projects")
@@ -27,7 +27,7 @@ interface HomePageProps {
     projects: Project[];
     messages: Record<string, string>;
 }
-
+7;
 export default function Home({ whatIdo, projects }: HomePageProps) {
     return (
         <>
@@ -44,6 +44,7 @@ export default function Home({ whatIdo, projects }: HomePageProps) {
                 <link rel="icon" href="/favicon.ico" />
             </Head>
             <main>
+                
                 <LandingIntro />
                 <GradientColon />
 
@@ -70,23 +71,32 @@ export const getStaticProps: GetStaticProps<HomePageProps> = async (
         }
     ) as Skill[];
     console.log("this is whatIdo", whatIdo);
-    const projects = (await mongo.collection("projects").find().toArray()).map(
-        (project) => {
-            return {
-                title: project.title,
-                description: project.description,
-                thumbnail: project.thumbnail,
-                tags: project.tags,
-                date: project.date,
-            } as Project;
-        }
-    ) as Project[];
+    const projects = (
+        await mongo.collection("projects").find({ limit: 2 }).toArray()
+    ).map((project) => {
+        ctx.locales?.forEach((locale) => {
+            project[locale as "tr" | "en"] = {
+                title: project[locale as "tr" | "en"].title,
+                description: project[locale as "tr" | "en"].description,
+                tags: project[locale as "tr" | "en"].tags,
+                thumbnail: project[locale as "tr" | "en"].thumbnail,
+            };
+        });
+        return {
+            _id: project._id.toString(),
+            date: project.date,
+            thumbnail: project.thumbnail,
+            tr: project.tr,
+            en: project.en,
+        } as Project;
+    }) as Project[];
 
     return {
         props: {
             whatIdo,
             projects,
-            messages: (await import(`../../messages/${ctx.locale}.json`)).default,
+            messages: (await import(`../../messages/${ctx.locale}.json`))
+                .default,
         },
     };
 };

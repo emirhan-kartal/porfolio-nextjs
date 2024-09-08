@@ -12,7 +12,7 @@ export default function CTA({ mt }: { mt: number }) {
             <Typography fontSize={"29px"} mb={3}>
                 {t("text")}
             </Typography>
-            <Link href={""}>
+            <Link href={"/contact"}>
                 <GradientText
                     sx={{
                         fontSize: { xs: 32, md: 72 },

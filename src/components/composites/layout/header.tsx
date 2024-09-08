@@ -18,6 +18,7 @@ import { useState } from "react";
 import styles from "@/styles/page.module.css";
 import { useTranslations } from "next-intl";
 import { useRouter } from "next/router";
+import LanguageSwitcher from "@/components/ui/language-switcher";
 
 export default function Header() {
     const t = useTranslations("header");
@@ -31,6 +32,7 @@ export default function Header() {
         { title: t("projects"), link: `/projects` },
         { title: t("about"), link: `/about` },
         { title: t("blog"), link: `/blog` },
+        { title: t("contact"), link: "/contact" },
     ];
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const drawerMenu = (
@@ -128,9 +130,13 @@ export default function Header() {
 
                 <Box
                     ml={"auto"}
-                    display={{ xs: "none", md: "block" }}
+                    display={{ xs: "none", md: "flex" }}
+                    alignItems={"center"}
                     color="text.primary"
                 >
+                    <Box ml={"auto"}>
+                        <LanguageSwitcher />
+                    </Box>{" "}
                     <EButton type="white" href="/contact">
                         {t("lets-talk")}
                     </EButton>

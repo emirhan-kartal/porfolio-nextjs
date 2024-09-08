@@ -1,10 +1,17 @@
 import { useEffect, useState } from "react";
-import { Blog } from "@/pages/blog";
-import { Box, TextField, Button, CircularProgress } from "@mui/material";
-import { Project } from "../composites/featured-projects";
+import {
+    Box,
+    Button,
+    CircularProgress,
+} from "@mui/material";
 import * as yup from "yup";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { useRouter } from "next/router";
+import AdminContentLanguageTab from "./admin-content-language-tab";
+import { Blog, Project } from "@/types";
+import { FormContext } from "../context/formContext";
+
 export default function AdminContentForm({
     content,
     type,
@@ -14,35 +21,48 @@ export default function AdminContentForm({
     type: "blogs" | "projects";
     isLoading?: boolean;
 }) {
+    const { locales, locale } = useRouter();
+    const [lang, setLang] = useState<"tr" | "en">(locale as "tr" | "en");
+    const initialLocaleContent = locales?.reduce((acc: any, locale: any) => {
+        acc[locale] = {
+            title: content?.[lang]?.title || "",
+            description: content?.[lang]?.description || "",
+            tags: content?.[lang]?.tags || "",
+            content: content?.[lang]?.content || "",
+            thumbnail: content?.thumbnail || "",
+        };
+        return acc;
+    }, {});
     const [formData, setFormData] = useState({
-        title: content?.title || "",
-        description: content?.description || "",
-        tags: content?.tags || "",
-        thumbnail: content?.thumbnail || "",
-        content: content?.content || "",
-        author: "Emirhan Kartal",
         _id: content?._id.toString() || "",
         date: new Date().toISOString(),
+        thumbnail: content?.thumbnail || "",
+        author: "Emirhan Kartal",
+        ...initialLocaleContent,
     });
-
-    const yupSchema = yup.object().shape({
-        title: yup.string().required("Title is required"),
-        description: yup.string().required("Description is required"),
-        tags: yup.string().required("Tags are required"),
-        thumbnail: yup.string().url("Must be an URL").required(),
-        content: yup
+    const [validatedForms, setValidatedForms] = useState(
+        locales?.reduce((acc: any, locale: any) => {
+            acc[locale] = false;
+            return acc;
+        }, {})
+    );
+    const yupSchemaObject = locales?.reduce((acc: any, lang: any) => {
+        acc[lang + ".title"] = yup.string().required("Title is required");
+        acc[lang + ".description"] = yup
+            .string()
+            .required("Description is required");
+        acc[lang + ".tags"] = yup.string().required("Tags are required");
+        acc[lang + ".content"] = yup
             .string()
             .required("Content is required")
-            .min(50, "Content must be at least 50 characters long."),
-        author: yup.string().required(),
-        _id: yup.string().required(),
-        date: yup.string().required(),
-    });
-    const {
-        register,
-        handleSubmit,
-        formState: { errors },
-    } = useForm({
+            .min(50, "Content must be at least 50 characters long.");
+
+        return yup.object().shape(acc);
+    }, {} as Record<string, yup.StringSchema>);
+
+    const yupSchema = yup.object().shape(yupSchemaObject);
+
+    const methods = useForm({
         resolver: yupResolver(yupSchema),
         defaultValues: formData,
     });
@@ -50,27 +70,17 @@ export default function AdminContentForm({
     useEffect(() => {
         if (content) {
             setFormData({
-                title: content.title,
-                description: content.description,
-                tags: content.tags,
+                title: content?.[lang].title,
+                description: content?.[lang].description,
+                tags: content?.[lang].tags,
                 thumbnail: content.thumbnail,
-                content: content.content,
+                content: content?.[lang].content,
                 author: "Emirhan Kartal",
                 _id: content._id.toString(),
                 date: content.date,
             });
         }
     }, [content]);
-
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const { name, value } = e.target;
-        console.log(name, "name");
-        console.log(value, "value");
-        setFormData((prevData) => ({
-            ...prevData,
-            [name]: value,
-        }));
-    };
 
     const onSubmit = async (data: typeof formData) => {
         const apiRoute =
@@ -89,104 +99,61 @@ export default function AdminContentForm({
             alert(result.statusText);
         }
     };
-
-    console.log(content);
-
+    const allValidated = Object.values(validatedForms).every(
+        (value) => value === true
+    );
     return (
-        <Box
-            component="form"
-            display="flex"
-            flexDirection="column"
-            gap={2}
-            width="100%"
-            height="100%"
-            p={2}
-            onSubmit={handleSubmit(onSubmit)}
-            sx={{ opacity: isLoading ? 0.5 : 1 }}
+        <FormContext.Provider
+            value={{
+                validatedForms,
+                setValidatedForms,
+                formData,
+                setFormData,
+            }}
         >
-            <CircularProgress
-                sx={{
-                    visibility: isLoading ? "visible" : "hidden",
-                    color: "white",
-                    position: "absolute",
-                    zIndex: 1000,
-                    top: "50vh",
-                    left: "50vw",
-                    transform: "translate(-50%, -50%)",
+            <Box
+                component="form"
+                display="flex"
+                flexDirection="column"
+                gap={2}
+                width="100%"
+                height="100%"
+                p={2}
+                onSubmit={(e) => {
+                    e.preventDefault();
+                    if (allValidated) {
+                        onSubmit(formData);
+
+                        console.log(formData);
+                    }
                 }}
-            />
-            <TextField
-                label="Title"
-                variant="outlined"
-                fullWidth
-                required
-                value={formData.title}
-                {...register("title")}
-                disabled={isLoading}
-                onChange={handleChange}
-                error={!!errors.title}
-                helperText={errors.title ? errors.title.message : ""}
-            />
-            <TextField
-                label="Description"
-                variant="outlined"
-                fullWidth
-                required
-                value={formData.description}
-                disabled={isLoading}
-                {...register("description")}
-                onChange={handleChange}
-                error={!!errors.description}
-                helperText={
-                    errors.description ? errors.description.message : ""
-                }
-            />
-            <TextField
-                label="Tags"
-                variant="outlined"
-                fullWidth
-                required
-                value={formData.tags}
-                disabled={isLoading}
-                {...register("tags")}
-                onChange={handleChange}
-                error={!!errors.tags}
-                helperText={errors.tags ? errors.tags.message : ""}
-            />
-            <TextField
-                label="Thumbnail"
-                variant="outlined"
-                fullWidth
-                required
-                value={formData.thumbnail}
-                disabled={isLoading}
-                {...register("thumbnail")}
-                onChange={handleChange}
-                error={!!errors.thumbnail}
-                helperText={errors.thumbnail ? errors.thumbnail.message : ""}
-            />
-            <TextField
-                label="Content"
-                variant="outlined"
-                fullWidth
-                required
-                multiline
-                rows={30}
-                value={formData.content}
-                disabled={isLoading}
-                {...register("content")}
-                onChange={handleChange}
-                error={!!errors.content}
-                helperText={errors.content ? errors.content.message : ""}
-            />
-            <Button
-                variant="contained"
-                color="primary"
-                type="submit"
-                disabled={isLoading}
+                sx={{ opacity: isLoading ? 0.5 : 1 }}
             >
-                {content ? "Update" : "Create"}
-            </Button>
-        </Box>
+                <CircularProgress
+                    sx={{
+                        visibility: isLoading ? "visible" : "hidden",
+                        color: "white",
+                        position: "absolute",
+                        zIndex: 1000,
+                        top: "50vh",
+                        left: "50vw",
+                        transform: "translate(-50%, -50%)",
+                    }}
+                />
+
+                <AdminContentLanguageTab
+                    sendLangToParent={(data: "tr" | "en") => setLang(data)}
+                />
+
+                <Button
+                    variant="contained"
+                    color="primary"
+                    type="submit"
+                    disabled={isLoading || !allValidated}
+                >
+                    {content ? "Update" : "Create"}
+                </Button>
+            </Box>
+        </FormContext.Provider>
     );
 }

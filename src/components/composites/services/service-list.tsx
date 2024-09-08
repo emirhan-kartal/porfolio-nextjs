@@ -28,7 +28,7 @@ export default function ServiceList() {
             >
                 <Box component={motion.div} variants={itemVariants}>
                     <GradientText sx={{ mb: 1.5, fontSize: "3rem" }}>
-                        Our Services
+                        {t("title")}
                     </GradientText>
                 </Box>
                 <Box

@@ -3,16 +3,18 @@ import EButton from "@/components/ui/ebutton";
 import FAQAccordion from "@/components/ui/faq-accordion";
 import GradientText from "@/components/ui/gradient-text";
 import { Box, Typography } from "@mui/material";
+import { useTranslations } from "next-intl";
 
 export default function FAQ() {
+    const t = useTranslations("faq");
     return (
-        <ContentWrapper content sx={{pt:12}}>
+        <ContentWrapper content sx={{ pt: 12 }}>
             <Box display={"flex"} flexDirection="column" gap={2} mb={2}>
                 <Box>
-                    <Typography variant="h2">
-                        Frequently Asked 
-                    </Typography>
-                    <GradientText sx={{fontSize:"4rem"}}>Questions</GradientText>
+                    <Typography variant="h2">Frequently Asked</Typography>
+                    <GradientText sx={{ fontSize: "4rem" }}>
+                        Questions
+                    </GradientText>
                 </Box>
                 <Typography variant="h6">
                     Answer to the Ultimate Question of Life, the Universe, and
@@ -23,8 +25,8 @@ export default function FAQ() {
                     sx={{
                         width: { xs: "50%", sm: "40%", md: "20%" },
                         height: { xs: "6rem", sm: "5rem", md: "4rem" },
-                        mt:3,
-                        mb:6
+                        mt: 3,
+                        mb: 6,
                     }}
                 >
                     Contact Me

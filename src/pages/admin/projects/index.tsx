@@ -6,9 +6,9 @@ import { authOptions } from "../../api/auth/[...nextauth]";
 import AdminLayout from "@/components/composites/admin/admin-layout";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { Project } from "@/components/composites/featured-projects";
 import useSWR from "swr";
 import { useEffect, useState } from "react";
+import { Project } from "@/types";
 
 function sleep(ms: number) {
     return new Promise((resolve) => setTimeout(resolve, ms));

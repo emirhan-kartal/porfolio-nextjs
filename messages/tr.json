@@ -17,13 +17,13 @@
         "hi-2": "Fullstack Geliştirici",
         "hi-3": "",
         "what-i-do": "İşletmelerin dijital ürünlerini inşa etmelerini sağlıyorum",
-        "contact": "İletişime Geç",
-        "projects": "Tüm Projeleri Gör"
+        "contact": "İLETİŞİME GEÇ",
+        "projects": "Tüm PROJELERİ Gör"
     },
     "featured-projects": {
         "look-at-1": "Öne Çıkan ",
         "look-at-2": "Projelerime Göz Atın",
-        "look-at-3": "Projeler yaparak yeteneklerimi geliştiriyor ve gerçeğe dönüştürüyorum."
+        "look-at-3": "Projeler yaparak yeteneklerimi geliştiriyor ve yeni teknolojiler öğreniyorum. Aşağıda, son projelerimden bazılarını görebilirsiniz."
     },
     "project-container": {
         "no-projects": "Proje bulunamadı"
@@ -31,38 +31,47 @@
     "blog-container": {
         "no-blogs": "Blog bulunamadı"
     },
+    "service-list": {
+        "title": "Hizmetlerimiz",
+        "button":""
+    },
+    "service-card":{
+        "button":"Benimle Çalış"
+    },
     "landing-about": {
         "who-am-i": "Çözüm Odaklı Bir Geliştirici",
-        "who-am-i-desc-1": "Başarılı bir geliştirici olma hedefiyle 2014 yılında, 12 yaşında başladığı bu yolculukta, Minecraft için Python benzeri bir betik dili olan 'Skript' ile denemeler yaptı. Bu dilin düşük performans endişeleri nedeniyle, Java'ya geçiş yaparak Minecraft'a özel bir arayüz olan Bukkit API'yi öğrendi.",
+        "who-am-i-desc-1": "Başarılı bir geliştirici olma hedefiyle 2014 yılında, 12 yaşında başladığı bu yolculukta, Minecraft için Python benzeri bir betik dili olan 'Skript' ile denemeler yaptı. Bu dilin düşük performans sorunu nedeniyle, Java'ya geçiş yaparak Minecraft'a özel bir yapı olan Bukkit API'yi öğrendi.",
         "who-am-i-desc-2": "Toplulukta ücretsiz eklentiler yayımladı. Bu dönemde Java ile birlikte soyut kavramlara hakim oldu.Programlamaya olan tutkusu uzun süredir bir hobi olarak devam ediyor ve şu anda Fullstack projeler üzerinde çalışıyor.",
         "what-i-do-title": "Ne Yapıyorum"
     },
     "services": {
+        "title": "Hizmetlerimiz",
         "service-1-title": "Web Geliştirme",
         "service-1-description": "Hızlı, güvenli ve kullanımı kolay web siteleri inşa ediyorum. En son teknolojileri kullanarak, duyarlı ve erişilebilir web siteleri oluşturuyorum."
     },
     "CTA": {
-        "text": "İyi geliştirme becerilerinin işletmenizdeki etkisini görün.",
-        "button": "Birlikte Çalışalım"
+        "text": "İyi uygulanan geliştirme metodlarının yaratacağı farkı görün.",
+        "button": "Benimle Çalışmak İçin"
     },
     "contact-form": {
-        "get-in-touch":"İletişime Geç",
+        "get-in-touch": "İletişime Geç",
         "have-in-mind": "Bir projeniz mi var? Şirketinize geliştirici mi arıyorsunuz? Aşağıdaki formu kullanarak benimle iletişime geçin. 48 saat içinde size geri dönüş yapacağım.",
         "name": "İsim",
         "email": "E-posta",
         "budget": "Bütçe",
         "description": "Projenizin/Teklifinizin Açıklaması",
-        "submit-button": "Gönder"
+        "submit": "Gönder",
+        "submitting":"Gönderiliyor..."
     },
     "projects": {
         "title": "Projelerim"
     },
     "project-card": {
-        "view": "Projeyi Görüntüle"
+        "view": "Görüntüle"
     },
     "blogs": {
         "top-1": "Geliştiriciler için",
-        "top-2": "Bloglar ve makaleler",
+        "top-2": "Bloglar yazıları",
         "recent": "Son Makaleler"
     },
     "blog-card": {
@@ -72,7 +81,7 @@
         "me": "Merhaba, Ben",
         "detail": "Son birkaç yıldır yazılım geliştirici olarak çalışıyorum. React, Next.js ve Node.js kullanarak web uygulamaları geliştirme deneyimim var. Kendi kendine öğrenen bir geliştiriciyim ve her zaman yeni teknolojiler öğrenmeye hevesliyim."
     },
-    "education-": {
+    "education": {
         "title": "Eğitim",
         "university": "Akdeniz Üniversitesi",
         "degree": "Bilgisayar Programcılığı",

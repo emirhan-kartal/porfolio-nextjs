@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 import { itemVariants } from "../utils/animations";
 import Image from "next/image";
 import useResponsiveImage from "../hooks/useResponsiveImage";
-import { Skill } from "../composites/landing-about";
+import { Skill } from "@/types";
 
 export default function WhatIdoCard({ skill }: { skill: Skill }) {
     const condition = (x: number) =>

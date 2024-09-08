@@ -1,3 +1,4 @@
+import { FAQuestion } from "@/types";
 import {
     Accordion,
     AccordionDetails,
@@ -5,10 +6,7 @@ import {
     Typography,
 } from "@mui/material";
 
-export interface FAQuestion {
-    question: string;
-    answer: string;
-}
+
 
 export default function FAQAccordion({ question, answer }: FAQuestion) {
     return (

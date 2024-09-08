@@ -24,5 +24,5 @@ async function getHandler(req: NextApiRequest, res: NextApiResponse) {
         .sort({ _id: 1 })
         .limit(5)
         .toArray();
-    res.status(200).send({ name: "Emirhan Kartal getHandler" });
+    res.status(200).send(nextPage);
 }

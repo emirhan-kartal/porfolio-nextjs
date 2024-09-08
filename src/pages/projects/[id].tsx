@@ -2,19 +2,21 @@ import ContentWrapper from "@/components/ui/content-wrapper";
 import { Box, Typography } from "@mui/material";
 import GradientText from "@/components/ui/gradient-text";
 import Image from "next/image";
-import { Project } from "@/components/composites/featured-projects";
 import { getDatabase } from "@/lib/db";
 import { ObjectId } from "mongodb";
 import markdownToHtml from "@/lib/markdownToHtml";
-export default function Page({ data }: { data: Project }) {
+import { useRouter } from "next/router";
+import { ProjectContent } from "@/types";
+export default function Page({ data }: { data: ProjectContent }) {
     console.log(data, "hello world");
-
+    const { locale } = useRouter();
+    const { title, content, thumbnail } = data;
     return (
         <>
             <ContentWrapper content sx={{ pt: 15 }}>
                 <Box>
                     <Typography mb={3} variant="h3">
-                        {data.title}
+                        {title}
                     </Typography>
                     <GradientText>— By Emirhan Kartal</GradientText>
                 </Box>
@@ -30,8 +32,8 @@ export default function Page({ data }: { data: Project }) {
                 bgcolor={"text.primary"}
             >
                 <Image
-                    src={data.thumbnail}
-                    alt={data.title}
+                    src={thumbnail}
+                    alt={title}
                     height={0}
                     width={0}
                     sizes="100wv"
@@ -43,12 +45,12 @@ export default function Page({ data }: { data: Project }) {
                 />
             </Box>
             <ContentWrapper content sx={{ bgcolor: "secondary.main" }}>
-                <Box py={4} component={"div"}>
+                <Box py={4} component={"div"} sx={{ wordBreak: "break-word" }}>
                     <Typography
                         variant="body1"
                         component={"div"}
                         dangerouslySetInnerHTML={{
-                            __html: data.content,
+                            __html: content,
                         }}
                     ></Typography>
                 </Box>
@@ -59,8 +61,10 @@ export default function Page({ data }: { data: Project }) {
 
 export const getStaticProps = async ({
     params,
+    locale,
 }: {
     params: { id: string };
+    locale: string;
 }) => {
     const mongo = await getDatabase();
     const res = await mongo
@@ -71,30 +75,49 @@ export const getStaticProps = async ({
             notFound: true,
         };
     }
-    const markdownContent = await markdownToHtml(res.content);
+    if (!locale) {
+        return {
+            notFound: true, 
+        };
+    }
+    const localizedProject = res[locale as "tr" | "en"];
+    const markdownContent = await markdownToHtml(localizedProject.content);
     const data = {
-        title: res.title,
+        title: localizedProject.title,
         content: markdownContent,
-        thumbnail: res.thumbnail,
-        author: res.author,
+        thumbnail: localizedProject.thumbnail,
+        author: "Emirhan Kartal",
     };
-
     return {
         props: {
             data,
+            messages: (await import(`../../../messages/${locale}`)).default,
         },
     };
 };
-export async function getStaticPaths() {
+export async function getStaticPaths({ locales }: { locales: string[] }) {
     // Replace 'http://localhost:3000' with your actual domain or environment variable
     const mongo = await getDatabase();
     const res = await mongo.collection("projects").find().toArray();
-    const paths = res.map((blog) => ({
-        params: { id: blog._id.toString() },
-    }));
+    const paths = res.flatMap((project) => {
+        return locales.map((locale) => ({
+            params: { id: project._id.toString() },
+            locale,
+        }));
+    });
+    console.log(paths, "this is paths");
+    /*    const paths = res.map((project) => [
+        locales.map((locale) => ({
+            params: {
+                id: project._id.toString(),
+            },
+            locale: locale,
+        })),
+    ]); */
 
     return {
         paths,
+
         fallback: false,
     };
 }

@@ -1,22 +1,29 @@
 import BlogContainer from "@/components/ui/blog-container";
 import ContentWrapper from "@/components/ui/content-wrapper";
 import GradientText from "@/components/ui/gradient-text";
+import { Blog } from "@/types";
 import { useTranslations } from "next-intl";
-
+interface BlogsAllProps {
+    allBlogsCount: number;
+    blogs: Blog[];
+    getPageAfter: (cursor: string) => void;
+}
 export default function BlogsAll({
-    data,
-}: {
-    data: { blogs: any[]; blogCount: number };
-}) {
+    allBlogsCount,
+    blogs,
+    getPageAfter,
+}: BlogsAllProps) {
     const t = useTranslations("blogs");
+    console.log(blogs, "test blogs");
     return (
         <ContentWrapper content>
             <GradientText sx={{ fontSize: "3rem", mb: 2 }}>
                 {t("recent")}
             </GradientText>
             <BlogContainer
-                blogs={data?.blogs?.slice(2)}
-                paginate={data?.blogCount}
+                blogs={blogs.slice(2)}
+                paginate={allBlogsCount}
+                getPageAfter={getPageAfter}
             />
         </ContentWrapper>
     );

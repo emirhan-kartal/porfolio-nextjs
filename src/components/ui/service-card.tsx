@@ -3,6 +3,7 @@ import Image from "next/image";
 import EButton from "./ebutton";
 import { motion } from "framer-motion";
 import { itemVariants } from "../utils/animations";
+import { useTranslations } from "next-intl";
 interface ServiceCardProps {
     title: string;
     description: string;
@@ -14,6 +15,7 @@ export default function ServiceCard({
     description,
     image,
 }: ServiceCardProps) {
+    const t = useTranslations("service-card");
     return (
         <Box
             display={"flex"}
@@ -28,7 +30,7 @@ export default function ServiceCard({
                 </Typography>
 
                 <EButton type="gradient" href="/contact" sx={{ mt: 2, p: 2 }}>
-                    Hire me
+                    {t('button')}
                 </EButton>
             </Box>
             <Image

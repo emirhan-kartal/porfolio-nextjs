@@ -7,6 +7,7 @@ import GradientText from "../../ui/gradient-text";
 import { containerVariants, itemVariants } from "@/components/utils/animations";
 import { motion } from "framer-motion";
 import { useTranslations } from "next-intl";
+import GradientIcon from "@/components/ui/gradient-icon";
 export default function FollowMe() {
     const mediaQuery = useMediaQuery((theme: Theme) =>
         theme.breakpoints.up("md")
@@ -37,8 +38,6 @@ export default function FollowMe() {
                     />
                 </Box>
                 <Box
-                    bgcolor={"text.primary"}
-                    width={{ xs: "85%", md: "400px" }}
                     left={{ xs: "50%", md: "400px" }}
                     sx={{
                         transform: {
@@ -48,10 +47,10 @@ export default function FollowMe() {
                         top: { xs: -50, md: "50%" },
                     }}
                     position={{ xs: "relative", md: "absolute" }}
-                    component={motion.div}
-                    variants={itemVariants}
                 >
                     <Box
+                        bgcolor={"text.primary"}
+                        width={{ xs: "85%", md: "400px" }}
                         p={4}
                         mx={"auto"}
                         component={motion.div}
@@ -92,13 +91,32 @@ export default function FollowMe() {
                                 gap={1}
                                 width={1}
                             >
-                                <Typography
-                                    variant={"h5"}
-                                    color={"primary.main"}
+                                <Box
+                                    display={"flex"}
+                                    gap={1}
+                                    justifyContent={"end"}
+                                    alignItems={"center"}
                                 >
-                                    {t("about")}
-                                </Typography>
-                                <Box display={"flex"} gap={1}></Box>
+                                    <Typography
+                                        variant={"h5"}
+                                        color={"primary.main"}
+                                        mr={"auto"}
+                                    >
+                                        {t("social")}
+                                    </Typography>
+                                    <GradientIcon
+                                        icon={"akar-icons:github-fill"}
+                                        link={
+                                            "https://github.com/emirhankartal"
+                                        }
+                                    />
+                                    <GradientIcon
+                                        icon={"akar-icons:linkedin-fill"}
+                                        link={
+                                            "https://www.linkedin.com/in/emirhankartal/"
+                                        }
+                                    />
+                                </Box>
                             </Box>
                         </Box>
                     </Box>

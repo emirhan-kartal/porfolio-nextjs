@@ -8,13 +8,7 @@ import React, { useCallback, useEffect, useState } from "react";
 import AddSkillModal from "@/components/ui/admin-add-skill-modal";
 import useSWR from "swr";
 import { fetcher } from "@/components/utils/fetcher";
-
-export interface SkillRow {
-    _id: string;
-    name: string;
-    image: string;
-}
-export type SkillRowWithoutId = Omit<SkillRow, "_id">;
+import { SkillRow } from "@/types";
 
 export default function Page() {
     const { data, error, isLoading } = useSWR("/api/skills", fetcher);
@@ -143,7 +137,6 @@ export default function Page() {
                     disableColumnFilter
                     disableColumnMenu
                     disableColumnResize
-                    
                 />
             </Box>
         </AdminLayout>

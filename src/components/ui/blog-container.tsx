@@ -1,54 +1,46 @@
 import { Box, CircularProgress, Pagination, Typography } from "@mui/material";
 import BlogCard from "./blog-card";
-import { BlogWithoutContent } from "@/pages/blog";
 import { motion } from "framer-motion";
 import { container, itemVariants } from "../utils/animations";
-import { useEffect, useState } from "react";
+import {  useState } from "react";
 import { useTranslations } from "next-intl";
+import { useRouter } from "next/router";
+import { BlogWithoutContent } from "@/types";
 
+type BlogContainerProps = {
+    blogs: BlogWithoutContent[];
+    paginate?: number;
+    getPageAfter?: (cursor: string) => void;
+};
 export default function BlogContainer({
     blogs,
     paginate,
-}: {
-    blogs: BlogWithoutContent[]; //blogs sent by doing -2 in the slice because the first 2 blogs are displayed in the top
-    paginate?: number;
-}) {
+    getPageAfter,
+}: BlogContainerProps) {
     //YOU SHOULD -2 TO THE PAGINATE BECAUSE LATEST 2 BLOGS ARE DISPLAYED IN THE BLOGS TOP
+    console.log(blogs, "test blogs");
+    console.log("test");
     const t = useTranslations("blog-container");
-    const [receivedBlogs, setReceivedBlogs] = useState<
-        BlogWithoutContent[] | undefined
-    >();
-    const [page, setPage] = useState(1);
-    useEffect(() => {
-        if (blogs && receivedBlogs === undefined) {
-            setReceivedBlogs(blogs);
-        }
-    }, [blogs]);
-    const lastBlogId = receivedBlogs?.[receivedBlogs.length - 1]?._id;
 
+    const { locale } = useRouter();
+    const [page, setPage] = useState(1);
+
+    const lastBlogId = blogs.length !== 0 ? blogs[blogs.length - 1]._id : "-1";
     const handleChange = async (
         event: React.ChangeEvent<unknown>,
         value: number
     ) => {
         if (Math.ceil((paginate! - 2) / 5) === page) return;
 
-        if (receivedBlogs) {
-            const receivedBlogsPageCount = Math.ceil(receivedBlogs.length / 5);
-            if (value > page) {
-                if (receivedBlogsPageCount === page) {
-                    const data = await fetch(
-                        "/api/blogs/next?id=" + lastBlogId
-                    );
-                    const response = await data.json();
-                    if (data) {
-                        setReceivedBlogs([...receivedBlogs, ...response]);
-                    }
-                }
-
-                setPage(page + 1);
-            } else {
-                setPage(page - 1);
+        const receivedBlogsPageCount = Math.ceil(blogs.length / 5);
+        if (value > page) {
+            // if the user is going to the next page
+            if (receivedBlogsPageCount === page && paginate && getPageAfter) {
+                getPageAfter(lastBlogId);
             }
+            setPage(page + 1);
+        } else {
+            setPage(page - 1);
         }
     };
 
@@ -63,16 +55,15 @@ export default function BlogContainer({
                 animate="visible"
                 variants={container("wo-delay")}
             >
-                {receivedBlogs
-                    ?.slice((page - 1) * 5, (page - 1) * 5 + 5)
-                    .map((blog) => (
-                        <motion.div key={blog.title} variants={itemVariants}>
-                            <BlogCard {...blog} />
-                        </motion.div>
-                    ))}
-                {receivedBlogs?.length === 0 && (
-                    <Typography>{t("no-blogs")}</Typography>
-                )}
+                {blogs.slice((page - 1) * 5, (page - 1) * 5 + 5).map((blog) => (
+                    <motion.div
+                        key={blog[locale as "tr" | "en"].title}
+                        variants={itemVariants}
+                    >
+                        <BlogCard {...blog} />
+                    </motion.div>
+                ))}
+                {blogs.length === 0 && <Typography>{t("no-blogs")}</Typography>}
                 {blogs === undefined && (
                     <Box
                         p={4}
@@ -96,7 +87,7 @@ export default function BlogContainer({
                         sx={{
                             mx: "auto",
                         }}
-                        onChange={handleChange}
+                        onChange={blogs.length !== 0 ? handleChange : undefined}
                         aria-label="pagination"
                     />
                 )}

@@ -31,6 +31,12 @@
     "blog-container": {
         "no-blogs": "No blogs found"
     },
+    "service-list": {
+        "title": "Our Services"
+    },
+    "service-card":{
+        "button":"Hire me"
+    },
     "landing-about": {
         "who-am-i": "A Solution Oriented Developer",
         "who-am-i-desc-1": "Striving to become a successful Developer, his journey commenced in 2014 at the age of 12, experimenting with 'Skript' a Python-like scripting language for Minecraft. Addressing performance concerns, he transitioned to Java, mastering the Bukkit API, a Minecraft-specific interface.",
@@ -38,6 +44,7 @@
         "what-i-do-title": "What I do"
     },
     "services": {
+        "title": "Our Services",
         "service-1-title": "Web Development",
         "service-1-description": "I build websites that are fast, secure, and easy to use. I use the latest technologies to create websites that are responsive and accessible."
     },
@@ -46,13 +53,14 @@
         "button": "Let's Work Together"
     },
     "contact-form": {
-        "get-in-touch":"Get in touch",
+        "get-in-touch": "Get in touch",
         "have-in-mind": "Have a project in mind? Looking for a developer? Reach out to me using the form below. I will get back to you under 48 hours.",
         "name": "Name",
         "email": "Email",
         "budget": "Budget",
         "description": "Your Project's/Offer's Description",
-        "submit-button": "Submit"
+        "submit": "SUBMIT",
+        "submitting":"Submitting..."
     },
     "projects": {
         "title": "My Projects"

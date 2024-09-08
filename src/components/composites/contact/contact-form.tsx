@@ -78,13 +78,15 @@ export default function ContactForm() {
     console.log(errors);
     return (
         <ContentWrapper content sx={{}}>
-            <GradientText sx={{ fontSize: 40 }}>{t('get-in-touch')}</GradientText>
-            <Typography py={1}>
-                {t("have-in-mind")}
-            </Typography>
+            <GradientText sx={{ fontSize: 40 }}>
+                {t("get-in-touch")}
+            </GradientText>
+            <Typography py={1}>{t("have-in-mind")}</Typography>
             <Box display={"flex"} gap={2} mt={3} alignItems={"center"}>
                 <GradientIcon icon="ic:outline-email" height={24} />
-                <Typography variant="h6" fontSize={16}>e.kartal115@gmail.com</Typography>
+                <Typography variant="h6" fontSize={16}>
+                    e.kartal115@gmail.com
+                </Typography>
             </Box>
 
             <Box
@@ -97,7 +99,7 @@ export default function ContactForm() {
             >
                 <TextField
                     error={!!errors.name}
-                    label={t('name')}
+                    label={t("name")}
                     fullWidth
                     {...register("name")}
                     value={formData.name}
@@ -116,7 +118,7 @@ export default function ContactForm() {
                 />
                 <TextField
                     error={!!errors.budget}
-                    label={t('budget')}
+                    label={t("budget")}
                     fullWidth
                     {...register("budget")}
                     value={formData.budget}
@@ -124,7 +126,7 @@ export default function ContactForm() {
                     helperText={errors.budget ? errors.budget.message : ""}
                 />
                 <TextField
-                    label={t('description')}
+                    label={t("description")}
                     multiline
                     rows={8}
                     fullWidth
@@ -146,7 +148,7 @@ export default function ContactForm() {
                         height: { xs: "6rem", sm: "5rem", md: "4rem" },
                     }}
                 >
-                    {isSubmitting ? "Submitting..." : "Submit"}
+                    {isSubmitting ? t("submitting") : t("submit")}
                 </EButton>
             </Box>
         </ContentWrapper>

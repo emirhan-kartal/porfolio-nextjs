@@ -1,16 +1,15 @@
 import { Box, Typography } from "@mui/material";
 import Image from "next/image";
 import Link from "next/link";
-import { BlogWithoutContent } from "@/pages/blog";
 import { useTranslations } from "next-intl";
-export default function BlogCard({
-    tags,
-    description,
-    link,
-    _id,
-}: BlogWithoutContent) {
+import { useRouter } from "next/router";
+import { BlogWithoutContent } from "@/types";
+export default function BlogCard(blog: BlogWithoutContent) {
+    const { _id } = blog;
+    const { locale } = useRouter();
+    const { description, tags } = blog[locale as "tr" | "en"];
     console.log(tags);
-    const t = useTranslations("blog-card")
+    const t = useTranslations("blog-card");
     return (
         <Link href={"/blog/" + _id}>
             <Box

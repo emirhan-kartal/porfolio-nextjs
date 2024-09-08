@@ -1,11 +1,14 @@
 import BlogContainer from "@/components/ui/blog-container";
 import ContentWrapper from "@/components/ui/content-wrapper";
 import GradientText from "@/components/ui/gradient-text";
-import { BlogWithoutContent } from "@/pages/blog";
+import { BlogWithoutContent } from "@/types";
 import { Box, Typography } from "@mui/material";
 import { useTranslations } from "next-intl";
 
-export default function BlogsTop({ blogs }: { blogs: BlogWithoutContent[] }) {
+type BlogsTopProps = {
+    blogs: BlogWithoutContent[];
+};
+export default function BlogsTop({ blogs }: BlogsTopProps) {
     const t = useTranslations("blogs");
     return (
         <ContentWrapper content>
@@ -17,7 +20,9 @@ export default function BlogsTop({ blogs }: { blogs: BlogWithoutContent[] }) {
                     </GradientText>
                 </Box>
 
-                <BlogContainer blogs={blogs?.slice(0, 2)} />
+                <BlogContainer
+                    blogs={blogs?.slice(0, 2)}
+                />
             </Box>
         </ContentWrapper>
     );

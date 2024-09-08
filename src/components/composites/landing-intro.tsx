@@ -10,29 +10,32 @@ import { useTranslations } from "next-intl";
 import { useRouter } from "next/router";
 
 export default function LandingIntro() {
-
     const t = useTranslations("landing-intro");
     const { locale, locales, route } = useRouter();
     const otherLocale = locales?.find((loc) => loc !== locale);
-    
 
-
-    const settings = {
+    const widthSettings = {
         small: {
-            fontSize: { xs: "2.5rem", md: "3rem" },
+            fontSize: { xs: "2.3rem", md: "2.8rem" },
+            hi_2_fontSize: { xs: "2.2rem", md: "2.8rem" },
             textFontSize: 14,
-            imageHeight: 150,
             imageWidth: 150,
+            imageHeight: 150,
         },
         regular: {
             fontSize: { xs: "3rem", md: "3.5rem" },
+            hi_2_fontSize: { xs: "2.45rem", md: "2.8rem" },
+
             textFontSize: 16,
-            imageHeight: 180,
             imageWidth: 180,
+            imageHeight: 180,
         },
     };
+
     const [isSmallDevice, setIsSmallDevice] = useState(false);
-    const chosenSettings = isSmallDevice ? settings.small : settings.regular;
+    const chosenWidthSettings = isSmallDevice
+        ? widthSettings.small
+        : widthSettings.regular;
     useEffect(() => {
         if (typeof window !== "undefined") {
             var handler = () => {
@@ -66,8 +69,8 @@ export default function LandingIntro() {
             >
                 <Box
                     borderRadius={"100%"}
-                    height={chosenSettings.imageHeight}
-                    width={chosenSettings.imageWidth}
+                    height={chosenWidthSettings.imageHeight}
+                    width={chosenWidthSettings.imageWidth}
                     component={motion.div}
                     variants={itemVariants}
                     sx={{
@@ -81,8 +84,8 @@ export default function LandingIntro() {
                         src="/me.jpg"
                         alt="Vercel Logo"
                         priority={true}
-                        width={chosenSettings.imageWidth}
-                        height={chosenSettings.imageHeight}
+                        width={chosenWidthSettings.imageWidth}
+                        height={chosenWidthSettings.imageHeight}
                         style={{ borderRadius: "100%" }}
                     />
                 </Box>
@@ -90,31 +93,41 @@ export default function LandingIntro() {
                     textAlign={{ xs: "start", sm: "center" }}
                     component={motion.div}
                     variants={itemVariants}
+                    
                 >
                     <GradientText
                         sx={{
-                            fontSize: chosenSettings.fontSize,
+                            fontSize: chosenWidthSettings.fontSize,
                             fontWeight: "bold",
                         }}
                     >
-                       {t('hi-1')}
+                        {t("hi-1")}
                     </GradientText>
-                    <Typography fontSize={chosenSettings.fontSize}>
-                        {t('hi-2')}
+                    <Typography
+                        fontSize={
+                            isSmallDevice
+                                ? chosenWidthSettings.hi_2_fontSize
+                                : chosenWidthSettings.fontSize
+                        }
+                        variant="h1"
+                    >
+                        {t("hi-2")}
                     </Typography>
                     <Typography
-                        fontSize={chosenSettings.fontSize}
+                        variant="h2"
+                        fontSize={chosenWidthSettings.fontSize}
                         display={{ xs: "none", sm: "block" }}
                     >
-                        {t('hi-3')}
+                        {t("hi-3")}
                     </Typography>
                 </Box>
                 <Typography
-                    fontSize={chosenSettings.textFontSize}
+                    fontSize={chosenWidthSettings.textFontSize}
                     component={motion.div}
                     variants={itemVariants}
+                    variant="h3"
                 >
-                    {t('what-i-do')}
+                    {t("what-i-do")}
                 </Typography>
 
                 <Box
@@ -132,7 +145,7 @@ export default function LandingIntro() {
                         height="4rem"
                         href="/contact"
                     >
-                        {t('contact')}
+                        {t("contact")}
                     </EButton>
                     <EButton
                         type="black"
@@ -140,7 +153,7 @@ export default function LandingIntro() {
                         height="4rem"
                         href="/projects"
                     >
-                        {t('projects')}
+                        {t("projects")}
                     </EButton>
                 </Box>
             </Box>

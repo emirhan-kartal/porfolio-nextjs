@@ -34,7 +34,7 @@ export default function EButton({
                     border: type === "gradient" ? "none" : "1px solid black",
                     padding: "10px 20px",
                     cursor: "pointer",
-                    width: width ? width : "fit-content",
+                    width: width ? width : "180px",
                     height: height ? height : "fit-content",
                     "&:hover > :first-of-type": {
                         color: "white",

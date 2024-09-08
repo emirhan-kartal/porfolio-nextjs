@@ -1,18 +1,22 @@
 import { Box, Grid, Pagination, Typography } from "@mui/material";
 import { motion } from "framer-motion";
-import { ProjectWithoutContent } from "../composites/featured-projects";
 import { containerVariants, itemVariants } from "../utils/animations";
 import { contentWrapperSx } from "./content-wrapper";
 import ProjectCard from "./project-card";
 import { useTranslations } from "next-intl";
+import { ProjectWithoutContent } from "@/types";
+import { useState } from "react";
 
 export default function ProjectContainer({
     projects,
     paginate,
+    getNextPage,
 }: {
     projects: ProjectWithoutContent[];
     paginate?: number;
+    getNextPage?: (cursor: string) => void;
 }) {
+    const [page, setPage] = useState(1);
     console.log(projects, "projects");
     const t = useTranslations("project-container");
     return (
@@ -43,9 +47,7 @@ export default function ProjectContainer({
                     </Grid>
                 ))}
                 {projects.length === 0 && (
-                    <Typography>
-                        {t("no-projects")}
-                    </Typography>
+                    <Typography>{t("no-projects")}</Typography>
                 )}
             </Grid>
             {paginate && (
@@ -53,6 +55,12 @@ export default function ProjectContainer({
                     <Pagination
                         count={Math.ceil((paginate - 2) / 5)}
                         color="primary"
+                        page={page}
+                        onChange={(e, value) => {
+                            if (page < value && getNextPage) {
+                                getNextPage(projects[projects.length - 1]._id);
+                            }
+                        }}
                     />
                 </Box>
             )}

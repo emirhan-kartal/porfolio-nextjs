@@ -1,29 +1,47 @@
 import BlogsAll from "@/components/composites/blog/blogs-all";
 import BlogsTop from "@/components/composites/blog/blogs-top";
-import { Project } from "@/components/composites/featured-projects";
 import ContentWrapper from "@/components/ui/content-wrapper";
 import CTA from "@/components/ui/cta";
 import GradientColon from "@/components/ui/gradient-colon";
-import { fetcher } from "@/components/utils/fetcher";
 import { getDatabase } from "@/lib/db";
-import useSWR from "swr";
+import { Blog } from "@/types";
+import { GetStaticProps } from "next";
+import { useEffect, useState } from "react";
 
-export type Blog = Project & { author: string };
-export type BlogWithoutContent = Omit<Blog, "content">;
+export default function Page({
+    initialBlogs,
+    allBlogsCount,
+}: {
+    initialBlogs: Blog[];
+    allBlogsCount: number;
+}) {
+    const [blogs, setBlogs] = useState<Blog[]>(initialBlogs);
+    console.log("initialBlogs", initialBlogs);
+    useEffect(() => {
+        if (initialBlogs.length === 0) return;
+        getPageAfter(blogs[blogs.length - 1]._id);
+    }, []);
+    const getPageAfter = async (cursor: string) => {
+        const nextPageBlog = await fetch("/api/blogs/next?cursor=" + cursor);
+        setBlogs((prev) => {
+            return {
+                ...prev,
+                ...nextPageBlog,
+            };
+        });
+    };
+    console.log(blogs, "test blogs");
 
-export default function Page() {
-    const { data, error, isLoading } = useSWR("/api/blogs", fetcher);
-    console.log(data);
-
-    if (error) {
-        return <div>Error</div>;
-    }
     return (
         <>
-            <BlogsTop blogs={data?.blogs} />
+            <BlogsTop blogs={blogs} />
             <GradientColon />
-            {data && data.blogs && data.blogs.length > 0 && (
-                <BlogsAll data={data} />
+            {blogs.length > 0 && (
+                <BlogsAll
+                    blogs={blogs}
+                    allBlogsCount={allBlogsCount}
+                    getPageAfter={getPageAfter}
+                />
             )}
             <ContentWrapper content>
                 <CTA mt={0} />
@@ -31,15 +49,37 @@ export default function Page() {
         </>
     );
 }
-function sleep(arg0: number) {
-    //make the app sleep for a while
-    return new Promise((resolve) => setTimeout(resolve, arg0));
-}
-export const getStaticProps = async (ctx: any) => {
+
+export const getStaticProps: GetStaticProps<object> = async (ctx) => {
+    const db = await getDatabase();
+    const allBlogsCount = await db.collection("blogs").countDocuments({});
+    const blogsRetrieved = await db
+        .collection("blogs")
+        .find()
+        .limit(6)
+        .toArray();
+    const initialBlogs = blogsRetrieved.map((blog) => {
+        ctx.locales?.forEach((locale) => {
+            blog[locale as "tr" | "en"] = {
+                title: blog[locale as "tr" | "en"].title,
+                description: blog[locale as "tr" | "en"].description,
+                tags: blog[locale as "tr" | "en"].tags,
+                thumbnail: blog[locale as "tr" | "en"].thumbnail,
+            };
+        });
+        return {
+            _id: blog._id.toString(),
+            date: blog.date,
+            thumbnail: blog.thumbnail,
+            tr: blog.tr,
+            en: blog.en,
+        } as Blog;
+    }) as Blog[];
     return {
         props: {
-            messages: (await import(`../../../messages/${ctx.locale}.json`))
-                .default,
+            initialBlogs,
+            allBlogsCount,
+            messages: (await import(`../../../messages/${ctx.locale}`)).default,
         },
     };
 };

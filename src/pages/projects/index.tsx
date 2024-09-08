@@ -1,19 +1,39 @@
 import ContentWrapper from "@/components/ui/content-wrapper";
 import ProjectContainer from "@/components/ui/project-container";
-import { ProjectWithoutContent } from "@/components/composites/featured-projects";
+
 import { motion } from "framer-motion";
 import GradientText from "@/components/ui/gradient-text";
 import { container } from "@/components/utils/animations";
 import { GetStaticProps } from "next";
 import { getDatabase } from "@/lib/db";
 import { useTranslations } from "next-intl";
+import { Project, ProjectWithoutContent } from "@/types";
+
+import { useEffect, useState } from "react";
 export default function Page({
-    projects,
+    initialProjects,
 }: {
-    projects: ProjectWithoutContent[];
+    initialProjects: ProjectWithoutContent[];
 }) {
     const t = useTranslations("projects");
-    console.log(t("title"),"selamke")
+    const [projectState, setProjects] = useState<Project[]>(initialProjects);
+
+    useEffect(() => {
+        getPageAfter(projectState[projectState.length - 1]._id);
+    }, []);
+    const getPageAfter = async (cursor: string) => {
+        const nextPageProject = await fetch("/api/blogs/next?cursor=" + cursor);
+        const data = await nextPageProject.json();
+        if (data.length === 0) {
+            return;
+        }
+        setProjects((prev) => {
+            return {
+                ...prev,
+                ...data,
+            };
+        });
+    };
     return (
         <ContentWrapper content>
             <motion.div
@@ -25,31 +45,37 @@ export default function Page({
                     {t("title")}
                 </GradientText>
             </motion.div>
-            <ProjectContainer projects={projects ?? []} />
+            <ProjectContainer
+                projects={initialProjects ?? []}
+                getNextPage={getPageAfter}
+            />
         </ContentWrapper>
     );
 }
 export const getStaticProps: GetStaticProps<object> = async (ctx) => {
     const db = await getDatabase();
-    const query = await db
-        .collection("projects")
-        .find({}, { projection: { content: 0 } })
-        .toArray();
-    console.log("it runs bro");
-    const projects = query.map((project) => {
+    const initialProjects = (
+        await db.collection("projects").find().limit(6).toArray()
+    ).map((project) => {
+        ctx.locales?.forEach((locale) => {
+            project[locale as "tr" | "en"] = {
+                title: project[locale as "tr" | "en"].title,
+                description: project[locale as "tr" | "en"].description,
+                tags: project[locale as "tr" | "en"].tags,
+                thumbnail: project[locale as "tr" | "en"].thumbnail,
+            };
+        });
         return {
-            title: project.title,
-            description: project.description,
-            image: project.thumbnail,
-            link: project.link,
-            tags: project.tags,
             _id: project._id.toString(),
             date: project.date,
-        };
-    });
+            thumbnail: project.thumbnail,
+            tr: project.tr,
+            en: project.en,
+        } as Project;
+    }) as Project[];
     return {
         props: {
-            projects,
+            initialProjects,
             messages: (await import(`../../../messages/${ctx.locale}`)).default,
         },
     };

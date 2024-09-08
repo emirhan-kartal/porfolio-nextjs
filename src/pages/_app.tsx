@@ -8,6 +8,10 @@ import { SessionProvider } from "next-auth/react";
 import type { AppProps } from "next/app";
 import { NextIntlClientProvider } from "next-intl";
 import { useRouter } from "next/router";
+import SnackbarProvider from "@/components/context/snackbarContext";
+import SnackBarFeedback from "@/components/ui/snackbar-feedback";
+import LoadingProvider from "@/components/context/loadingContext";
+import LoadingScreen from "@/components/ui/loading-screen";
 
 export default function App({
     Component,
@@ -23,9 +27,15 @@ export default function App({
             <AppCacheProvider {...pageProps}>
                 <ThemeProvider theme={darkTheme}>
                     <SessionProvider session={session}>
-                        <Header />
-                        <Component {...pageProps} />
-                        <Footer />
+                        <LoadingProvider>
+                            <Header />
+                            <SnackbarProvider>
+                                <Component {...pageProps} />
+                                <SnackBarFeedback />
+                                <LoadingScreen />
+                            </SnackbarProvider>
+                            <Footer />
+                        </LoadingProvider>
                     </SessionProvider>
                 </ThemeProvider>
             </AppCacheProvider>

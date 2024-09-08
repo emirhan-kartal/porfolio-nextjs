@@ -1,5 +1,4 @@
-import { SkillRow, SkillRowWithoutId } from "@/pages/admin/skills";
-import { useState, useEffect } from "react";
+import { SkillRow, SkillRowWithoutId } from "@/types";
 
 interface SkillFormType {
     skill: SkillRow;

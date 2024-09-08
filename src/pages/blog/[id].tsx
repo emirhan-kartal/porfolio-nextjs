@@ -1,13 +1,12 @@
 import ContentWrapper from "@/components/ui/content-wrapper";
 import { Box, Typography } from "@mui/material";
-import { Blog } from "../blog";
 import GradientText from "@/components/ui/gradient-text";
 import Image from "next/image";
 import { getDatabase } from "@/lib/db";
 import { ObjectId } from "mongodb";
 import markdownToHtml from "@/lib/markdownToHtml";
 import Head from "next/head";
-export default function Page({ data }: { data: Blog }) {
+export default function Page({ data }: { data: any }) {
     console.log(data, "hello world");
     return (
         <>
@@ -57,8 +56,10 @@ export default function Page({ data }: { data: Blog }) {
 
 export const getStaticProps = async ({
     params,
+    locale,
 }: {
     params: { id: string };
+    locale: string;
 }) => {
     const mongo = await getDatabase();
     const res = await mongo
@@ -69,27 +70,32 @@ export const getStaticProps = async ({
             notFound: true,
         };
     }
-    const markdownContent = await markdownToHtml(res.content);
+    const localizedBlog = res[locale as "tr" | "en"];
+    const markdownContent = await markdownToHtml(localizedBlog.content);
     const data = {
-        title: res.title,
+        title: localizedBlog.title,
         content: markdownContent,
-        thumbnail: res.thumbnail,
-        author: res.author,
-    } as Blog;
+        thumbnail: localizedBlog.thumbnail,
+        author: localizedBlog.author,
+    };
 
     return {
         props: {
             data,
+            messages: (await import(`../../../messages/${locale}`)).default,
         },
     };
 };
-export async function getStaticPaths() {
+export async function getStaticPaths({ locales }: { locales: string[] }) {
     // Replace 'http://localhost:3000' with your actual domain or environment variable
     const mongo = await getDatabase();
     const res = await mongo.collection("blogs").find().toArray();
-    const paths = res.map((blog) => ({
-        params: { id: blog._id.toString() },
-    }));
+    const paths = res.flatMap((blog) => [
+        locales.map((locale) => ({
+            params: { id: blog._id.toString() },
+            locale,
+        })),
+    ]);
 
     return {
         paths,

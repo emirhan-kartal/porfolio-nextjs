@@ -10,11 +10,7 @@ import {
 import WhatIdoCard from "../ui/whatido-card";
 import CTA from "../ui/cta";
 import { useTranslations } from "next-intl";
-
-export interface Skill {
-    title: string;
-    image: string;
-}
+import { Skill } from "@/types";
 
 const LandingAbout = ({ whatIdo }: { whatIdo: Skill[] }) => {
     const t = useTranslations("landing-about");
@@ -80,7 +76,7 @@ const LandingAbout = ({ whatIdo }: { whatIdo: Skill[] }) => {
                     component={motion.div}
                     variants={itemVariants}
                 >
-                    <Typography variant="h4">{t('what-i-do-title')}</Typography>
+                    <Typography variant="h4">{t("what-i-do-title")}</Typography>
                 </Grid>
                 <Grid
                     item

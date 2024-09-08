@@ -1,4 +1,4 @@
-import { SkillRow } from "@/pages/admin/skills";
+import { SkillRow } from "@/types";
 import { useRef } from "react";
 
 function useFileUpload(
