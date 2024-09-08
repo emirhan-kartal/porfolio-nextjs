@@ -4,7 +4,7 @@ import * as yup from "yup";
 import { FormContext } from "../context/formContext";
 import { SnackbarContext } from "../context/snackbarContext";
 import { TextfieldType } from "@/types";
-import DynamicTextFields from "../hooks/dynamic-text-fields";
+import DynamicTextFields from "./dynamic-text-fields";
 type AdminContentTextFieldsProps = {
     lang: "tr" | "en";
     isLoading?: boolean;
