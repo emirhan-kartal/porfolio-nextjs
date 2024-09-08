@@ -3,8 +3,7 @@ import { ObjectId } from "mongodb";
 import { NextApiRequest, NextApiResponse } from "next";
 import { getServerSession } from "next-auth";
 import { authOptions } from "../auth/[...nextauth]";
-import { Project } from "@/components/composites/featured-projects";
-
+import { Project } from "@/types";
 export default async function handler(
     req: NextApiRequest,
     res: NextApiResponse
@@ -64,9 +63,10 @@ async function postHandler(req: NextApiRequest, res: NextApiResponse) {
         return res.status(400).send({ error: "project data is required" });
     }
     const project: Project = req.body;
+    const { _id, ...rest } = project;
     const mongo = await getDatabase();
-    const result = await mongo.collection("projects").insertOne(project);
-    project._id = result.insertedId;
+    const result = await mongo.collection("projects").insertOne(rest);
+    project._id = result.insertedId.toString();
     if (!result) {
         return res.status(500).send({ error: "Error inserting project" });
     }

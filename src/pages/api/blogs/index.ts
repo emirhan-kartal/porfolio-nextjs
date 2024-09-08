@@ -3,7 +3,7 @@ import { ObjectId } from "mongodb";
 import { NextApiRequest, NextApiResponse } from "next";
 import { getServerSession } from "next-auth";
 import { authOptions } from "../auth/[...nextauth]";
-import { Blog } from "@/components/composites/featured-projects";
+import { Blog } from "@/types";
 export default async function handler(
     req: NextApiRequest,
     res: NextApiResponse
@@ -69,8 +69,9 @@ async function postHandler(req: NextApiRequest, res: NextApiResponse) {
     if (!blog) {
         return res.status(400).send({ error: "Blog data is required" });
     }
+    const {_id, ...rest} = blog;
     const mongo = await getDatabase();
-    const result = await mongo.collection("blogs").insertOne(blog);
+    const result = await mongo.collection("blogs").insertOne(rest);
     if (!result) {
         return res.status(500).send({ error: "Error inserting blog" });
     }
@@ -89,7 +90,7 @@ async function putHandler(req: NextApiRequest, res: NextApiResponse) {
     const mongo = await getDatabase();
     const result = await mongo
         .collection("blogs")
-        .updateOne({ _id: blog._id }, { $set: blog });
+        .updateOne({ _id: new ObjectId(blog._id) }, { $set: blog });
 
     if (result.modifiedCount === 0) {
         return res.status(404).send({ error: "Blog not found" });
