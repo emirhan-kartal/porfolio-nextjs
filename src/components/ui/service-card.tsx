@@ -1,4 +1,4 @@
-import { Box, Typography } from "@mui/material";
+import { Box, Theme, Typography, useMediaQuery } from "@mui/material";
 import Image from "next/image";
 import EButton from "./ebutton";
 import { motion } from "framer-motion";
@@ -16,6 +16,7 @@ export default function ServiceCard({
     image,
 }: ServiceCardProps) {
     const t = useTranslations("service-card");
+    const isMdUp = useMediaQuery((theme: Theme) => theme.breakpoints.up("md"));
     return (
         <Box
             display={"flex"}
@@ -30,7 +31,7 @@ export default function ServiceCard({
                 </Typography>
 
                 <EButton type="gradient" href="/contact" sx={{ mt: 2, p: 2 }}>
-                    {t('button')}
+                    {t("button")}
                 </EButton>
             </Box>
             <Image
@@ -39,7 +40,7 @@ export default function ServiceCard({
                 width={0}
                 height={0}
                 sizes="100wv"
-                style={{ height: "auto", width: "500px", objectFit: "cover" }}
+                style={{ height: isMdUp ? "300px" : "200px", width: "auto", objectFit: "cover" }}
             />
         </Box>
     );

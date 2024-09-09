@@ -12,7 +12,6 @@ export default function ProjectCard(project: ProjectWithoutContent) {
     const { _id } = project;
     const { title, description, tags, thumbnail } =
         project[locale as "tr" | "en"];
-    console.log("hello this is project card", _id);
     const t = useTranslations("project-card");
     return (
         <Box display={"flex"} flexDirection={"column"}>
