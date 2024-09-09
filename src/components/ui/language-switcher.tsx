@@ -97,7 +97,7 @@ const LanguageSwitcher = () => {
         >
 
             <MaterialUISwitch
-                checked={switchLocale === "tr"}
+                checked={switchLocale === "en"}
                 onChange={handleLanguageChange}
             />
         </Box>
