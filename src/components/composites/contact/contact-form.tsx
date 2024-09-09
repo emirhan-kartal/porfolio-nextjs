@@ -44,9 +44,7 @@ export default function ContactForm() {
             };
         });
     };
-    useEffect(() => {
-        console.log(errors);
-    }, [errors]);
+
     const onSubmit = async () => {
         setIsSubmitting(true);
 

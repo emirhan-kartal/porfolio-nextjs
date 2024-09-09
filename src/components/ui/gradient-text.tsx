@@ -1,4 +1,4 @@
-import { Box, Typography } from "@mui/material";
+import { Box, Typography, useTheme } from "@mui/material";
 
 export default function GradientText({
     children,
@@ -9,8 +9,10 @@ export default function GradientText({
 }: {
     children: React.ReactNode;
     underline?: boolean;
-    sx?: object;
+    sx?: { [key: string]: any };
 }) {
+    const theme = useTheme();
+
     return (
         <Box
             sx={{
@@ -19,12 +21,20 @@ export default function GradientText({
                 ...sx,
             }}
         >
+            {/*             <div
+                className="gradient-text"
+                style={{
+                    color: theme.palette.text.primary,
+                    fontSize: sx?.fontSize ? sx.fontSize : "1.5rem",
+                    ...sx,
+                }}
+            >
+                {children}
+            </div> */}
             <Typography
+                className="gradient-text"
+                component={"div"}
                 sx={{
-                    background:
-                        "linear-gradient(90deg, #B16CEA, #FF5E69, #FF8A56, #FFA84B)",
-                    WebkitBackgroundClip: "text",
-                    WebkitTextFillColor: "transparent",
                     fontSize: "1.5rem",
                     textDecoration: "underline",
                     width: "100%", // i dunno why but it doesnt shop up with full width

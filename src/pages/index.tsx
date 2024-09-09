@@ -1,5 +1,4 @@
 import Head from "next/head";
-import { Inter } from "next/font/google";
 import LandingIntro from "@/components/composites/landing-intro";
 import GradientColon from "@/components/ui/gradient-colon";
 
@@ -12,15 +11,15 @@ import dynamic from "next/dynamic";
 import LazyLoad from "@/components/utils/LazyLoad";
 import { getDatabase } from "@/lib/db";
 import { Skill, Project } from "@/types";
+import Header from "@/components/composites/layout/header";
+import Footer from "@/components/composites/layout/footer";
 
 const DynamicFeaturedProjects = dynamic(
     import("@/components/composites/featured-projects")
 );
 const DynamicLandingAbout = dynamic(
-    import("@/components/composites/landing-about"),
-    { ssr: false }
+    import("@/components/composites/landing-about")
 );
-const inter = Inter({ subsets: ["latin"] });
 
 interface HomePageProps {
     whatIdo: Skill[];
@@ -44,10 +43,7 @@ export default function Home({ whatIdo, projects }: HomePageProps) {
                 <link rel="icon" href="/favicon.ico" />
             </Head>
             <main>
-                
-                <LandingIntro />
-                <GradientColon />
-
+                <LandingIntro /> <GradientColon />
                 <LazyLoad>
                     <DynamicFeaturedProjects projects={projects} />
                 </LazyLoad>
@@ -72,7 +68,11 @@ export const getStaticProps: GetStaticProps<HomePageProps> = async (
     ) as Skill[];
     console.log("this is whatIdo", whatIdo);
     const projects = (
-        await mongo.collection("projects").find({ limit: 2 }).toArray()
+        await mongo
+            .collection("projects")
+            .find({}, { projection: { content: 0 } })
+            .limit(2)
+            .toArray()
     ).map((project) => {
         ctx.locales?.forEach((locale) => {
             project[locale as "tr" | "en"] = {

@@ -20,8 +20,7 @@ export default function LazyLoad({ children }: { children: React.ReactNode }) {
                         alignItems: "center",
                     }}
                     bgcolor={"background.paper"}
-                >
-                </Box>
+                />
             )}
         </div>
     );

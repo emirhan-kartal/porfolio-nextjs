@@ -1,13 +1,10 @@
 import { Html, Head, Main, NextScript } from "next/document";
 
-import {
-    DocumentHeadTags,
-    documentGetInitialProps,
-} from "@mui/material-nextjs/v14-pagesRouter";
+import { DocumentHeadTags } from "@mui/material-nextjs/v14-pagesRouter";
 
 export default function Document(props: any) {
     return (
-        <Html lang="en">
+        <Html lang={props.locale}>
             <Head>
                 <meta charSet="utf-8" />
                 <meta
@@ -19,6 +16,15 @@ export default function Document(props: any) {
                     content="dijital ürün geliştirme, iş çözümleri, özel yazılım geliştirme, web uygulama geliştirme, Next.js geliştirici, dijital dönüşüm hizmetleri, Next.js SEO optimizasyonu, önyüz geliştirme, tam yığın geliştirme, kullanıcı odaklı tasarım, Türkiye'de dijital ürün geliştirme, İstanbul'da yazılım geliştirme, web tasarım, yazılım geliştirme Türkiye, özel yazılım çözümleri
 "
                 />
+                <style>{`
+
+                    .main {
+                        height:800px;
+                        width:"full";
+                        background-color:red;
+                        border:3px solid black;
+                    }
+                `}</style>
                 <DocumentHeadTags {...props} />
             </Head>
             <body>
@@ -28,8 +34,3 @@ export default function Document(props: any) {
         </Html>
     );
 }
-
-Document.getInitialProps = async (ctx: any) => {
-    const initialProps = await documentGetInitialProps(ctx);
-    return { ...initialProps };
-};

@@ -4,7 +4,7 @@ import { useRouter } from "next/router";
 import { LoadingContext } from "../context/loadingContext";
 
 const LanguageSwitcher = () => {
-    const { locale, locales, route, push, query } = useRouter();
+    const { locale, route, push, query } = useRouter();
     const { setLoading } = useContext(LoadingContext);
     const [switchLocale, setSwitchLocale] = React.useState(locale);
     const handleLanguageChange = () => {
@@ -29,7 +29,7 @@ const LanguageSwitcher = () => {
         const timer = setTimeout(() => {
             setLoading(false);
             clearTimeout(timer);
-        }, 600);
+        }, 750);
 
         // Change the language by redirecting to the same route with the selected locale
     };
@@ -37,6 +37,7 @@ const LanguageSwitcher = () => {
         width: 62,
         height: 34,
         padding: 7,
+        fontFamily: "inherit",
         "& .MuiSwitch-switchBase": {
             margin: 1,
             padding: 0,
@@ -46,7 +47,7 @@ const LanguageSwitcher = () => {
                 transform: "translateX(25px)",
                 "& .MuiSwitch-thumb:before": {
                     display: "flex",
-
+                    fontFamily: "inherit",
                     content: "'EN'",
                 },
                 "& + .MuiSwitch-track": {
@@ -90,10 +91,11 @@ const LanguageSwitcher = () => {
 
     return (
         <Box
-            display={locales ? "flex" : "none"}
+            display={"flex"}
             alignItems="center"
             justifyContent="center"
         >
+
             <MaterialUISwitch
                 checked={switchLocale === "tr"}
                 onChange={handleLanguageChange}

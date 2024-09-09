@@ -19,6 +19,7 @@ const LandingAbout = ({ whatIdo }: { whatIdo: Skill[] }) => {
             <Grid
                 container
                 width={{ xs: "90%", md: "85%" }}
+                height={"100%"}
                 rowGap={3}
                 component={motion.div}
                 initial="hidden"

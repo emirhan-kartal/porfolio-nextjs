@@ -15,33 +15,39 @@ import EButton from "../../ui/ebutton";
 import { containerVariants } from "../../utils/animations";
 import { motion } from "framer-motion";
 import { useState } from "react";
-import styles from "@/styles/page.module.css";
 import { useTranslations } from "next-intl";
-import { useRouter } from "next/router";
 import LanguageSwitcher from "@/components/ui/language-switcher";
 
 export default function Header() {
     const t = useTranslations("header");
-    const { locale, locales, route } = useRouter();
-    const otherLocale = locales?.find((loc) => loc !== locale);
-    console.log(t("home"));
 
-    const links = [
-        { title: t("home"), link: `/` },
-        { title: t("services"), link: `/services` },
-        { title: t("projects"), link: `/projects` },
-        { title: t("about"), link: `/about` },
-        { title: t("blog"), link: `/blog` },
-        { title: t("contact"), link: "/contact" },
-    ];
+    const links = t //to prevent layout shift
+        ? [
+              { title: t("home"), link: `/` },
+              { title: t("services"), link: `/services` },
+              { title: t("projects"), link: `/projects` },
+              { title: t("about"), link: `/about` },
+              { title: t("blog"), link: `/blog` },
+              { title: t("contact"), link: "/contact" },
+          ]
+        : [
+              { title: "home", link: `/` },
+              { title: "services", link: `/services` },
+              { title: "projects", link: `/projects` },
+              { title: "about", link: `/about` },
+              { title: "blog", link: `/blog` },
+              { title: "contact", link: "/contact" },
+          ];
+
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const drawerMenu = (
         <Box
             width={200}
             bgcolor={"secondary.main"}
             onClick={() => setIsMenuOpen(false)}
+          
         >
-            <List>
+            <List >
                 {links.map((link, index) => {
                     return (
                         <ListItem key={index}>
@@ -59,14 +65,19 @@ export default function Header() {
                         </ListItem>
                     );
                 })}
+                <ListItem>
+                    <LanguageSwitcher />
+                </ListItem>
             </List>
         </Box>
     );
     return (
-        <ContentWrapper sx={{ pt: 0, pb: 0 }} content>
+        <ContentWrapper sx={{ pt: 0, pb: 0, minHeight: "10vh" }} content>
+            
             <Drawer
                 anchor="right"
                 open={isMenuOpen}
+                sx={{fontFamily:"inherit"}}
                 PaperProps={{
                     sx: {
                         width: 200,
@@ -78,7 +89,7 @@ export default function Header() {
                 {drawerMenu}
             </Drawer>
             <Box
-                height={"10svh"}
+                height={"10vh"}
                 bgcolor={"primary.main"}
                 display={"flex"}
                 alignItems={"center"}
@@ -100,7 +111,6 @@ export default function Header() {
                         Emirhan
                     </GradientText>
                 </Link>
-                <div className={styles.animatedComponent}></div>
                 <Box
                     sx={{
                         display: { xs: "none", md: "flex" },
@@ -149,6 +159,7 @@ export default function Header() {
                         aria-label="menu"
                         sx={{ display: { md: "none" } }}
                         onClick={() => setIsMenuOpen(true)}
+                        disableRipple
                     >
                         <Icon icon="ri:menu-3-fill" color="#fff" height={22} />{" "}
                     </IconButton>

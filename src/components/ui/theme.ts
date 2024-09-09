@@ -1,13 +1,10 @@
 import { createTheme } from "@mui/material";
-import { Bai_Jamjuree } from "next/font/google";
+import localFont from "next/font/local";
 
-export const jamjuree = Bai_Jamjuree({
-    subsets: ["latin"],
-    weight: ["400", "500", "600", "700"],
-});
+const myFont = localFont({ src: "../../pages/font.ttf", display: "swap" });
 
 const darkTheme = createTheme({
-    breakpoints:{
+    breakpoints: {
         values: {
             xs: 0,
             sm: 600,
@@ -72,10 +69,19 @@ const darkTheme = createTheme({
                 },
             },
         },
+        MuiSwitch: {
+            styleOverrides: {
+                root: {
+                    "& .MuiSwitch-thumb": {
+                        fontFamily: myFont.style.fontFamily,
+                    },
+                },
+            },
+        },
     },
     typography: {
-        fontFamily: "Jamjuree",
         allVariants: {
+            fontFamily: myFont.style.fontFamily,
             color: "#F0F2F5",
         },
     },
@@ -99,7 +105,6 @@ const darkTheme = createTheme({
 });
 const lightTheme = createTheme({
     typography: {
-        fontFamily: "Jamjuree",
         allVariants: {
             color: "#161513",
         },

@@ -13,33 +13,41 @@ import SnackBarFeedback from "@/components/ui/snackbar-feedback";
 import LoadingProvider from "@/components/context/loadingContext";
 import LoadingScreen from "@/components/ui/loading-screen";
 import { Analytics } from "@vercel/analytics/react";
+import localFont from "next/font/local";
+
+const myFont = localFont({ src: "./font.ttf", display: "swap" });
+
 export default function App({
     Component,
     pageProps: { session, ...pageProps },
 }: AppProps) {
     const router = useRouter();
     return (
-        <NextIntlClientProvider
-            locale={router.locale}
-            messages={pageProps.messages}
-            timeZone="Europe/Istanbul"
-        >
-            <AppCacheProvider {...pageProps}>
-                <ThemeProvider theme={darkTheme}>
-                    <SessionProvider session={session}>
-                        <LoadingProvider>
-                            <Header />
-                            <SnackbarProvider>
-                                <Component {...pageProps} />
-                                <Analytics />
-                                <SnackBarFeedback />
-                                <LoadingScreen />
-                            </SnackbarProvider>
-                            <Footer />
-                        </LoadingProvider>
-                    </SessionProvider>
-                </ThemeProvider>
-            </AppCacheProvider>
-        </NextIntlClientProvider>
+        <div className={myFont.className}>
+            <NextIntlClientProvider
+                locale={router.locale}
+                messages={pageProps.messages}
+                timeZone="Europe/Istanbul"
+            >
+                <AppCacheProvider {...pageProps}>
+                    <ThemeProvider theme={darkTheme}>
+                        <SessionProvider session={session}>
+                            <LoadingProvider>
+                                <SnackbarProvider>
+                                    <Header />
+
+                                    <Component {...pageProps} />
+
+                                    <Analytics />
+                                    <SnackBarFeedback />
+                                    <LoadingScreen />
+                                    <Footer />
+                                </SnackbarProvider>
+                            </LoadingProvider>
+                        </SessionProvider>
+                    </ThemeProvider>
+                </AppCacheProvider>
+            </NextIntlClientProvider>
+        </div>
     );
 }

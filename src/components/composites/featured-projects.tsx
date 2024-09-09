@@ -21,6 +21,7 @@ const FeaturedProjects = ({ projects }: { projects: Project[] }) => {
                 initial="hidden"
                 animate="visible"
                 variants={containerVariants}
+                minHeight={"20vh"}
             >
                 <Grid
                     item
