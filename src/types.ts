@@ -20,28 +20,39 @@ export interface SkillRow {
     name: string;
     image: string;
 }
-export interface ProjectContent extends BlogContent {
-    github: string;
-}
-export interface BlogContent {
+export interface BlogData {
     title: string;
     description: string;
     content: string;
     tags: string;
     thumbnail: string;
 }
+export interface ProjectData extends BlogData {
+    github: string;
+}
 
-export type Project = {
+export type BaseContent = {
     _id: string;
     date: string;
     thumbnail: string;
-    tr: ProjectContent;
-    en: ProjectContent;
+    tr: ProjectData | BlogData;
+    en: ProjectData | BlogData;
 };
-export type Blog = Project & {
+
+export type Project = BaseContent & {
+    type: "project";
+    tr: ProjectData;
+    en: ProjectData;
+};
+
+export type ProjectDataWithoutContent = Omit<ProjectData, "content">;
+export type BlogDataWithoutContent = Omit<BlogData, "content">;
+
+export type Blog = BaseContent & {
+    type: "blog";
     author: string;
-    tr: BlogContent;
-    en: BlogContent;
+    tr: BlogData;
+    en: BlogData;
 };
 
 export type ContentKey =
@@ -51,9 +62,15 @@ export type ContentKey =
     | "tags"
     | "thumbnail"
     | "date";
-export type ProjectWithoutContent = Omit<Project, "content">;
 export type SkillRowWithoutId = Omit<SkillRow, "_id">;
-export type BlogWithoutContent = Omit<Blog, "content">;
+export type BlogWithoutContent = Blog & {
+    tr: BlogDataWithoutContent;
+    en: BlogDataWithoutContent;
+};
+export type ProjectWithoutContent = Project & {
+    tr: ProjectDataWithoutContent;
+    en: ProjectDataWithoutContent;
+};
 export type TextfieldType = {
     name: ContentKey;
     label: string;
@@ -61,3 +78,4 @@ export type TextfieldType = {
     disabled: boolean;
     props: any;
 };
+export type ContentType = "project" | "blog";

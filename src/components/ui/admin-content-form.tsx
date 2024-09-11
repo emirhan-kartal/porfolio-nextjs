@@ -1,39 +1,48 @@
-import { useEffect, useState } from "react";
-import {
-    Box,
-    Button,
-    CircularProgress,
-} from "@mui/material";
-import * as yup from "yup";
-import { useForm } from "react-hook-form";
-import { yupResolver } from "@hookform/resolvers/yup";
+import { useState } from "react";
+import { Box, Button, CircularProgress } from "@mui/material";
+
 import { useRouter } from "next/router";
 import AdminContentLanguageTab from "./admin-content-language-tab";
-import { Blog, Project } from "@/types";
+import {
+    Blog,
+    BlogData,
+    ContentType,
+    Project,
+    ProjectData,
+} from "@/types";
 import { FormContext } from "../context/formContext";
+type AdminContentFormProps = {
+    content?: Blog | Project;
+    contentType: ContentType;
+    isLoading?: boolean;
+};
 
 export default function AdminContentForm({
     content,
-    type,
+    contentType,
     isLoading,
-}: {
-    content?: Blog | Project;
-    type: "blogs" | "projects";
-    isLoading?: boolean;
-}) {
+}: AdminContentFormProps) {
     const { locales, locale } = useRouter();
     const [lang, setLang] = useState<"tr" | "en">(locale as "tr" | "en");
+    console.log(contentType," testx1 ")
     const initialLocaleContent = locales?.reduce((acc: any, locale: any) => {
-        acc[locale] = {
+        const jsonContent = {
             title: content?.[lang]?.title || "",
             description: content?.[lang]?.description || "",
             tags: content?.[lang]?.tags || "",
             content: content?.[lang]?.content || "",
             thumbnail: content?.thumbnail || "",
+        } as BlogData | ProjectData;
+        if (contentType === "project") {
+            (jsonContent as ProjectData)["github"] =
+                (content as Project)?.[locale as "tr" | "en"]?.github || "";
+        }
+        acc[locale] = {
+            ...jsonContent,
         };
         return acc;
     }, {});
-    const [formData, setFormData] = useState({
+    const [formData, setFormData] = useState<Blog | Project>({
         _id: content?._id.toString() || "",
         date: new Date().toISOString(),
         thumbnail: content?.thumbnail || "",
@@ -46,45 +55,10 @@ export default function AdminContentForm({
             return acc;
         }, {})
     );
-    const yupSchemaObject = locales?.reduce((acc: any, lang: any) => {
-        acc[lang + ".title"] = yup.string().required("Title is required");
-        acc[lang + ".description"] = yup
-            .string()
-            .required("Description is required");
-        acc[lang + ".tags"] = yup.string().required("Tags are required");
-        acc[lang + ".content"] = yup
-            .string()
-            .required("Content is required")
-            .min(50, "Content must be at least 50 characters long.");
-
-        return yup.object().shape(acc);
-    }, {} as Record<string, yup.StringSchema>);
-
-    const yupSchema = yup.object().shape(yupSchemaObject);
-
-    const methods = useForm({
-        resolver: yupResolver(yupSchema),
-        defaultValues: formData,
-    });
-
-    useEffect(() => {
-        if (content) {
-            setFormData({
-                title: content?.[lang].title,
-                description: content?.[lang].description,
-                tags: content?.[lang].tags,
-                thumbnail: content.thumbnail,
-                content: content?.[lang].content,
-                author: "Emirhan Kartal",
-                _id: content._id.toString(),
-                date: content.date,
-            });
-        }
-    }, [content]);
 
     const onSubmit = async (data: typeof formData) => {
         const apiRoute =
-            `/api/${type}` + (content ? `?id=${formData._id}` : "");
+            `/api/${contentType}` + (content ? `?id=${formData._id}` : "");
         const { _id, ...formDataWOId } = data;
         const result = await fetch(apiRoute, {
             method: content ? "PUT" : "POST",
@@ -102,6 +76,7 @@ export default function AdminContentForm({
     const allValidated = Object.values(validatedForms).every(
         (value) => value === true
     );
+    console.log("admin content form", contentType);
     return (
         <FormContext.Provider
             value={{
@@ -109,6 +84,8 @@ export default function AdminContentForm({
                 setValidatedForms,
                 formData,
                 setFormData,
+                content,
+                isLoading,
             }}
         >
             <Box
@@ -143,6 +120,7 @@ export default function AdminContentForm({
 
                 <AdminContentLanguageTab
                     sendLangToParent={(data: "tr" | "en") => setLang(data)}
+                    contentType={contentType}
                 />
 
                 <Button

@@ -4,12 +4,15 @@ import { useContext, useState } from "react";
 import TabPanel from "./tab-panel";
 import AdminContentTextFields from "./admin-content-text-fields";
 import { FormContext } from "../context/formContext";
+import { ContentType } from "@/types";
 
 interface AdminContentLanguageTabProps {
     sendLangToParent: (data: "tr" | "en") => void;
+    contentType: ContentType;
 }
 export default function AdminContentLanguageTab({
     sendLangToParent,
+    contentType,
 }: AdminContentLanguageTabProps) {
     const { locales } = useRouter();
     const [value, setValue] = useState<number>(0); //
@@ -18,7 +21,8 @@ export default function AdminContentLanguageTab({
         const lang = locales![newValue] as "tr" | "en";
         sendLangToParent(lang);
     };
-    const {validatedForms} = useContext(FormContext);
+    console.log("admin content language tab", contentType);
+    const { validatedForms } = useContext(FormContext);
     return (
         <>
             <Tabs
@@ -26,27 +30,24 @@ export default function AdminContentLanguageTab({
                 textColor={"secondary"}
                 indicatorColor="secondary"
                 onChange={(_, newValue) => handleChange(newValue)}
-                
             >
-                {locales?.map((locale,i) => (
-                    <Tab
-                        value={i}
-                        key={i}
-                        label={locale.toUpperCase()}
-                    />
+                {locales?.map((locale, i) => (
+                    <Tab value={i} key={i} label={locale.toUpperCase()} />
                 ))}
             </Tabs>
             {locales?.map((locale, index) => (
-                <TabPanel value={locales[value]} index={locales[index]} key={locale}>
+                <TabPanel
+                    value={locales[value]}
+                    index={locales[index]}
+                    key={locale}
+                >
                     <Typography variant="h6" gutterBottom>
                         {locale.toUpperCase()}
-                        {
-                            validatedForms[locale] && " - Form is validated"
-                        }
+                        {validatedForms[locale] && " - Form is validated"}
                     </Typography>
                     <AdminContentTextFields
                         lang={locale as "tr" | "en"}
-                        sendDataToParent={() => {}}
+                        contentType={contentType}
                     />
                 </TabPanel>
             ))}

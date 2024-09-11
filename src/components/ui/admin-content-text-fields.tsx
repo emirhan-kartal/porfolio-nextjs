@@ -1,37 +1,28 @@
-import { Box } from "@mui/material";
-import { useContext } from "react";
-import * as yup from "yup";
+import { Box, Button, TextField } from "@mui/material";
+import { useContext, useEffect, useState } from "react";
 import { FormContext } from "../context/formContext";
 import { SnackbarContext } from "../context/snackbarContext";
-import { TextfieldType } from "@/types";
-import DynamicTextFields from "./dynamic-text-fields";
+import { getSchema, getTextfields } from "../utils/schemas";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { useForm } from "react-hook-form";
 type AdminContentTextFieldsProps = {
     lang: "tr" | "en";
     isLoading?: boolean;
-    sendDataToParent: (data: any) => void;
+    contentType: "project" | "blog";
 };
 
 export default function AdminContentTextFields({
     lang,
     isLoading,
+    contentType,
 }: AdminContentTextFieldsProps) {
     const { showSnackbar } = useContext(SnackbarContext);
 
-    const { setValidatedForms } = useContext(FormContext);
+    const { setValidatedForms, setFormData, content } = useContext(FormContext);
+    //if content is not passed, that means it is creating a new content.If it is passed, it is editing an existing content.
 
-    const schema = yup.object().shape({
-        [lang]: yup.object().shape({
-            title: yup.string().required("Title is required"),
-            description: yup.string().required("Description is required"),
-            tags: yup.string().required("Tags are required"),
-            content: yup
-                .string()
-                .required("Content is required")
-                .min(50, "Content must be at least 50 characters long."),
-            thumbnail: yup.string().required("Thumbnail is required"),
-        }),
-    });
-
+    const schema = getSchema(contentType, lang);
+    console.log("schema", schema);
     const validate = () => {
         console.log("validated");
         setValidatedForms((prev: any) => ({ ...prev, [lang]: true }));
@@ -45,32 +36,52 @@ export default function AdminContentTextFields({
         disabled: isLoading,
         variant: "outlined",
     };
-    const textFields = [
-        {
-            name: "title",
-            label: "Title",
-        },
-        {
-            name: "description",
-            label: "Description",
-        },
-        {
-            name: "tags",
-            label: "Tags",
-        },
-        {
-            name: "thumbnail",
-            label: "Thumbnail",
-        },
-        {
-            name: "content",
-            label: "Content",
-            props: {
-                multiline: true,
-                rows: 20,
-            },
-        },
-    ] as TextfieldType[];
+    console.log("admin content text fields", contentType);
+    const textFields = getTextfields(contentType);
+    const nameList = textFields.map((textField) => textField.name);
+    type FormDataKey = (typeof nameList)[number]; //gets the onion type of the keys
+    type FormDataState = Record<FormDataKey, string>;
+
+    const [localFormData, setLocalFormData] = useState<FormDataState>(
+        {} as FormDataState
+    );
+    useEffect(() => {
+
+        if (lang && content && content[lang]) {
+            console.log(content[lang]);
+            setLocalFormData(content[lang] as FormDataState);
+        }
+    }, [content]);
+
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            setFormData((prev: any) => ({
+                ...prev,
+                [lang]: { ...localFormData },
+            }));
+        }, 100);
+        return () => clearTimeout(timer);
+    }, [localFormData]);
+
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const { name, value } = e.target;
+
+        setLocalFormData((prev) => ({
+            ...prev,
+            [name.split(".")[1]]: value,
+        }));
+        setValidatedForms((prev: any) => ({ ...prev, [lang]: false }));
+    };
+
+    const {
+        register,
+        handleSubmit,
+        formState: { errors },
+    } = useForm({
+        resolver: yupResolver(schema),
+    });
+    const errorObject = errors?.[lang] as any;
+    console.log(errors)
     return (
         <>
             <Box
@@ -82,13 +93,37 @@ export default function AdminContentTextFields({
                 p={2}
                 sx={{ opacity: isLoading ? 0.5 : 1 }}
             >
-                <DynamicTextFields
-                    textFieldsJson={textFields}
-                    globals={globals}
-                    lang={lang}
-                    yupSchema={schema}
-                    validate={validate}
-                />
+                {textFields.map((textField: any) => {
+
+                    return (
+                        <TextField
+                            key={textField.name}
+                            label={textField.label}
+                            value={
+                                localFormData[textField.name as FormDataKey] ??
+                                ""
+                            }
+                            {...register(lang + "." + textField.name)}
+                            onChange={handleChange}
+                            error={!!errorObject?.[textField.name]}
+                            helperText={
+                                errorObject?.[textField.name]
+                                    ? errorObject[textField.name].message
+                                    : ""
+                            }
+                            {...globals}
+                            {...textField.props}
+                        />
+                    );
+                })}
+                <Button
+                    variant="contained"
+                    color="primary"
+                    disabled={globals.disabled}
+                    onClick={handleSubmit(validate)}
+                >
+                    Validate
+                </Button>
             </Box>
         </>
     );

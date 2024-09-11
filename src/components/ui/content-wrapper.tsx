@@ -35,6 +35,7 @@ const wrapperBox = ({
             alignItems={"center"}
             sx={sx}
             py={8}
+            width={"100%"}
         >
             {children}
         </Box>

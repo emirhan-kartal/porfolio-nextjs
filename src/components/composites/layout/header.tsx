@@ -17,9 +17,11 @@ import { motion } from "framer-motion";
 import { useState } from "react";
 import { useTranslations } from "next-intl";
 import LanguageSwitcher from "@/components/ui/language-switcher";
+import { useRouter } from "next/router";
 
 export default function Header() {
     const t = useTranslations("header");
+    const { route } = useRouter();
 
     const links = t //to prevent layout shift
         ? [
@@ -45,9 +47,8 @@ export default function Header() {
             width={200}
             bgcolor={"secondary.main"}
             onClick={() => setIsMenuOpen(false)}
-          
         >
-            <List >
+            <List>
                 {links.map((link, index) => {
                     return (
                         <ListItem key={index}>
@@ -71,13 +72,13 @@ export default function Header() {
             </List>
         </Box>
     );
+    if (route.includes("admin")) return null;
     return (
-        <ContentWrapper sx={{ pt: 0, pb: 0, minHeight: "10vh" }} content>
-            
+        <ContentWrapper sx={{ pt: 0, pb: 0, minHeight: "10svh" }} content>
             <Drawer
                 anchor="right"
                 open={isMenuOpen}
-                sx={{fontFamily:"inherit"}}
+                sx={{ fontFamily: "inherit" }}
                 PaperProps={{
                     sx: {
                         width: 200,
@@ -89,7 +90,7 @@ export default function Header() {
                 {drawerMenu}
             </Drawer>
             <Box
-                height={"10vh"}
+                height={"100%"}
                 bgcolor={"primary.main"}
                 display={"flex"}
                 alignItems={"center"}

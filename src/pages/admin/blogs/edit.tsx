@@ -2,6 +2,7 @@ import AdminLayout from "@/components/composites/admin/admin-layout";
 import AdminContentForm from "@/components/ui/admin-content-form";
 import { fetcher } from "@/components/utils/fetcher";
 import { authOptions } from "@/pages/api/auth/[...nextauth]";
+import { Blog } from "@/types";
 import { Typography } from "@mui/material";
 import { getServerSession } from "next-auth";
 import { useSession } from "next-auth/react";
@@ -12,7 +13,7 @@ export default function Page() {
     const { data: session } = useSession();
     const router = useRouter();
     const { query } = router;
-    console.log(query.id)
+    console.log(query.id);
     const { data, error, isLoading } = useSWR(
         "/api/blogs/" + query.id,
         fetcher
@@ -20,6 +21,8 @@ export default function Page() {
     if (error) {
         return <div>Error</div>;
     }
+    console.log(isLoading)
+    const BlogObject = data as Blog;
 
     return (
         <AdminLayout>
@@ -28,8 +31,8 @@ export default function Page() {
             </Typography>
 
             <AdminContentForm
-                content={data}
-                type="blogs"
+                content={BlogObject}
+                contentType="blog"
                 isLoading={isLoading}
             />
         </AdminLayout>

@@ -2,8 +2,8 @@ import { Grid, Box, Typography } from "@mui/material";
 import { motion } from "framer-motion";
 import { itemVariants } from "../utils/animations";
 import Image from "next/image";
-import useResponsiveImage from "../hooks/useResponsiveImage";
 import { Skill } from "@/types";
+import useResponsiveImage from "../hooks/useResponsiveImage";
 
 export default function WhatIdoCard({ skill }: { skill: Skill }) {
     const condition = (x: number) =>

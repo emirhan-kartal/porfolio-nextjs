@@ -11,7 +11,7 @@ export default function Page() {
             <Typography component={"h1"} variant="h5">
                 Create a new blog post, {session?.user?.email}
             </Typography>
-            <AdminContentForm type="blogs" />
+            <AdminContentForm contentType="blog"  />
         </AdminLayout>
     );
 }

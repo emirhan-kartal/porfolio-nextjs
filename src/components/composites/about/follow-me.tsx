@@ -1,8 +1,7 @@
 "use client";
-import { Divider, Typography, useMediaQuery } from "@mui/material";
+import { Box, Divider, Theme, Typography, useMediaQuery } from "@mui/material";
 import ContentWrapper from "../../ui/content-wrapper";
 import Image from "next/image";
-import { Box, Theme } from "@mui/system";
 import GradientText from "../../ui/gradient-text";
 import { containerVariants, itemVariants } from "@/components/utils/animations";
 import { motion } from "framer-motion";

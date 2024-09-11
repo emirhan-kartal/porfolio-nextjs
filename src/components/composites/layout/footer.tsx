@@ -8,12 +8,13 @@ import { useRouter } from "next/router";
 export default function Footer({ className = "" }: { className?: string }) {
     const t = useTranslations("header");
     const tFooter = useTranslations("footer");
-    const { locale } = useRouter();
+    const { locale, route } = useRouter();
     const navLinks = [
         { title: t("home"), link: `/` },
         { title: t("about"), link: `/about` },
         { title: t("contact"), link: `/contact` },
     ];
+    if (route.includes("admin")) return null;
     return (
         <ContentWrapper sx={{ pb: 0, pt: 0 }}>
             <Box

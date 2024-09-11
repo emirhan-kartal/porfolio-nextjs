@@ -110,6 +110,7 @@ export default function LandingIntro() {
                                     ? chosenWidthSettings.hi_2_fontSize
                                     : chosenWidthSettings.fontSize
                             }
+                            
                             variant="h1"
                         >
                             {t("hi-2")}

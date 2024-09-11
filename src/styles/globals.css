@@ -10,7 +10,6 @@ body {
 }
 body {
     min-height: 100vh;
-    background-color: #ff8a56;
 }
 main {
     min-height: 100vh;
@@ -33,9 +32,7 @@ a {
     background-clip: text;
     text-decoration: underline;
 }
-html {
-    background-color: purple;
-}
+
 .hidden {
     display: none;
 }

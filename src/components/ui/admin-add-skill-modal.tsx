@@ -1,8 +1,9 @@
 import { Box, Button, Modal, TextField } from "@mui/material";
 import React, { useEffect, useRef, useState } from "react";
-import useFileUpload from "../hooks/useFileUpload";
-import useSkillForm from "../hooks/useSkillForm";
+
 import { SkillRow } from "@/types";
+import useSkillForm from "../hooks/useSkillForm";
+import useFileUpload from "../hooks/useFileUpload";
 interface AddSkillModalProps {
     rows: SkillRow[];
     setRows: React.Dispatch<React.SetStateAction<SkillRow[]>>;

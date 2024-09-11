@@ -1,6 +1,6 @@
 import React from "react";
-import useIfInView from "../hooks/useIfInView";
 import { Box } from "@mui/material";
+import useIfInView from "../hooks/useIfInView";
 
 export default function LazyLoad({ children }: { children: React.ReactNode }) {
     const onlyChild = React.Children.only(children);

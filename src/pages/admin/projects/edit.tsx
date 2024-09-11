@@ -26,7 +26,11 @@ export default function Page() {
             <Typography component={"h1"} variant="h5">
                 Edit the project post, {session?.user?.email}
             </Typography>
-            <AdminContentForm content={data} type="projects" />
+            <AdminContentForm
+                content={data}
+                contentType="project"
+                isLoading={isLoading}
+            />
         </AdminLayout>
     );
 }

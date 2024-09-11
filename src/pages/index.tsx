@@ -44,7 +44,12 @@ export default function Home({ whatIdo, projects }: HomePageProps) {
             </Head>
             <main>
                 <LandingIntro /> <GradientColon />
-   
+                <LazyLoad>
+                    <DynamicFeaturedProjects projects={projects} />
+                </LazyLoad>
+                <LazyLoad>
+                    <DynamicLandingAbout whatIdo={whatIdo} />
+                </LazyLoad>
             </main>
         </>
     );

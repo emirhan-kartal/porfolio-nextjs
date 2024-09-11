@@ -6,8 +6,8 @@ import { getDatabase } from "@/lib/db";
 import { ObjectId } from "mongodb";
 import markdownToHtml from "@/lib/markdownToHtml";
 import { useRouter } from "next/router";
-import { ProjectContent } from "@/types";
-export default function Page({ data }: { data: ProjectContent }) {
+import { ProjectData } from "@/types";
+export default function Page({ data }: { data: ProjectData }) {
     console.log(data, "hello world");
     const { locale } = useRouter();
     const { title, content, thumbnail } = data;

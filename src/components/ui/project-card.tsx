@@ -62,7 +62,7 @@ export default function ProjectCard(project: ProjectWithoutContent) {
                     {description}
                 </Typography>
 
-                <Typography mt={2}>Technologies Used:</Typography>
+                <Typography mt={2}>{t("tech-used")}:</Typography>
                 <Box display={"flex"} flexWrap={"wrap"} gap={1}>
                     {tags.split(",").map((tag: any, index: number) => (
                         <Typography
@@ -83,7 +83,7 @@ export default function ProjectCard(project: ProjectWithoutContent) {
                     mt={"auto"}
                     justifyContent={"space-between"}
                 >
-                    <Link href={"#github-link"}>
+                    <a href={"#git-link"} target="_blank">
                         <Box
                             display={"flex"}
                             alignItems={"center"}
@@ -104,9 +104,11 @@ export default function ProjectCard(project: ProjectWithoutContent) {
                         >
                             <Icon icon="akar-icons:github-fill" />
 
-                            <Typography color={"inherit"}>View Code</Typography>
+                            <Typography color={"inherit"}>
+                                {t("view-code")}
+                            </Typography>
                         </Box>
-                    </Link>
+                    </a>
                     <Link href={"projects/" + _id}>
                         <EButton type="black">{t("view")}</EButton>
                     </Link>
