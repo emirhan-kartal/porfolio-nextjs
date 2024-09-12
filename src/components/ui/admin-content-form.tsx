@@ -3,13 +3,7 @@ import { Box, Button, CircularProgress } from "@mui/material";
 
 import { useRouter } from "next/router";
 import AdminContentLanguageTab from "./admin-content-language-tab";
-import {
-    Blog,
-    BlogData,
-    ContentType,
-    Project,
-    ProjectData,
-} from "@/types";
+import { Blog, BlogData, ContentType, Project, ProjectData } from "@/types";
 import { FormContext } from "../context/formContext";
 type AdminContentFormProps = {
     content?: Blog | Project;
@@ -24,7 +18,6 @@ export default function AdminContentForm({
 }: AdminContentFormProps) {
     const { locales, locale } = useRouter();
     const [lang, setLang] = useState<"tr" | "en">(locale as "tr" | "en");
-    console.log(contentType," testx1 ")
     const initialLocaleContent = locales?.reduce((acc: any, locale: any) => {
         const jsonContent = {
             title: content?.[lang]?.title || "",

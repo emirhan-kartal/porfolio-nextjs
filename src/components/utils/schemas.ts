@@ -12,33 +12,31 @@ const getSchema = (type: ContentType, lang: string) => {
             .min(50, "Content must be at least 50 characters long."),
         thumbnail: yup.string().required("Thumbnail is required"),
     };
-    const baseSchema = yup.object().shape({
-        [lang]: yup.object().shape({
-            ...baseJson,
+
+    return yup.object().shape({
+        [lang]: yup.lazy(() => {
+            switch (type) {
+                case "project":
+                    return yup.object().shape({
+                        ...baseJson,
+                        github: yup
+                            .string()
+                            .required("Github link is required")
+                            .url("Invalid URL")
+                            .matches(/github.com/, "Must be a github link"),
+                    });
+                case "faq":
+                    return yup.object().shape({
+                        question: yup.string().required("Question is required"),
+                        answer: yup.string().required("Answer is required"),
+                    });
+                default:
+                    return yup.object().shape(baseJson);
+            }
         }),
     });
-    if (type === "project") {
-        const projectJson = {
-            ...baseJson,
-            github: yup
-                .string()
-                .required("Github link is required")
-                .url("Invalid URL")
-                .matches(/github.com/, "Must be a github link"),
-        };
-        const githubAddition = {
-            [lang]: yup.object().shape({
-                ...projectJson,
-            }),
-        };
-        console.log(lang, "langx1");
-        console.log(projectJson);
-        const projectSchema = yup.object().shape(githubAddition);
-
-        return projectSchema;
-    }
-    return baseSchema;
 };
+
 const getTextfields = (type: ContentType) => {
     const baseFields = [
         {
@@ -77,6 +75,12 @@ const getTextfields = (type: ContentType) => {
             ...baseFields.slice(1),
         ];
         return newProjectFields;
+    } else if (type === "faq") {
+        const faqFields = [
+            { name: "question", label: "Question" },
+            { name: "answer", label: "Answer" },
+        ];
+        return faqFields;
     }
     return baseFields;
 };

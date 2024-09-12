@@ -35,8 +35,7 @@ async function getHandler(req: NextApiRequest, res: NextApiResponse) {
     if (!blog) {
         return res.status(404).send({ error: "blog not found" });
     }
-    console.log("------------sending---------------");
-    console.log(blog);
+
     res.status(200).send(blog);
 }
 

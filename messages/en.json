@@ -97,6 +97,12 @@
         "experience-2": "Personal Trainer",
         "experience-2-detail": "Self Employed"
     },
+    "faq": {
+        "title-1": "Frequently Asked",
+        "title-2": "Questions",
+        "description": "Here are some of the most frequently asked questions. If you have any other questions, feel free to reach out to me.",
+        "cta": "Have a question?"
+    },
     "follow-me": {
         "title": "Follow me",
         "about": "I'm Emirhan, a developer who builds digital products.",

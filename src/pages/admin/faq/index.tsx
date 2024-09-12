@@ -25,18 +25,15 @@ const fetcher = async (url: string) => {
 export default function Page() {
     const router = useRouter();
 
-    const { data, error, isLoading } = useSWR("/api/projects", fetcher);
+    const { data, error, isLoading } = useSWR("/api/faq", fetcher);
     const [rows, setRows] = useState<Project[]>(data);
+    const { locale } = useRouter();
+    console.log(data);
     useEffect(() => {
         if (!data) return;
-        console.log(data.projects);
-        const enData = (data.projects as Project[]).map((project) => {
-            return {
-                ...project,
-                ...project["en"],
-            };
-        });
-        setRows(enData);
+        console.log(data);
+
+        setRows(data);
     }, [data]);
 
     if (error) {
@@ -64,16 +61,8 @@ export default function Page() {
     };
 
     const columns: GridColDef[] = [
-        { field: "title", headerName: "Title", minWidth: 250, flex: 1 },
-        { field: "author", headerName: "Author", minWidth: 100, flex: 1 },
-        { field: "tags", headerName: "Tags", minWidth: 100, flex: 1 },
-        {
-            field: "date",
-            headerName: "Date",
-            type: "string",
-            minWidth: 100,
-            flex: 1,
-        },
+        { field: "question", headerName: "Question", minWidth: 250, flex: 1 },
+        { field: "answer", headerName: "Answer", minWidth: 100, flex: 1 },
         {
             field: "actions",
             headerName: "Actions",

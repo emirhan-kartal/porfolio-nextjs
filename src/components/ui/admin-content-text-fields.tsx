@@ -5,10 +5,11 @@ import { SnackbarContext } from "../context/snackbarContext";
 import { getSchema, getTextfields } from "../utils/schemas";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
+import { ContentType } from "@/types";
 type AdminContentTextFieldsProps = {
     lang: "tr" | "en";
     isLoading?: boolean;
-    contentType: "project" | "blog";
+    contentType: ContentType;
 };
 
 export default function AdminContentTextFields({
@@ -21,8 +22,6 @@ export default function AdminContentTextFields({
     const { setValidatedForms, setFormData, content } = useContext(FormContext);
     //if content is not passed, that means it is creating a new content.If it is passed, it is editing an existing content.
 
-    const schema = getSchema(contentType, lang);
-    console.log("schema", schema);
     const validate = () => {
         console.log("validated");
         setValidatedForms((prev: any) => ({ ...prev, [lang]: true }));
@@ -46,7 +45,6 @@ export default function AdminContentTextFields({
         {} as FormDataState
     );
     useEffect(() => {
-
         if (lang && content && content[lang]) {
             console.log(content[lang]);
             setLocalFormData(content[lang] as FormDataState);
@@ -73,6 +71,7 @@ export default function AdminContentTextFields({
         setValidatedForms((prev: any) => ({ ...prev, [lang]: false }));
     };
 
+    const schema = getSchema(contentType, lang);
     const {
         register,
         handleSubmit,
@@ -81,7 +80,7 @@ export default function AdminContentTextFields({
         resolver: yupResolver(schema),
     });
     const errorObject = errors?.[lang] as any;
-    console.log(errors)
+    console.log(errors);
     return (
         <>
             <Box
@@ -94,7 +93,6 @@ export default function AdminContentTextFields({
                 sx={{ opacity: isLoading ? 0.5 : 1 }}
             >
                 {textFields.map((textField: any) => {
-
                     return (
                         <TextField
                             key={textField.name}

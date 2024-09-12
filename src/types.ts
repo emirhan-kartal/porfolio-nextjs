@@ -4,10 +4,7 @@ export interface Skill {
     title: string;
     image: string;
 }
-export interface FAQuestion {
-    question: string;
-    answer: string;
-}
+
 export interface User {
     email: string;
     password: string;
@@ -78,4 +75,15 @@ export type TextfieldType = {
     disabled: boolean;
     props: any;
 };
-export type ContentType = "project" | "blog";
+export type ContentType = "project" | "blog" | "faq";
+export interface FAQuestionContent {
+    question: string;
+    answer: string;
+}
+export interface FAQuestion {
+    tr: FAQuestionContent;
+    en: FAQuestionContent;
+}
+export interface FAQuestionWithId extends FAQuestion {
+    _id: string;
+}

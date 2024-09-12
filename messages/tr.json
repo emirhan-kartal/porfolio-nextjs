@@ -33,10 +33,10 @@
     },
     "service-list": {
         "title": "Hizmetlerim",
-        "button":""
+        "button": ""
     },
-    "service-card":{
-        "button":"Benimle Çalış"
+    "service-card": {
+        "button": "Benimle Çalış"
     },
     "landing-about": {
         "who-am-i": "Çözüm Odaklı Bir Geliştirici",
@@ -61,15 +61,15 @@
         "budget": "Bütçe",
         "description": "Projenizin/Teklifinizin Açıklaması",
         "submit": "Gönder",
-        "submitting":"Gönderiliyor..."
+        "submitting": "Gönderiliyor..."
     },
     "projects": {
         "title": "Projelerim"
     },
     "project-card": {
         "view": "Görüntüle",
-        "tech-used":"Kullanılan Teknolojiler",
-        "view-code":"Kodu Görüntüle"
+        "tech-used": "Kullanılan Teknolojiler",
+        "view-code": "Kodu Görüntüle"
     },
     "blogs": {
         "top-1": "Geliştiriciler için",
@@ -97,6 +97,12 @@
         "experience-1": "Frontend Geliştirici",
         "experience-2": "Kişisel Antrenör",
         "experience-2-detail": "Serbest Meslek"
+    },
+    "faq": {
+        "title-1": "Sık Sorulan",
+        "title-2": "Sorular",
+        "description": "Burada en sık sorulan sorulardan bazıları var. Başka sorularınız varsa, benimle iletişime geçmekten çekinmeyin.",
+        "cta": "Bana Ulaşın"
     },
     "follow-me": {
         "title": "Beni Takip Edin",

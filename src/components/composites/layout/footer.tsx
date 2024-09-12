@@ -86,12 +86,12 @@ export default function Footer({ className = "" }: { className?: string }) {
                         order={{ md: 4 }}
                     >
                         <GradientIcon
-                            icon={"hugeicons:instagram"}
-                            link="https://instagram.com"
+                            icon={"akar-icons:github-fill"}
+                            link={"https://github.com/emirhankartal"}
                         />
                         <GradientIcon
-                            icon={"hugeicons:instagram"}
-                            link="https://instagram.com"
+                            icon={"akar-icons:linkedin-fill"}
+                            link={"https://www.linkedin.com/in/emirhankartal/"}
                         />
                     </Grid>
                 </Grid>

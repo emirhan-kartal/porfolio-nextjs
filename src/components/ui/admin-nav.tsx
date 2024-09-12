@@ -61,6 +61,14 @@ export default function AdminNav() {
                         <ListItemText>Skills</ListItemText>
                     </ListItemButton>
                 </ListItem>
+                <ListItem>
+                    <ListItemButton
+                        color="text.primary"
+                        onClick={() => router.push("/admin/faq")}
+                    >
+                        <ListItemText>FAQ</ListItemText>
+                    </ListItemButton>
+                </ListItem>
                 <ListItem sx={{ mt: "full", position: "relative" }}>
                     <ListItemButton
                         color="text.primary"

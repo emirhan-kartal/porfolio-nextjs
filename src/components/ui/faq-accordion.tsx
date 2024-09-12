@@ -6,12 +6,9 @@ import {
     Typography,
 } from "@mui/material";
 
-
-
-export default function FAQAccordion({ question, answer }: FAQuestion) {
+export default function FAQAccordion({ question, answer }: any) {
     return (
         <>
-            
             <Accordion
                 sx={{
                     // Height when collapsed

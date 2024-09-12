@@ -1,10 +1,5 @@
 import { Icon } from "@iconify/react/dist/iconify.js";
-import {
-    Box,
-    Button,
-    IconButton,
-    Typography,
-} from "@mui/material";
+import { Box, Button, IconButton, Typography } from "@mui/material";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import { getServerSession } from "next-auth";
 import { authOptions } from "../../api/auth/[...nextauth]";
@@ -14,6 +9,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import useSWR from "swr";
 import { fetcher } from "@/components/utils/fetcher";
+import { Blog } from "@/types";
 
 export default function Page() {
     const { data, error, isLoading } = useSWR("/api/blogs", fetcher);
@@ -21,6 +17,12 @@ export default function Page() {
     const [rows, setRows] = useState([]);
     useEffect(() => {
         if (!data) return;
+        const enData = (data.blogs as Blog[]).map((blog: any) => {
+            return {
+                ...blog,
+                ...blog["en"],
+            };
+        });
         setRows(data.blogs);
     }, [data]);
     const router = useRouter();
