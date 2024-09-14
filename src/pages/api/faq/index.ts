@@ -27,6 +27,7 @@ export async function handler(req: NextApiRequest, res: NextApiResponse) {
 
 async function getHandler(req: NextApiRequest, res: NextApiResponse) {
     const db = await getDatabase();
+
     const result = await db.collection("faq").find().toArray();
     const faqs = result.map((faq) => {
         return {
@@ -49,7 +50,7 @@ async function postHandler(req: NextApiRequest, res: NextApiResponse) {
     if (!result) {
         return res.status(500).json({ error: "Error saving email" });
     }
-
+    res.revalidate("/contact");
     res.status(200).json({ _id: result.insertedId.toString() });
 }
 
@@ -68,6 +69,7 @@ async function putHandler(req: NextApiRequest, res: NextApiResponse) {
             },
         }
     );
+    res.revalidate("/contact");
     res.status(200).json({ success: true });
 }
 async function deleteHandler(req: NextApiRequest, res: NextApiResponse) {
@@ -81,6 +83,7 @@ async function deleteHandler(req: NextApiRequest, res: NextApiResponse) {
     if (!result) {
         return res.status(500).json({ error: "Error deleting email" });
     }
+    res.revalidate("/contact");
     res.status(200).json({ success: true });
 }
 export default handler;

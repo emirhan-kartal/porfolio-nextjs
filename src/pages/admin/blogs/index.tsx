@@ -27,19 +27,14 @@ export default function Page() {
     }, [data]);
     const router = useRouter();
 
-    console.log(data);
     if (error) {
-        console.log(error);
         return <div>Error</div>;
     }
 
     const handleEdit = (params: any) => {
-        console.log(params);
-        console.log("edit?id=" + params.id);
         router.push("blogs/edit?id=" + params.id);
     };
     const handleDelete = async (params: any) => {
-        console.log(params.id);
         const rowsClone = [...rows];
         setRows((prev: any) => {
             return prev.filter((row: any) => row._id !== params.id);
@@ -52,7 +47,6 @@ export default function Page() {
             alert(result.statusText);
         }
 
-        console.log(params);
     };
 
     const columns: GridColDef[] = [

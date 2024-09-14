@@ -9,15 +9,11 @@ export default async function handler(
     res: NextApiResponse
 ) {
     const session = await getServerSession(req, res, authOptions);
-    console.log(session);
     if (session || req.method === "GET") {
-        console.log("Session", session);
     } else {
-        console.log("No session found");
         res.status(401).json({ error: "Unauthorized" });
         return;
     }
-    console.log("çalışıyor");
 
     switch (req.method) {
         case "GET":
@@ -37,8 +33,6 @@ interface ProjectGetResponse {
 }
 async function getHandler(req: NextApiRequest, res: NextApiResponse) {
     const mongo = await getDatabase();
-    console.log(req.body);
-    console.log(req.body);
 
     const result = await mongo
         .collection("projects")

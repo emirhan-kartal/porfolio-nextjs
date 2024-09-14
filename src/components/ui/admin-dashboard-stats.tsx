@@ -14,7 +14,6 @@ export default function AdminDashboardStats({
     title,
 }: AdminDashboardStatsProps) {
     const { data, error, isLoading } = useSWR(apiRoute, fetcher);
-    console.log(data);
     return (
         <Suspense fallback={<AdminDashboardStatsLoading />}>
             <Box

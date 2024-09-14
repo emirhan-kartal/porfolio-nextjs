@@ -73,7 +73,6 @@ export default function ContactForm() {
             setIsSubmitting(false);
         }
     };
-    console.log(errors);
     return (
         <ContentWrapper content sx={{}}>
             <GradientText sx={{ fontSize: 40 }}>

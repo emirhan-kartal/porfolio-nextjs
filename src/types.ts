@@ -37,7 +37,7 @@ export type BaseContent = {
 };
 
 export type Project = BaseContent & {
-    type: "project";
+    type: "projects";
     tr: ProjectData;
     en: ProjectData;
 };
@@ -46,7 +46,7 @@ export type ProjectDataWithoutContent = Omit<ProjectData, "content">;
 export type BlogDataWithoutContent = Omit<BlogData, "content">;
 
 export type Blog = BaseContent & {
-    type: "blog";
+    type: "blogs";
     author: string;
     tr: BlogData;
     en: BlogData;
@@ -75,12 +75,18 @@ export type TextfieldType = {
     disabled: boolean;
     props: any;
 };
-export type ContentType = "project" | "blog" | "faq";
+export type ContentType = "projects" | "blogs" | "faq";
+export type ContentMap = {
+    projects: Project;
+    blogs: Blog;
+    faq: FAQuestion;
+};
 export interface FAQuestionContent {
     question: string;
     answer: string;
 }
 export interface FAQuestion {
+    type: "faq";
     tr: FAQuestionContent;
     en: FAQuestionContent;
 }

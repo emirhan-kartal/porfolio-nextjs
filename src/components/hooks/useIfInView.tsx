@@ -15,7 +15,6 @@ const useIfInView = (
                 if (entry.isIntersecting) {
                     setIsInView(true);
                     observer.unobserve(ref.current as Element);
-                    console.log("unobserved element", ref.current);
                 }
             });
         }, observerOptions);

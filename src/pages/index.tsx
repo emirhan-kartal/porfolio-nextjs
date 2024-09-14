@@ -66,7 +66,6 @@ export const getStaticProps: GetStaticProps<HomePageProps> = async (
             } as Skill;
         }
     ) as Skill[];
-    console.log("this is whatIdo", whatIdo);
     const projects = (
         await mongo
             .collection("projects")

@@ -11,7 +11,7 @@ export default function Page() {
             <Typography component={"h1"} variant="h5">
                 Create a new project, {session?.user?.email}
             </Typography>
-            <AdminContentForm contentType="project" />
+            <AdminContentForm contentType="projects" />
         </AdminLayout>
     );
 }

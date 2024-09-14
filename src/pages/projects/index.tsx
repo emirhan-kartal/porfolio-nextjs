@@ -12,13 +12,16 @@ import { Project, ProjectWithoutContent } from "@/types";
 import { useEffect, useState } from "react";
 export default function Page({
     initialProjects,
+    allProjectsCount,
 }: {
     initialProjects: ProjectWithoutContent[];
+    allProjectsCount: number;
 }) {
     const t = useTranslations("projects");
     const [projectState, setProjects] = useState<Project[]>(initialProjects);
 
     useEffect(() => {
+        if (initialProjects.length === 0 || allProjectsCount <= 6) return;
         getPageAfter(projectState[projectState.length - 1]._id);
     }, []);
     const getPageAfter = async (cursor: string) => {
@@ -28,10 +31,7 @@ export default function Page({
             return;
         }
         setProjects((prev) => {
-            return {
-                ...prev,
-                ...data,
-            };
+            return [...prev, ...data];
         });
     };
     return (
@@ -73,8 +73,10 @@ export const getStaticProps: GetStaticProps<object> = async (ctx) => {
             en: project.en,
         } as Project;
     }) as Project[];
+    const allProjectsCount = await db.collection("projects").countDocuments({});
     return {
         props: {
+            allProjectsCount,
             initialProjects,
             messages: (await import(`../../../messages/${ctx.locale}`)).default,
         },

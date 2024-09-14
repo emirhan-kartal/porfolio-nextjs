@@ -80,7 +80,6 @@ function useSkillForm({
     };
 
     const handleAdd = async (skillObject: SkillRowWithoutId) => {
-        console.log(skillObject);
         if (!checkFields()) {
             return;
         }
@@ -101,7 +100,6 @@ function useSkillForm({
             alert(result.statusText);
         } else {
             const newSkill = await result.json();
-            console.log(tempId);
             setRows((prev) => {
                 return prev.map((row) => {
                     if (row._id === tempId) {
@@ -113,7 +111,6 @@ function useSkillForm({
                     return row;
                 });
             });
-            console.log(newSkill);
         }
     };
 

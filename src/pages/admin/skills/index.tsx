@@ -17,7 +17,6 @@ export default function Page() {
 
     useEffect(() => {
         if (!data || rows.length !== 0) return;
-        console.log("data useEffect Triggered", data);
         setRows([...data]);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [data]);
@@ -29,7 +28,6 @@ export default function Page() {
     });
 
     const handleDelete = async (e: any, params: any) => {
-        console.log(params.id);
         const rowsClone = [...rows];
         setRows((prev: any) => {
             return prev.filter((row: SkillRow) => row._id !== params.id);
@@ -42,15 +40,12 @@ export default function Page() {
             setRows(rowsClone);
             alert(result.statusText);
         }
-        console.log(params);
     };
     const handleEdit = (e: React.MouseEvent, _id: string) => {
         e.stopPropagation();
-        console.log("handleEdit id", _id);
         const rowObject: SkillRow = rows.find(
             (row: SkillRow) => row._id === _id
         ) as SkillRow;
-        console.log("handleEdit rOWS", rows);
         setOpen(true);
         setSelectedRow(rowObject);
     };

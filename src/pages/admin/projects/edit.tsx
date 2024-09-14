@@ -28,7 +28,7 @@ export default function Page() {
             </Typography>
             <AdminContentForm
                 content={data}
-                contentType="project"
+                contentType="projects"
                 isLoading={isLoading}
             />
         </AdminLayout>

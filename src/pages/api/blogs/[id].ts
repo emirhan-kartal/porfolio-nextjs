@@ -43,8 +43,6 @@ async function deleteHandler(req: NextApiRequest, res: NextApiResponse) {
     if (!req.query.id) {
         return res.status(400).send({ error: "ID is required" });
     }
-    console.log(req.query.id);
-    console.log("testpaosdjoapsdjop");
     const mongo = await getDatabase();
     const result = await mongo
         .collection("blogs")

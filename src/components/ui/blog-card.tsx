@@ -8,7 +8,6 @@ export default function BlogCard(blog: BlogWithoutContent) {
     const { _id } = blog;
     const { locale } = useRouter();
     const { description, tags } = blog[locale as "tr" | "en"];
-    console.log(tags);
     const t = useTranslations("blog-card");
     return (
         <Link href={"/blog/" + _id}>

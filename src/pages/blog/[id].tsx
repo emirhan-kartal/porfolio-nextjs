@@ -7,7 +7,6 @@ import { ObjectId } from "mongodb";
 import markdownToHtml from "@/lib/markdownToHtml";
 import Head from "next/head";
 export default function Page({ data }: { data: any }) {
-    console.log(data, "hello world");
     return (
         <>
             <Head>
@@ -76,7 +75,7 @@ export const getStaticProps = async ({
         title: localizedBlog.title,
         content: markdownContent,
         thumbnail: localizedBlog.thumbnail,
-        author: localizedBlog.author,
+        author: res.author,
     };
 
     return {
@@ -87,18 +86,22 @@ export const getStaticProps = async ({
     };
 };
 export async function getStaticPaths({ locales }: { locales: string[] }) {
-    // Replace 'http://localhost:3000' with your actual domain or environment variable
     const mongo = await getDatabase();
-    const res = await mongo.collection("blogs").find().toArray();
-    const paths = res.flatMap((blog) => [
+    const res = await mongo.collection("blogs").find({}, {}).toArray();
+
+    // Flatten the paths array to avoid nesting
+    const paths = res.flatMap((blog) => 
         locales.map((locale) => ({
             params: { id: blog._id.toString() },
             locale,
-        })),
-    ]);
+        }))
+    );
+
+    console.log(paths, "paths");
 
     return {
-        paths,
-        fallback: false,
+        paths, 
+        fallback: false, // or true, depending on your use case
     };
 }
+

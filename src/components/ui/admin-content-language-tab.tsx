@@ -21,7 +21,6 @@ export default function AdminContentLanguageTab({
         const lang = locales![newValue] as "tr" | "en";
         sendLangToParent(lang);
     };
-    console.log("admin content language tab", contentType);
     const { validatedForms } = useContext(FormContext);
     return (
         <>

@@ -1,12 +1,14 @@
-import { useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Box, Button, CircularProgress } from "@mui/material";
 
 import { useRouter } from "next/router";
 import AdminContentLanguageTab from "./admin-content-language-tab";
-import { Blog, BlogData, ContentType, Project, ProjectData } from "@/types";
+import { Blog, ContentType, FAQuestionWithId, Project } from "@/types";
 import { FormContext } from "../context/formContext";
+import { SnackbarContext } from "../context/snackbarContext";
+import { getTextfields } from "../utils/schemas";
 type AdminContentFormProps = {
-    content?: Blog | Project;
+    content?: Blog | Project | FAQuestionWithId;
     contentType: ContentType;
     isLoading?: boolean;
 };
@@ -18,30 +20,27 @@ export default function AdminContentForm({
 }: AdminContentFormProps) {
     const { locales, locale } = useRouter();
     const [lang, setLang] = useState<"tr" | "en">(locale as "tr" | "en");
-    const initialLocaleContent = locales?.reduce((acc: any, locale: any) => {
-        const jsonContent = {
-            title: content?.[lang]?.title || "",
-            description: content?.[lang]?.description || "",
-            tags: content?.[lang]?.tags || "",
-            content: content?.[lang]?.content || "",
-            thumbnail: content?.thumbnail || "",
-        } as BlogData | ProjectData;
-        if (contentType === "project") {
-            (jsonContent as ProjectData)["github"] =
-                (content as Project)?.[locale as "tr" | "en"]?.github || "";
-        }
-        acc[locale] = {
-            ...jsonContent,
-        };
-        return acc;
-    }, {});
-    const [formData, setFormData] = useState<Blog | Project>({
-        _id: content?._id.toString() || "",
-        date: new Date().toISOString(),
-        thumbnail: content?.thumbnail || "",
-        author: "Emirhan Kartal",
-        ...initialLocaleContent,
-    });
+    const { showSnackbar } = useContext(SnackbarContext);
+    const router = useRouter();
+    const textFields = getTextfields(contentType);
+    const initialLocaleContent = !content
+        ? locales?.reduce((acc: any, locale: any) => {
+              acc["author"] = "Emirhan Kartal";
+              acc["_id"] = "";
+              acc["date"] = new Date().toISOString();
+              acc["thumbnail"] = "";
+              acc[locale] = textFields.reduce((acc: any, textField: any) => {
+                  acc[textField.name] = "";
+                  return acc;
+              }, {});
+              return acc;
+          }, {})
+        : {};
+
+    const [formData, setFormData] = useState<Blog | Project | FAQuestionWithId>(
+        content ?? initialLocaleContent
+    );
+
     const [validatedForms, setValidatedForms] = useState(
         locales?.reduce((acc: any, locale: any) => {
             acc[locale] = false;
@@ -51,8 +50,9 @@ export default function AdminContentForm({
 
     const onSubmit = async (data: typeof formData) => {
         const apiRoute =
-            `/api/${contentType}` + (content ? `?id=${formData._id}` : "");
+            `/api/${contentType}` + (content ? `/${formData._id}` : "");
         const { _id, ...formDataWOId } = data;
+        showSnackbar("Success", "success");
         const result = await fetch(apiRoute, {
             method: content ? "PUT" : "POST",
             headers: {
@@ -60,16 +60,16 @@ export default function AdminContentForm({
             },
             body: JSON.stringify(formDataWOId),
         });
+
         if (result.ok) {
-            alert("Success");
+            router.push("/admin/" + contentType);
         } else {
-            alert(result.statusText);
+            showSnackbar("Failed", "error");
         }
     };
     const allValidated = Object.values(validatedForms).every(
         (value) => value === true
     );
-    console.log("admin content form", contentType);
     return (
         <FormContext.Provider
             value={{
@@ -93,8 +93,6 @@ export default function AdminContentForm({
                     e.preventDefault();
                     if (allValidated) {
                         onSubmit(formData);
-
-                        console.log(formData);
                     }
                 }}
                 sx={{ opacity: isLoading ? 0.5 : 1 }}

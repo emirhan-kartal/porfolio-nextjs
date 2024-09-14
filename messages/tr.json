@@ -77,7 +77,8 @@
         "recent": "Son Makaleler"
     },
     "blog-card": {
-        "read-more": "Devamını Oku"
+        "read-more": "Devamını Oku",
+        "view": "Görüntüle"
     },
     "about": {
         "me": "Merhaba, Ben",

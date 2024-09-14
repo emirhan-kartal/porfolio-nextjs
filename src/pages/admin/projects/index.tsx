@@ -29,7 +29,6 @@ export default function Page() {
     const [rows, setRows] = useState<Project[]>(data);
     useEffect(() => {
         if (!data) return;
-        console.log(data.projects);
         const enData = (data.projects as Project[]).map((project) => {
             return {
                 ...project,
@@ -47,7 +46,6 @@ export default function Page() {
         router.push("projects/edit?id=" + params.id);
     };
     const handleDelete = async (params: any) => {
-        console.log(params.id);
         const rowsClone = [...rows];
         setRows((prev: any) => {
             return prev.filter((row: any) => row._id !== params.id);
@@ -60,7 +58,6 @@ export default function Page() {
             alert(result.statusText);
         }
 
-        console.log(params);
     };
 
     const columns: GridColDef[] = [

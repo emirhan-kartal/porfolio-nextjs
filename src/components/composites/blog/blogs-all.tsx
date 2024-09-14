@@ -14,7 +14,6 @@ export default function BlogsAll({
     getPageAfter,
 }: BlogsAllProps) {
     const t = useTranslations("blogs");
-    console.log(blogs, "test blogs");
     return (
         <ContentWrapper content>
             <GradientText sx={{ fontSize: "3rem", mb: 2 }}>

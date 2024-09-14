@@ -22,7 +22,8 @@ export default function AdminContentTextFields({
     const { setValidatedForms, setFormData, content } = useContext(FormContext);
     //if content is not passed, that means it is creating a new content.If it is passed, it is editing an existing content.
 
-    const validate = () => {
+    const validate = (data: any) => {
+        console.log(data);
         console.log("validated");
         setValidatedForms((prev: any) => ({ ...prev, [lang]: true }));
         showSnackbar("Form is validated", "success");
@@ -35,7 +36,6 @@ export default function AdminContentTextFields({
         disabled: isLoading,
         variant: "outlined",
     };
-    console.log("admin content text fields", contentType);
     const textFields = getTextfields(contentType);
     const nameList = textFields.map((textField) => textField.name);
     type FormDataKey = (typeof nameList)[number]; //gets the onion type of the keys
@@ -48,6 +48,12 @@ export default function AdminContentTextFields({
         if (lang && content && content[lang]) {
             console.log(content[lang]);
             setLocalFormData(content[lang] as FormDataState);
+            setFormData((prev: any) => ({
+                ...prev,
+                [lang]: { ...content[lang] },
+                _id: content._id,
+            }));
+            reset({ [lang]: { ...content[lang] } });
         }
     }, [content]);
 
@@ -76,11 +82,12 @@ export default function AdminContentTextFields({
         register,
         handleSubmit,
         formState: { errors },
+        reset,
     } = useForm({
         resolver: yupResolver(schema),
+        defaultValues: { [lang]: { ...localFormData } },
     });
     const errorObject = errors?.[lang] as any;
-    console.log(errors);
     return (
         <>
             <Box
@@ -97,11 +104,14 @@ export default function AdminContentTextFields({
                         <TextField
                             key={textField.name}
                             label={textField.label}
+                            {...register(lang + "." + textField.name)}
+                            defaultValue={
+                                localFormData[textField.name as FormDataKey]
+                            }
                             value={
                                 localFormData[textField.name as FormDataKey] ??
                                 ""
                             }
-                            {...register(lang + "." + textField.name)}
                             onChange={handleChange}
                             error={!!errorObject?.[textField.name]}
                             helperText={

@@ -1,4 +1,4 @@
-import { ContentType, TextfieldType } from "@/types";
+import { Blog, ContentType, FAQuestion, Project, TextfieldType } from "@/types";
 import * as yup from "yup";
 
 const getSchema = (type: ContentType, lang: string) => {
@@ -16,7 +16,7 @@ const getSchema = (type: ContentType, lang: string) => {
     return yup.object().shape({
         [lang]: yup.lazy(() => {
             switch (type) {
-                case "project":
+                case "projects":
                     return yup.object().shape({
                         ...baseJson,
                         github: yup
@@ -34,7 +34,7 @@ const getSchema = (type: ContentType, lang: string) => {
                     return yup.object().shape(baseJson);
             }
         }),
-    });
+    } as Record<string, any>);
 };
 
 const getTextfields = (type: ContentType) => {
@@ -64,24 +64,60 @@ const getTextfields = (type: ContentType) => {
             },
         },
     ];
-    console.log(type, "type");
-    if (type === "project") {
-        const newProjectFields = [
-            ...baseFields.slice(0, 1),
-            {
-                name: "github",
-                label: "Github",
-            },
-            ...baseFields.slice(1),
-        ];
-        return newProjectFields;
-    } else if (type === "faq") {
-        const faqFields = [
-            { name: "question", label: "Question" },
-            { name: "answer", label: "Answer" },
-        ];
-        return faqFields;
+
+    switch (type) {
+        case "projects":
+            return [
+                ...baseFields.slice(0, 1),
+                {
+                    name: "github",
+                    label: "Github",
+                },
+                ...baseFields.slice(1),
+            ];
+        case "faq":
+            return [
+                { name: "question", label: "Question" },
+                { name: "answer", label: "Answer" },
+            ];
+        default:
+            return baseFields;
     }
-    return baseFields;
 };
-export { getSchema, getTextfields };
+
+const getDefaultValues = (
+    type: ContentType,
+    lang: "tr" | "en"
+): Record<string, any> => {
+    switch (type) {
+        case "projects":
+            return {
+                [lang]: {
+                    github: "",
+                    title: "",
+                    description: "",
+                    tags: "",
+                    content: "",
+                    thumbnail: "",
+                },
+            };
+        case "faq":
+            return {
+                [lang]: {
+                    question: "",
+                    answer: "",
+                },
+            };
+        default:
+            return {
+                [lang]: {
+                    title: "",
+                    description: "",
+                    tags: "",
+                    content: "",
+                    thumbnail: "",
+                },
+            };
+    }
+};
+export { getSchema, getTextfields, getDefaultValues };

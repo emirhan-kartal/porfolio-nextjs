@@ -76,7 +76,8 @@
         "recent": "Recent Insights"
     },
     "blog-card": {
-        "read-more": "Read More"
+        "read-more": "Read More",
+        "view": "View Blog"
     },
     "about": {
         "me": "Hi, I am",

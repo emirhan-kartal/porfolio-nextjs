@@ -20,7 +20,6 @@ export default function AddSkillModal({
 }: AddSkillModalProps) {
     useEffect(() => {
         setSkill(selectedRow);
-        console.log("useEffect triggered SeletectedRow", selectedRow);
     }, [selectedRow]);
     const [skill, setSkill] = useState<SkillRow>(selectedRow);
     const [errors, setErrors] = useState({ name: "", image: "" });

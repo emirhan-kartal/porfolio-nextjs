@@ -17,7 +17,6 @@ export default function ProjectContainer({
     getNextPage?: (cursor: string) => void;
 }) {
     const [page, setPage] = useState(1);
-    console.log(projects, "projects");
     const t = useTranslations("project-container");
     return (
         <>

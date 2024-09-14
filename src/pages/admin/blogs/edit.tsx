@@ -13,7 +13,6 @@ export default function Page() {
     const { data: session } = useSession();
     const router = useRouter();
     const { query } = router;
-    console.log(query.id);
     const { data, error, isLoading } = useSWR(
         "/api/blogs/" + query.id,
         fetcher
@@ -21,7 +20,6 @@ export default function Page() {
     if (error) {
         return <div>Error</div>;
     }
-    console.log(isLoading)
     const BlogObject = data as Blog;
 
     return (
@@ -32,7 +30,7 @@ export default function Page() {
 
             <AdminContentForm
                 content={BlogObject}
-                contentType="blog"
+                contentType="blogs"
                 isLoading={isLoading}
             />
         </AdminLayout>

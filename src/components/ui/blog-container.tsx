@@ -18,8 +18,6 @@ export default function BlogContainer({
     getPageAfter,
 }: BlogContainerProps) {
     //YOU SHOULD -2 TO THE PAGINATE BECAUSE LATEST 2 BLOGS ARE DISPLAYED IN THE BLOGS TOP
-    console.log(blogs, "test blogs");
-    console.log("test");
     const t = useTranslations("blog-container");
 
     const { locale } = useRouter();

@@ -9,15 +9,11 @@ export default async function handler(
     res: NextApiResponse
 ) {
     const session = await getServerSession(req, res, authOptions);
-    console.log(session);
     if (session || req.method === "GET") {
-        console.log("Session", session);
     } else {
-        console.log("No session found");
         res.status(401).json({ error: "Unauthorized" });
         return;
     }
-    console.log("çalışıyor");
 
     switch (req.method) {
         case "GET":
@@ -38,14 +34,12 @@ interface BlogGetResponse {
 }
 async function getHandler(req: NextApiRequest, res: NextApiResponse) {
     const mongo = await getDatabase();
-    console.log("getHandler 1");
     const result = await mongo
         .collection("blogs")
         .find()
         .sort({ _id: 1 })
         .limit(7)
         .toArray();
-    console.log("getHandler 2");
     if (!result) {
         return res.status(500).send({ error: "Error fetching blogs" });
     }
@@ -75,14 +69,13 @@ async function postHandler(req: NextApiRequest, res: NextApiResponse) {
     if (!result) {
         return res.status(500).send({ error: "Error inserting blog" });
     }
-    res.revalidate("/blogs/" + blog._id.toString());
+    res.revalidate("/blogs/" + blog._id);
     res.revalidate("/blogs");
     res.revalidate("/");
     res.status(201).send(blog);
 }
 async function putHandler(req: NextApiRequest, res: NextApiResponse) {
     const blog: Blog = req.body;
-    console.log(blog, "işte u dostum");
 
     if (!blog) {
         return res.status(400).send({ error: "Blog data is required" });
@@ -104,8 +97,6 @@ async function deleteHandler(req: NextApiRequest, res: NextApiResponse) {
     if (!req.query.id) {
         return res.status(400).send({ error: "ID is required" });
     }
-    console.log(req.query.id);
-    console.log("testpaosdjoapsdjop");
     const mongo = await getDatabase();
     const result = await mongo
         .collection("blogs")

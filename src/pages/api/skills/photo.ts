@@ -104,11 +104,7 @@ async function putHandler(req: NextApiRequest, res: NextApiResponse) {
 
         req.body = fields;
         const fileName = files.image[0].originalFilename;
-        console.log(
-            files.image[0].originalFilename,
-            "s1113331131313131elamke1ee"
-        );
-        console.log(req.body);
+
         const mongo = await getDatabase();
         // formidable parses all the thinhs as arrays i guess.
         const data = await mongo.collection("skills").findOneAndUpdate(
@@ -123,7 +119,6 @@ async function putHandler(req: NextApiRequest, res: NextApiResponse) {
                 returnDocument: "before",
             }
         );
-        console.log("4");
         if (!data) {
             res.status(500).json({ error: "Error fetching data" });
             console.error("Error fetching data");
@@ -143,18 +138,14 @@ async function putHandler(req: NextApiRequest, res: NextApiResponse) {
         }
 
         if (data.image !== "/skills/" + fileName) {
-            console.log("1");
             const oldImage = path.join(process.cwd(), data.image) as string;
 
-            console.log(data.image);
 
-            console.log(oldImage, "oldImage");
             if (fs.existsSync(oldImage)) {
                 const unlinkAsync = promisify(fs.unlink);
                 try {
                     await unlinkAsync(oldImage);
                 } catch (error) {
-                    console.log("----------------------------------------");
                     console.error(error);
                 }
             }

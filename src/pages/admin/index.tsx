@@ -33,7 +33,6 @@ export default function Page() {
     );
 }
 export async function getServerSideProps(context: any) {
-    console.log("getServerSession STARTED");
     const serverSession = await getServerSession(
         context.req,
         context.res,

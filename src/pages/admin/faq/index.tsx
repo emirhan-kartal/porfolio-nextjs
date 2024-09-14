@@ -7,8 +7,9 @@ import AdminLayout from "@/components/composites/admin/admin-layout";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import useSWR from "swr";
-import { useEffect, useState } from "react";
-import { Project } from "@/types";
+import { useContext, useEffect, useState } from "react";
+import { FAQuestionWithId, Project } from "@/types";
+import { SnackbarContext } from "@/components/context/snackbarContext";
 
 function sleep(ms: number) {
     return new Promise((resolve) => setTimeout(resolve, ms));
@@ -26,14 +27,17 @@ export default function Page() {
     const router = useRouter();
 
     const { data, error, isLoading } = useSWR("/api/faq", fetcher);
-    const [rows, setRows] = useState<Project[]>(data);
-    const { locale } = useRouter();
-    console.log(data);
+    const [rows, setRows] = useState<FAQuestionWithId[]>(data);
+    const { showSnackbar } = useContext(SnackbarContext);
     useEffect(() => {
         if (!data) return;
-        console.log(data);
-
-        setRows(data);
+        const enData = (data as FAQuestionWithId[]).map((project) => {
+            return {
+                ...project,
+                ...project["en"],
+            };
+        });
+        setRows(enData);
     }, [data]);
 
     if (error) {
@@ -41,23 +45,21 @@ export default function Page() {
     }
 
     const handleEdit = (params: any) => {
-        router.push("projects/edit?id=" + params.id);
+        router.push("faq/edit?id=" + params.id);
     };
     const handleDelete = async (params: any) => {
-        console.log(params.id);
         const rowsClone = [...rows];
         setRows((prev: any) => {
             return prev.filter((row: any) => row._id !== params.id);
         });
-        const result = await fetch("/api/projects/" + params.id, {
+        const result = await fetch("/api/faq/" + params.id, {
             method: "DELETE",
         });
         if (!result.ok) {
             setRows(rowsClone);
-            alert(result.statusText);
+            showSnackbar("Failed to delete", "error");
         }
 
-        console.log(params);
     };
 
     const columns: GridColDef[] = [
@@ -94,16 +96,16 @@ export default function Page() {
         <AdminLayout>
             <Box display={"flex"}>
                 <Typography>
-                    Welcome to the admin panel This is for projects
+                    Welcome to the admin panel This is for faq
                 </Typography>
                 <Box ml={"auto"}>
                     <Button
                         variant="contained"
                         color="secondary"
                         component={Link}
-                        href="projects/create"
+                        href="faq/create"
                     >
-                        Add a Project
+                        Add a FAQ
                     </Button>
                 </Box>
             </Box>

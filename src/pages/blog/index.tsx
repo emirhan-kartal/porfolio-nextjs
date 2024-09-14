@@ -4,7 +4,7 @@ import ContentWrapper from "@/components/ui/content-wrapper";
 import CTA from "@/components/ui/cta";
 import GradientColon from "@/components/ui/gradient-colon";
 import { getDatabase } from "@/lib/db";
-import { Blog } from "@/types";
+import { Blog, BlogWithoutContent } from "@/types";
 import { GetStaticProps } from "next";
 import { useEffect, useState } from "react";
 
@@ -12,26 +12,22 @@ export default function Page({
     initialBlogs,
     allBlogsCount,
 }: {
-    initialBlogs: Blog[];
+    initialBlogs: BlogWithoutContent[];
     allBlogsCount: number;
 }) {
-    const [blogs, setBlogs] = useState<Blog[]>(initialBlogs);
-    console.log("initialBlogs", initialBlogs);
+    const [blogs, setBlogs] = useState<BlogWithoutContent[]>(initialBlogs);
     useEffect(() => {
-        if (initialBlogs.length === 0) return;
+        if (initialBlogs.length === 0 && allBlogsCount <= 6) return;
         getPageAfter(blogs[blogs.length - 1]._id);
     }, []);
     const getPageAfter = async (cursor: string) => {
         const nextPageBlog = await fetch("/api/blogs/next?cursor=" + cursor);
+        const data = await nextPageBlog.json();
         setBlogs((prev) => {
-            return {
-                ...prev,
-                ...nextPageBlog,
-            };
+            return [...prev, ...data];
         });
     };
-    console.log(blogs, "test blogs");
-
+    console.log(blogs, "blogs");
     return (
         <>
             <BlogsTop blogs={blogs} />

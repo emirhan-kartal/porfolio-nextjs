@@ -23,7 +23,6 @@ export default function SnackbarProvider({
     });
     const showSnackbar = (message: any, severity: any) => {
         setSnackbarProps({ message, severity, open: true });
-        console.log(message, severity, "123123");
     };
 
     return (

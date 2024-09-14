@@ -16,7 +16,6 @@ export const authOptions: NextAuthOptions = {
                 password: { label: "Password", type: "password" },
             },
             async authorize(credentials: any): Promise<KartalUser | null> {
-                console.log("AUTHORIZER STARTED");
                 const { email, password } = credentials;
                 const user = await findUserByEmail(email);
                 if (user) {

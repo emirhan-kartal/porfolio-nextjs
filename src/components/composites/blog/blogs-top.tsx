@@ -10,6 +10,8 @@ type BlogsTopProps = {
 };
 export default function BlogsTop({ blogs }: BlogsTopProps) {
     const t = useTranslations("blogs");
+    console.log(typeof blogs)
+    console.log(blogs)
     return (
         <ContentWrapper content>
             <Box display={"flex"} flexDirection={"column"}>

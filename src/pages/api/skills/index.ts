@@ -9,11 +9,8 @@ export default async function handler(
     res: NextApiResponse
 ) {
     const session = await getServerSession(req, res, authOptions);
-    console.log(session);
     if (session || req.method === "GET") {
-        console.log("Session", session);
     } else {
-        console.log("No session found");
         res.status(401).json({ error: "Unauthorized" });
         return;
     }
@@ -53,8 +50,6 @@ async function postHandler(req: NextApiRequest, res: NextApiResponse) {
         res.status(400).json({ error: "Skill data is required" });
         return;
     }
-    console.log("here is the thing bro");
-    console.log(req.body);
     const body = JSON.parse(req.body);
     const toInsert = {
         name: body.name,
@@ -67,15 +62,12 @@ async function postHandler(req: NextApiRequest, res: NextApiResponse) {
         res.revalidate("/");
         res.status(200).json(data);
     } catch (error) {
-        console.log(error);
 
         res.status(500).json({ error: error });
     }
 }
 async function putHandler(req: NextApiRequest, res: NextApiResponse) {
-    console.log("PUT", req.body._id);
-    console.log("PUT", req.body.name);
-    console.log("PUT", req.body.image);
+
 
     if (!req.body) {
         res.status(400).json({ error: "Skill data is requ5ired" });
@@ -98,12 +90,10 @@ async function putHandler(req: NextApiRequest, res: NextApiResponse) {
         res.revalidate("/");
         res.status(200).json(query);
     } catch (error) {
-        console.log(error);
         res.status(500).json({ error: error });
     }
 }
 async function deleteHandler(req: NextApiRequest, res: NextApiResponse) {
-    console.log(req.query.id, " id bu");
 
     if (!req.query.id) {
         res.status(400).json({ error: "Skill data is required" });

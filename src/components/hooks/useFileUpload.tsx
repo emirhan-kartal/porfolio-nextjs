@@ -26,7 +26,6 @@ function useFileUpload(
 
     const submitFile = async () => {
         if (!ref.current?.files?.[0]) {
-            console.log("No file selected");
             return;
         }
         const formData = new FormData();
@@ -38,14 +37,12 @@ function useFileUpload(
         const rowsClone = [...rows];
 
         setRows((prev: SkillRow[]) => {
-            console.log("STATE DEĞİŞTİRİLDİ(FONKSİYON ÇAĞIRILDI)");
             const newRows = prev.map((row: any) => {
                 if (row._id === skill._id) {
                     return { ...row, image: "/skills/" + newFilePath };
                 }
                 return row;
             });
-            console.log(newRows);
             return newRows;
         });
         const result = await fetch("/api/skills/photo", {
@@ -53,18 +50,14 @@ function useFileUpload(
             body: formData,
         });
         //optimistic approach
-        console.log("rowsClone", rowsClone);
 
         if (!result.ok) {
-            console.log("failed");
-            console.log(result.body);
             alert("Edit failed");
         }
         if (skill.name !== "") {
             closeCallback();
             setErrors({ name: "", image: "" });
         }
-        console.log(result);
     };
 
     return { ref, handleFileClick, handleFileChange, submitFile };

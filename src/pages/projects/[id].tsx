@@ -8,7 +8,6 @@ import markdownToHtml from "@/lib/markdownToHtml";
 import { useRouter } from "next/router";
 import { ProjectData } from "@/types";
 export default function Page({ data }: { data: ProjectData }) {
-    console.log(data, "hello world");
     const { locale } = useRouter();
     const { title, content, thumbnail } = data;
     return (
@@ -77,7 +76,7 @@ export const getStaticProps = async ({
     }
     if (!locale) {
         return {
-            notFound: true, 
+            notFound: true,
         };
     }
     const localizedProject = res[locale as "tr" | "en"];
@@ -98,22 +97,14 @@ export const getStaticProps = async ({
 export async function getStaticPaths({ locales }: { locales: string[] }) {
     // Replace 'http://localhost:3000' with your actual domain or environment variable
     const mongo = await getDatabase();
-    const res = await mongo.collection("projects").find().toArray();
+    const res = await mongo.collection("projects").find({}, {}).toArray();
     const paths = res.flatMap((project) => {
         return locales.map((locale) => ({
             params: { id: project._id.toString() },
             locale,
         }));
     });
-    console.log(paths, "this is paths");
-    /*    const paths = res.map((project) => [
-        locales.map((locale) => ({
-            params: {
-                id: project._id.toString(),
-            },
-            locale: locale,
-        })),
-    ]); */
+
 
     return {
         paths,

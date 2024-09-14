@@ -12,7 +12,6 @@ export default async function handler(
         res.status(401).json({ error: "Unauthorized" });
         return;
     }
-    console.log("skills count")
     if (req.method === "GET") {
         return getHandler(req, res);
     }
@@ -24,7 +23,5 @@ async function getHandler(req: NextApiRequest, res: NextApiResponse) {
     const response = {
         value: query + "",
     };
-    console.log(response,"sent")
-    console.log("--------------------------------")
     res.status(200).send(response);
 }
