@@ -53,6 +53,7 @@ export default function AdminContentTextFields({
                 [lang]: { ...content[lang] },
                 _id: content._id,
             }));
+            setValidatedForms((prev: any) => ({ ...prev, [lang]: true }));
             reset({ [lang]: { ...content[lang] } });
         }
     }, [content]);
@@ -74,7 +75,18 @@ export default function AdminContentTextFields({
             ...prev,
             [name.split(".")[1]]: value,
         }));
+        const localFormString = JSON.stringify({
+            ...localFormData,
+            [name.split(".")[1]]: value,
+        });
+        const contentString = JSON.stringify(content[lang]);
+
+        if (localFormString === contentString) {
+            setValidatedForms((prev: any) => ({ ...prev, [lang]: true }));
+            return;
+        }
         setValidatedForms((prev: any) => ({ ...prev, [lang]: false }));
+
     };
 
     const schema = getSchema(contentType, lang);

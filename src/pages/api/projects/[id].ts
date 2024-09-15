@@ -59,7 +59,12 @@ async function deleteHandler(req: NextApiRequest, res: NextApiResponse) {
         "projects"
     );
     if (
-        await Promise.all(urlsToBeRevalidated.map((url) => res.revalidate(url)))
+        await Promise.all(
+            urlsToBeRevalidated.map((url) => {
+                console.log(url)
+                return res.revalidate(url);
+            })
+        )
     ) {
         res.status(200).json({ success: true });
     } else {

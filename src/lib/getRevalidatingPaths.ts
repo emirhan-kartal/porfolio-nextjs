@@ -5,15 +5,16 @@ export default function getRevalidatingPaths(
     contentType: string
 ) {
     const urlsToBeRevalidated: string[] = [
-        contentType,
-        contentType + "/" + idString,
+        `/${contentType}`,
+        `/${contentType}/${idString}`,
     ];
     const defaultLocale = nextConfig.i18n?.defaultLocale;
     nextConfig.i18n?.locales.forEach((locale: any) => {
         if (defaultLocale !== locale) {
-            urlsToBeRevalidated.push(locale + "/" + contentType);
-            urlsToBeRevalidated.push(locale + `/${contentType}/` + idString);
+            urlsToBeRevalidated.push(`/${locale}/${contentType}/${idString}`);
+            urlsToBeRevalidated.push(`/${locale}/${contentType}`);
         }
     });
+
     return urlsToBeRevalidated;
 }
