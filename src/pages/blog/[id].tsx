@@ -39,7 +39,7 @@ export default function Page({ data }: { data: any }) {
                 />
             </Box>
             <ContentWrapper content sx={{ bgcolor: "secondary.main" }}>
-                <Box py={4} component={"div"}>
+                <Box py={4} component={"div"} sx={{ wordBreak: "break-word" }}>
                     <Typography
                         variant="body1"
                         component={"div"}
@@ -90,7 +90,7 @@ export async function getStaticPaths({ locales }: { locales: string[] }) {
     const res = await mongo.collection("blogs").find({}, {}).toArray();
 
     // Flatten the paths array to avoid nesting
-    const paths = res.flatMap((blog) => 
+    const paths = res.flatMap((blog) =>
         locales.map((locale) => ({
             params: { id: blog._id.toString() },
             locale,
@@ -100,8 +100,7 @@ export async function getStaticPaths({ locales }: { locales: string[] }) {
     console.log(paths, "paths");
 
     return {
-        paths, 
+        paths,
         fallback: false, // or true, depending on your use case
     };
 }
-

@@ -105,7 +105,6 @@ export async function getStaticPaths({ locales }: { locales: string[] }) {
         }));
     });
 
-
     return {
         paths,
 
