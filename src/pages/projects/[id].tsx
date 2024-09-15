@@ -44,7 +44,7 @@ export default function Page({ data }: { data: ProjectData }) {
                 />
             </Box>
             <ContentWrapper content sx={{ bgcolor: "secondary.main" }}>
-                <Box py={4} component={"div"} sx={{ wordBreak: "break-word" }}>
+                <Box py={4} px={{xs:0,md:15,lg:30}} component={"div"} sx={{ wordBreak: "break-word" }}>
                     <Typography
                         variant="body1"
                         component={"div"}

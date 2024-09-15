@@ -3,6 +3,7 @@ import { ObjectId } from "mongodb";
 import { NextApiRequest, NextApiResponse } from "next";
 import { getServerSession } from "next-auth";
 import { authOptions } from "../auth/[...nextauth]";
+import getRevalidatingPaths from "@/lib/getRevalidatingPaths";
 
 export default async function handler(
     req: NextApiRequest,
@@ -50,10 +51,16 @@ async function deleteHandler(req: NextApiRequest, res: NextApiResponse) {
     if (result.deletedCount === 0) {
         return res.status(404).send({ error: "blog not found" });
     }
-    res.revalidate("/");
-    res.revalidate("/blog");
-    res.revalidate("/blog/" + req.query.id);
-    res.status(200).json({ name: "Emirhan Kartal deleteHandler" });
+    const urlsToBeRevalidated: string[] = getRevalidatingPaths(
+        req.query.id as string,
+        "blogs"
+    );
+    if (
+        await Promise.all(urlsToBeRevalidated.map((url) => res.revalidate(url)))
+    ) {
+        return res.status(200).send({ success: true });
+    }
+    return res.status(500).send({ error: "Error revalidating" });
 }
 async function postHandler(req: NextApiRequest, res: NextApiResponse) {
     if (!req.body) {
@@ -66,10 +73,16 @@ async function postHandler(req: NextApiRequest, res: NextApiResponse) {
     if (!result) {
         return res.status(500).send({ error: "Error inserting blog" });
     }
-    res.revalidate("/blog/" + blog._id);
-    res.revalidate("/blog");
-    res.revalidate("/");
-    res.status(201).send(blog);
+    const urlsToBeRevalidated: string[] = getRevalidatingPaths(
+        blog._id,
+        "blogs"
+    );
+    if (
+        await Promise.all(urlsToBeRevalidated.map((url) => res.revalidate(url)))
+    ) {
+        return res.status(201).send(blog);
+    }
+    return res.status(500).send({ error: "Error revalidating" });
 }
 async function putHandler(req: NextApiRequest, res: NextApiResponse) {
     if (!req.body) {
@@ -89,9 +102,14 @@ async function putHandler(req: NextApiRequest, res: NextApiResponse) {
     if (result.modifiedCount === 0) {
         return res.status(404).send({ error: "blog not found" });
     }
-    res.revalidate("/blog/" + blog._id);
-    res.revalidate("/blog");
-    res.revalidate("/");
-
-    res.status(200).send({ success: true });
+    const urlsToBeRevalidated: string[] = getRevalidatingPaths(
+        req.query.id as string,
+        "blogs"
+    );
+    if (
+        await Promise.all(urlsToBeRevalidated.map((url) => res.revalidate(url)))
+    ) {
+        return res.status(200).send(blog);
+    }
+    return res.status(500).send({ error: "Error revalidating" });
 }

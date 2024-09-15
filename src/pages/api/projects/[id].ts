@@ -4,6 +4,11 @@ import { NextApiRequest, NextApiResponse } from "next";
 import { getServerSession } from "next-auth";
 import { authOptions } from "../auth/[...nextauth]";
 import { Project } from "@/types";
+
+import nextConfig from "../../../../next.config.mjs";
+import { get } from "http";
+import getRevalidatingPaths from "@/lib/getRevalidatingPaths";
+
 export default async function handler(
     req: NextApiRequest,
     res: NextApiResponse
@@ -49,10 +54,17 @@ async function deleteHandler(req: NextApiRequest, res: NextApiResponse) {
     if (result.deletedCount === 0) {
         return res.status(404).send({ error: "project not found" });
     }
-    res.revalidate("/projects");
-    res.revalidate("/projects/" + req.query.id);
-
-    res.status(200).json({ name: "Emirhan Kartal deleteHandler" });
+    const urlsToBeRevalidated: string[] = getRevalidatingPaths(
+        req.query.id as string,
+        "projects"
+    );
+    if (
+        await Promise.all(urlsToBeRevalidated.map((url) => res.revalidate(url)))
+    ) {
+        res.status(200).json({ success: true });
+    } else {
+        res.status(500).send({ error: "Error revalidating" });
+    }
 }
 async function postHandler(req: NextApiRequest, res: NextApiResponse) {
     if (!req.body) {
@@ -66,9 +78,17 @@ async function postHandler(req: NextApiRequest, res: NextApiResponse) {
     if (!result) {
         return res.status(500).send({ error: "Error inserting project" });
     }
-    res.revalidate("/projects/" + project._id.toString());
-    res.revalidate("/projects");
-    res.status(201).send(project);
+    const urlsToBeRevalidated: string[] = getRevalidatingPaths(
+        project._id,
+        "projects"
+    );
+    if (
+        await Promise.all(urlsToBeRevalidated.map((url) => res.revalidate(url)))
+    ) {
+        res.status(201).send(project);
+    } else {
+        res.status(500).send({ error: "Error revalidating" });
+    }
 }
 async function putHandler(req: NextApiRequest, res: NextApiResponse) {
     if (!req.body) {
@@ -86,8 +106,17 @@ async function putHandler(req: NextApiRequest, res: NextApiResponse) {
     if (result.modifiedCount === 0) {
         return res.status(404).send({ error: "project not found" });
     }
-    res.revalidate("/projects/" + idString);
-    res.revalidate("/projects");
 
-    res.status(200).send({ success: true });
+    const urlsToBeRevalidated: string[] = getRevalidatingPaths(
+        idString,
+        "projects"
+    );
+
+    if (
+        await Promise.all(urlsToBeRevalidated.map((url) => res.revalidate(url)))
+    ) {
+        res.status(200).send({ success: true });
+    } else {
+        res.status(500).send({ error: "Error revalidating" });
+    }
 }
