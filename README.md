@@ -1,4 +1,4 @@
-# Portfolio Website - Next.js
+## Portfolio Website - Next.js
 
 This is a **portfolio website** built using **Next.js Pages Router** that serves both the **frontend** and **backend** functionalities. The project integrates modern technologies to provide a seamless experience for users and an efficient admin interface for managing content. Below is an overview of the key features and technologies used.
 
