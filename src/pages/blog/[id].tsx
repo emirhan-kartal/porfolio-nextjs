@@ -6,7 +6,9 @@ import { getDatabase } from "@/lib/db";
 import { ObjectId } from "mongodb";
 import markdownToHtml from "@/lib/markdownToHtml";
 import Head from "next/head";
+import React from "react";
 export default function Page({ data }: { data: any }) {
+    const ref = React.useRef<HTMLDivElement>(null);
     return (
         <>
             <Head>
@@ -27,16 +29,21 @@ export default function Page({ data }: { data: any }) {
                     <GradientText>— By {data.author}</GradientText>
                 </Box>
             </ContentWrapper>
-            <Box width={"100%"} height={{ xs: 300 }}>
-                <Image
-                    src={data.thumbnail}
-                    alt={data.title}
-                    height={350}
-                    width={0}
-                    style={{
-                        width: "100%",
-                    }}
-                />
+            <Box width={"100%"}>
+                <Box height={{ xs: 300 }}>
+                    <Image
+                        src={data.thumbnail}
+                        alt={data.title}
+                        height={0}
+                        width={0}
+                        style={{
+                            width: "auto",
+                            objectFit: "cover",
+                            height: "auto",
+                            
+                        }}
+                    />
+                </Box>
             </Box>
             <ContentWrapper content sx={{ bgcolor: "secondary.main" }}>
                 <Box py={4} component={"div"} sx={{ wordBreak: "break-word" }}>

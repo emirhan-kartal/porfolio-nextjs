@@ -34,8 +34,7 @@ export default function App({
                         <SessionProvider session={session}>
                             <LoadingProvider>
                                 <SnackbarProvider>
-                                    <Header />
-
+                                    <Header/>
                                     <Component {...pageProps} />
 
                                     <Analytics />

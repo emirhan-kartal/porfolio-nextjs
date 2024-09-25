@@ -9,7 +9,7 @@ const SignIn = ({ csrfToken }: { csrfToken: any }) => {
     const { data: session, status } = useSession();
     const router = useRouter();
     useEffect(() => {
-        if (status === "authenticated") {
+        if (status === "authenticated" || session) {
             router.push("/admin");
         }
     }, [router]);

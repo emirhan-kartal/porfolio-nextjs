@@ -10,6 +10,7 @@ import { ProjectData } from "@/types";
 export default function Page({ data }: { data: ProjectData }) {
     const { locale } = useRouter();
     const { title, content, thumbnail } = data;
+
     return (
         <>
             <ContentWrapper content sx={{ pt: 15 }}>
@@ -20,10 +21,9 @@ export default function Page({ data }: { data: ProjectData }) {
                     <GradientText>— By Emirhan Kartal</GradientText>
                 </Box>
             </ContentWrapper>
-
             <Box
                 width={"100%"}
-                height={{ xs: 300, sm: 350, md: 400 }}
+                height={{ xs: 300, sm: 350, md: 500,lg:700 }}
                 position={"relative"}
                 display={"flex"}
                 alignItems={"center"}
@@ -35,16 +35,22 @@ export default function Page({ data }: { data: ProjectData }) {
                     alt={title}
                     height={0}
                     width={0}
-                    sizes="100wv"
+                    sizes="100vw 80vw 60vw"
                     style={{
                         width: "auto",
                         objectFit: "cover",
-                        height: "100%",
+                        height: "auto",
+                        maxHeight: "100%",
                     }}
                 />
             </Box>
             <ContentWrapper content sx={{ bgcolor: "secondary.main" }}>
-                <Box py={4} px={{xs:0,md:15,lg:30}} component={"div"} sx={{ wordBreak: "break-word" }}>
+                <Box
+                    py={4}
+                    px={{ xs: 0, md: 15, lg: 30 }}
+                    component={"div"}
+                    sx={{ wordBreak: "break-word" }}
+                >
                     <Typography
                         variant="body1"
                         component={"div"}
