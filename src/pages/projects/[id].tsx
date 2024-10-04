@@ -23,7 +23,7 @@ export default function Page({ data }: { data: ProjectData }) {
             </ContentWrapper>
             <Box
                 width={"100%"}
-                height={{ xs: 300, sm: 350, md: 500,lg:700 }}
+                height={{ xs: 300, sm: 350, md: 500, lg: 700 }}
                 position={"relative"}
                 display={"flex"}
                 alignItems={"center"}
