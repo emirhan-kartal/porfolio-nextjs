@@ -2,7 +2,7 @@ import { Box, CircularProgress, Pagination, Typography } from "@mui/material";
 import BlogCard from "./blog-card";
 import { motion } from "framer-motion";
 import { container, itemVariants } from "../utils/animations";
-import {  useState } from "react";
+import { useState } from "react";
 import { useTranslations } from "next-intl";
 import { useRouter } from "next/router";
 import { BlogWithoutContent } from "@/types";

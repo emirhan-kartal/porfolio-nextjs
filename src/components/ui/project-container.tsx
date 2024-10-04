@@ -35,7 +35,7 @@ export default function ProjectContainer({
                     <Grid
                         item
                         xs={12}
-                        sm={6}
+                        lg={6}
                         key={index}
                         component={motion.div}
                         variants={itemVariants}
