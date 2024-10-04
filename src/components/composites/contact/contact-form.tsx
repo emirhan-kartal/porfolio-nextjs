@@ -8,18 +8,18 @@ import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useTranslations } from "next-intl";
-const validationSchema = yup.object().shape({
-    name: yup.string().required("Name is required"),
-    email: yup.string().email().required("Email is required"),
-    budget: yup.string().required("Budget is required"),
-    description: yup
-        .string()
-        .min(20, "Description must be at least 20 characters long.")
-        .required("Description is required"),
-});
 
 export default function ContactForm() {
     const t = useTranslations("contact-form");
+    const validationSchema = yup.object().shape({
+        name: yup.string().required(t("name-required")),
+        email: yup.string().email().required(t("email-required")),
+        phone: yup.string().length(11, "").required(t("phone-required")),
+        description: yup
+            .string()
+            .min(20, t("description-min")).max(1000, t("description-max"))
+            .required(t("description-required")),
+    });
 
     const resolver = yupResolver(validationSchema);
     const {
@@ -32,7 +32,7 @@ export default function ContactForm() {
     const [formData, setFormData] = useState({
         name: "",
         email: "",
-        budget: "",
+        phone: "",
         description: "",
     });
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -61,7 +61,7 @@ export default function ContactForm() {
                 setFormData({
                     name: "",
                     email: "",
-                    budget: "",
+                    phone: "",
                     description: "",
                 });
             } else {
@@ -114,13 +114,13 @@ export default function ContactForm() {
                     helperText={errors.email ? errors.email.message : ""}
                 />
                 <TextField
-                    error={!!errors.budget}
-                    label={t("budget")}
+                    error={!!errors.phone}
+                    label={t("phone")}
                     fullWidth
-                    {...register("budget")}
-                    value={formData.budget}
+                    {...register("phone")}
+                    value={formData.phone}
                     onChange={handleChange}
-                    helperText={errors.budget ? errors.budget.message : ""}
+                    helperText={errors.phone ? errors.phone.message : ""}
                 />
                 <TextField
                     label={t("description")}

@@ -60,7 +60,13 @@
         "budget": "Budget",
         "description": "Your Project's/Offer's Description",
         "submit": "SUBMIT",
-        "submitting": "Submitting..."
+        "submitting": "Submitting...",
+        "name-required":"Name is required",
+        "email-required":"Email is required",
+        "phone-required":"Phone is required",
+        "description-min":"Description must be at least 20 characters long",
+        "description-max":"Description must be at most 1000 characters long",
+        "description-required":"Description is required"
     },
     "projects": {
         "title": "My Projects"

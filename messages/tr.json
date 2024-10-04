@@ -61,7 +61,14 @@
         "budget": "Bütçe",
         "description": "Projenizin/Teklifinizin Açıklaması",
         "submit": "Gönder",
-        "submitting": "Gönderiliyor..."
+        "submitting": "Gönderiliyor...",
+        "name-required": "İsim alanı zorunludur",
+        "email-required": "E-posta alanı zorunludur",
+        "email-invalid": "Geçerli bir e-posta adresi girin",
+        "phone-required": "Telefon alanı zorunludur",
+        "description-min": "Açıklama en az 20 karakter olmalıdır",
+        "description-max": "Açıklama en fazla 1000 karakter olmalıdır",
+        "description-required": "Açıklama alanı zorunludur"
     },
     "projects": {
         "title": "Projelerim"
