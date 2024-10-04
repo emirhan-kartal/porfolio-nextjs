@@ -51,18 +51,18 @@ export default function ProjectCard(project: ProjectWithoutContent) {
                     borderBottomRightRadius: 16,
                     wordBreak: "break-word",
                 }}
-                height={{ xs: 200, sm: 250 }}
+                gap={2}
                 display={"flex"}
                 flexDirection={"column"}
             >
-                <Typography variant={"h5"} mb={1}>
+                <Typography variant={"h5"}>
                     {title}
                 </Typography>
                 <Typography fontSize={14} color={"lightgray"} variant="h1">
                     {description}
                 </Typography>
 
-                <Typography mt={2}>{t("tech-used")}:</Typography>
+                <Typography>{t("tech-used")}:</Typography>
                 <Box display={"flex"} flexWrap={"wrap"} gap={1}>
                     {tags.split(",").map((tag: any, index: number) => (
                         <Typography

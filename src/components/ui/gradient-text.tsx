@@ -36,7 +36,6 @@ export default function GradientText({
                 component={"div"}
                 sx={{
                     fontSize: "1.5rem",
-                    textDecoration: "underline",
                     width: "100%", // i dunno why but it doesnt show up wo full width
                     ...sx,
                 }}

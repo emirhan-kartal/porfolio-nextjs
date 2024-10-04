@@ -30,7 +30,6 @@ a {
     background: linear-gradient(90deg, #b16cea, #ff5e69, #ff8a56, #ffa84b);
     -webkit-text-fill-color: transparent;
     background-clip: text;
-    text-decoration: underline;
 }
 
 .hidden {

@@ -63,6 +63,7 @@ export default function LandingIntro() {
                         alignItems={"center"}
                         justifyContent={"center"}
                         flexDirection={"column"}
+                        flexGrow={0}
                         height={"90svh"}
                         gap={3}
                         component={m.div}

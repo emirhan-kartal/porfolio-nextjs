@@ -16,7 +16,6 @@ export default function CTA({ mt }: { mt: number }) {
                 <GradientText
                     sx={{
                         fontSize: { xs: 32, md: 72 },
-                        WebkitTextDecorationLine: "underline",
                     }}
                     underline={true}
                 >
