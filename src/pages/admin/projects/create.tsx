@@ -1,5 +1,6 @@
 import AdminLayout from "@/components/composites/admin/admin-layout";
 import AdminContentForm from "@/components/ui/admin-content-form";
+import { authOptions } from "@/pages/api/auth/[...nextauth]";
 import { Typography } from "@mui/material";
 import { getServerSession } from "next-auth";
 import { useSession } from "next-auth/react";
@@ -17,7 +18,7 @@ export default function Page() {
 }
 
 export async function getServerSideProps(context: any) {
-    const session = await getServerSession(context.req, context.res, {});
+    const session = await getServerSession(context.req, context.res, authOptions);
 
     if (!session) {
         return {

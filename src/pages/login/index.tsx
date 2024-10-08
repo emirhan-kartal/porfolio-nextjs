@@ -2,6 +2,7 @@ import { getServerSession } from "next-auth";
 import { getCsrfToken, signIn, useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
+import { authOptions } from "../api/auth/[...nextauth]";
 
 const SignIn = ({ csrfToken }: { csrfToken: any }) => {
     const [email, setEmail] = useState("");
@@ -64,7 +65,7 @@ export async function getServerSideProps(ctx: any) {
     return {
         props: {
             csrfToken: await getCsrfToken(ctx),
-            session: await getServerSession(ctx.req, ctx.res, {}),
+            session: await getServerSession(ctx.req, ctx.res, authOptions),
             messages: (await import(`../../../messages/${ctx.locale}.json`))
                 .default,
         },
