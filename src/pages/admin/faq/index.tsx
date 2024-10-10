@@ -52,7 +52,7 @@ export default function Page() {
         setRows((prev: any) => {
             return prev.filter((row: any) => row._id !== params.id);
         });
-        const result = await fetch("/api/faq/" + params.id, {
+        const result = await fetch("/api/faq?id=" + params.id, {
             method: "DELETE",
         });
         if (!result.ok) {
