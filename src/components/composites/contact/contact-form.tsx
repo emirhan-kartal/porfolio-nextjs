@@ -147,6 +147,15 @@ export default function ContactForm() {
                     FormHelperTextProps={{ sx: { borderRadius: "1rem" } }}
                 />
 
+                {messageText.message && (
+                    <Typography
+                        variant="h6"
+                        color={messageText.success ? "green" : "red"}
+                    >
+                        {messageText.message}
+                    </Typography>
+                )}
+
                 <EButton
                     type="gradient"
                     submit
@@ -157,13 +166,6 @@ export default function ContactForm() {
                 >
                     {isSubmitting ? t("submitting") : t("submit")}
                 </EButton>
-
-                <Typography
-                    variant="h6"
-                    color={messageText.success ? "green" : "red"}
-                >
-                    {messageText.message}
-                </Typography>
             </Box>
         </ContentWrapper>
     );

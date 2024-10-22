@@ -65,10 +65,12 @@
         "name-required":"Name is required",
         "email-required":"Email is required",
         "phone-required":"Phone is required",
-        
+
         "content-min":"Description must be at least 20 characters long",
         "content-max":"Description must be at most 1000 characters long",
-        "content-required":"Description is required"
+        "content-required":"Description is required",
+        "success":"Your message has been sent successfully. I will get back to you as soon as possible.",
+        "error":"An error occurred while sending the message. Please try again later."
     },
     "projects": {
         "title": "My Projects"

@@ -69,7 +69,9 @@
         "phone-required": "Telefon alanı zorunludur",
         "content-min": "Açıklama en az 20 karakter olmalıdır",
         "content-max": "Açıklama en fazla 1000 karakter olmalıdır",
-        "content-required": "Açıklama alanı zorunludur"
+        "content-required": "Açıklama alanı zorunludur",
+        "success":"Mesajınız başarıyla gönderildi. En kısa sürede size dönüş yapacağım.",
+        "error":"Bir hata oluştu. Lütfen daha sonra tekrar deneyin."
     },
     "projects": {
         "title": "Projelerim"
