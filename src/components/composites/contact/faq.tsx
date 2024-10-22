@@ -42,7 +42,6 @@ export default function FAQ({ faqs }: FAQProps) {
                     answer={faq[locale as "tr" | "en"].answer}
                 />
             ))}
-            <FAQAccordion question="What is the meaning of life?" answer="42" />
         </ContentWrapper>
     );
 }
