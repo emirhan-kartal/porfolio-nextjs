@@ -59,6 +59,7 @@
         "name": "İsim",
         "email": "E-posta",
         "budget": "Bütçe",
+        "phone":"Telefon",
         "description": "Projenizin/Teklifinizin Açıklaması",
         "submit": "Gönder",
         "submitting": "Gönderiliyor...",

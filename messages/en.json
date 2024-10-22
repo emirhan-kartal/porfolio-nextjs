@@ -58,6 +58,7 @@
         "name": "Name",
         "email": "Email",
         "budget": "Budget",
+        "phone": "Phone",
         "description": "Your Project's/Offer's Description",
         "submit": "SUBMIT",
         "submitting": "Submitting...",
