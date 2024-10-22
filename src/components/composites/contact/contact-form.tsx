@@ -15,10 +15,15 @@ export default function ContactForm() {
         name: yup.string().required(t("name-required")),
         email: yup.string().email().required(t("email-required")),
         phone: yup.string().length(11, "").required(t("phone-required")),
-        description: yup
+        content: yup
             .string()
-            .min(20, t("description-min")).max(1000, t("description-max"))
-            .required(t("description-required")),
+            .min(20, t("content-min"))
+            .max(1000, t("content-max"))
+            .required(t("content-required")),
+    });
+    const [messageText, setMessageText] = useState({
+        success: true,
+        message: "",
     });
 
     const resolver = yupResolver(validationSchema);
@@ -33,7 +38,7 @@ export default function ContactForm() {
         name: "",
         email: "",
         phone: "",
-        description: "",
+        content: "",
     });
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
@@ -57,15 +62,22 @@ export default function ContactForm() {
                 body: JSON.stringify(formData),
             });
             if (response.ok) {
-                alert("Your message has been sent!");
+                setMessageText({
+                    success: true,
+                    message: t("success"),
+                });
+
                 setFormData({
                     name: "",
                     email: "",
                     phone: "",
-                    description: "",
+                    content: "",
                 });
             } else {
-                alert("Something went wrong. Please try again later.");
+                setMessageText({
+                    success: false,
+                    message: t("error"),
+                });
             }
         } catch (error) {
             console.error(error);
@@ -123,17 +135,15 @@ export default function ContactForm() {
                     helperText={errors.phone ? errors.phone.message : ""}
                 />
                 <TextField
-                    label={t("description")}
+                    label={t("content")}
                     multiline
                     rows={8}
                     fullWidth
-                    value={formData.description}
-                    {...register("description")}
+                    value={formData.content}
+                    {...register("content")}
                     onChange={handleChange}
-                    error={!!errors.description}
-                    helperText={
-                        errors.description ? errors.description.message : ""
-                    }
+                    error={!!errors.content}
+                    helperText={errors.content ? errors.content.message : ""}
                     FormHelperTextProps={{ sx: { borderRadius: "1rem" } }}
                 />
 
@@ -147,6 +157,13 @@ export default function ContactForm() {
                 >
                     {isSubmitting ? t("submitting") : t("submit")}
                 </EButton>
+
+                <Typography
+                    variant="h6"
+                    color={messageText.success ? "green" : "red"}
+                >
+                    {messageText.message}
+                </Typography>
             </Box>
         </ContentWrapper>
     );

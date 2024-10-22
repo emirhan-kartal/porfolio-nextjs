@@ -10,24 +10,27 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
     }
 }
 async function postHandler(req: NextApiRequest, res: NextApiResponse) {
+    console.log(req.body, "req.body");
     if (!req.body) {
         return res.status(400).json({ error: "Email data is required" });
     }
-
-    const { data, error } = await resend.emails.send({
+    console.log("test");
+    const packageJson = {
         from: "Acme <onboarding@resend.dev>",
         to: ["e.kartal115@gmail.com"],
         subject:
             "Email from " +
             req.body.name +
             " " +
-            req.body.email +
-            " " +
-            req.body.budget,
+            req.body.email,
         html: req.body.content,
-    });
+    };
+
+    console.log(packageJson, "package");
+    const { data, error } = await resend.emails.send(packageJson);
 
     if (error) {
+        console.log(error);
         return res.status(400).json(error);
     }
 
