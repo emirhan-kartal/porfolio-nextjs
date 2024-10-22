@@ -7,12 +7,24 @@ import { ObjectId } from "mongodb";
 import markdownToHtml from "@/lib/markdownToHtml";
 import { useRouter } from "next/router";
 import { ProjectData } from "@/types";
+import Head from "next/head";
 export default function Page({ data }: { data: ProjectData }) {
     const { locale } = useRouter();
     const { title, content, thumbnail } = data;
 
     return (
         <>
+            <Head>
+                <meta name="description" content={data.description} />
+                <meta name="keywords" content={data.tags} />
+                <meta name="author" content={"Emirhan Kartal"} />
+                <meta
+                    name="viewport"
+                    content="width=device-width, initial-scale=1.0"
+                />
+                <meta name="language" content={locale} />
+                <title>{data.title} - Emirhan Kartal</title>
+            </Head>
             <ContentWrapper content sx={{ pt: 15 }}>
                 <Box>
                     <Typography mb={3} variant="h3">

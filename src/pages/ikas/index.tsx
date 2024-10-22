@@ -2,26 +2,19 @@ import ContactForm from "@/components/composites/contact/contact-form";
 import FAQ from "@/components/composites/contact/faq";
 import { getDatabase } from "@/lib/db";
 import { FAQuestionWithId } from "@/types";
-import { useTranslations } from "next-intl";
+import { Typography } from "@mui/material";
 import Head from "next/head";
-import { useRouter } from "next/router";
 
 export default function Page({ faqs }: { faqs: FAQuestionWithId[] }) {
-    const t = useTranslations("seo.contact");
-    const { locale } = useRouter();
     return (
         <>
-            <Head>
-                <meta name="description" content={t("description")} />
-                <meta name="keywords" content={t("keywords")} />
-                <meta name="author" content={"Emirhan Kartal"} />
-                <meta
-                    name="viewport"
-                    content="width=device-width, initial-scale=1.0"
-                />
-                <meta name="language" content={locale} />
-                <title>{t("title")}</title>
-            </Head>
+        <Head>
+            <meta name="description" content="İkas Hakkında Bilgi Almak İçin Aşağıdaki Formu Doldurabilirsiniz" />
+            <title>İkas Bilgi - Emirhan Kartal</title>
+        </Head>
+        <Typography variant="h1">
+            Uzmandan İkas hakkında ÜCRETSİZ bilgi almak için aşağıdaki formu doldurabilirsiniz.
+        </Typography>
             <ContactForm />
             <FAQ faqs={faqs} />
         </>

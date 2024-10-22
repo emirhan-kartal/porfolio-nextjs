@@ -10,6 +10,8 @@ import { useTranslations } from "next-intl";
 import { Project, ProjectWithoutContent } from "@/types";
 
 import { useEffect, useState } from "react";
+import Head from "next/head";
+import { useRouter } from "next/router";
 export default function Page({
     initialProjects,
     allProjectsCount,
@@ -18,6 +20,8 @@ export default function Page({
     allProjectsCount: number;
 }) {
     const t = useTranslations("projects");
+    const tSeo = useTranslations("seo.projects");
+    const {locale} = useRouter();
     const [projectState, setProjects] = useState<Project[]>(initialProjects);
 
     useEffect(() => {
@@ -35,21 +39,34 @@ export default function Page({
         });
     };
     return (
-        <ContentWrapper content>
-            <motion.div
-                variants={container("w-delay")}
-                initial="hidden"
-                animate="visible"
-            >
-                <GradientText sx={{ fontSize: "3rem", mb: 2 }}>
-                    {t("title")}
-                </GradientText>
-            </motion.div>
-            <ProjectContainer
-                projects={initialProjects ?? []}
-                getNextPage={getPageAfter}
-            />
-        </ContentWrapper>
+        <>
+            <Head>
+                <meta name="description" content={t("description")} />
+                <meta name="keywords" content={t("keywords")} />
+                <meta name="author" content={"Emirhan Kartal"} />
+                <meta
+                    name="viewport"
+                    content="width=device-width, initial-scale=1.0"
+                />
+                <meta name="language" content={locale} />
+                <title>{t("title")}</title>
+            </Head>
+            <ContentWrapper content>
+                <motion.div
+                    variants={container("w-delay")}
+                    initial="hidden"
+                    animate="visible"
+                >
+                    <GradientText sx={{ fontSize: "3rem", mb: 2 }}>
+                        {t("title")}
+                    </GradientText>
+                </motion.div>
+                <ProjectContainer
+                    projects={initialProjects ?? []}
+                    getNextPage={getPageAfter}
+                />
+            </ContentWrapper>
+        </>
     );
 }
 export const getStaticProps: GetStaticProps<object> = async (ctx) => {

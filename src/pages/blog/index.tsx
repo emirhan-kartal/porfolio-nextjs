@@ -6,6 +6,9 @@ import GradientColon from "@/components/ui/gradient-colon";
 import { getDatabase } from "@/lib/db";
 import { Blog, BlogWithoutContent } from "@/types";
 import { GetStaticProps } from "next";
+import { useTranslations } from "next-intl";
+import Head from "next/head";
+import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
 export default function Page({
@@ -27,9 +30,22 @@ export default function Page({
             return [...prev, ...data];
         });
     };
+    const { locale } = useRouter();
+    const t = useTranslations("seo.blogs");
     console.log(blogs, "blogs");
     return (
         <>
+            <Head>
+                <meta name="description" content={t("description")} />
+                <meta name="keywords" content={t("keywords")} />
+                <meta name="author" content={"Emirhan Kartal"} />
+                <meta
+                    name="viewport"
+                    content="width=device-width, initial-scale=1.0"
+                />
+                <meta name="language" content={locale} />
+                <title>{t("title")}</title>
+            </Head>
             <BlogsTop blogs={blogs} />
             <GradientColon />
             {blogs.length > 0 && (
