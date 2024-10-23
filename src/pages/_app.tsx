@@ -37,7 +37,7 @@ export default function App({
                                     <Header/>
                                     <Component {...pageProps} />
 
-                                    <Analytics />
+                                    <Analytics />c
                                     <SnackBarFeedback />
                                     <LoadingScreen />
                                     <Footer />
