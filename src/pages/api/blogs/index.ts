@@ -104,9 +104,11 @@ async function deleteHandler(req: NextApiRequest, res: NextApiResponse) {
     if (result.deletedCount === 0) {
         return res.status(404).send({ error: "Blog not found" });
     }
-    res.revalidate("/blogs/" + req.query._id);
-    res.revalidate("/blogs");
-    res.revalidate("/");
+    const resList = ["/blogs/" + req.query.id, "/blogs", "/"];
+    resList.forEach(async(url) => {
+        await res.revalidate(url);
+    });
+
 
     res.status(200).json({ name: "Emirhan Kartal deleteHandler" });
 }

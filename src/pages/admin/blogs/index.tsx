@@ -42,6 +42,7 @@ export default function Page() {
         const result = await fetch("/api/blogs?id=" + params.id, {
             method: "DELETE",
         });
+        
         if (!result.ok) {
             setRows(rowsClone);
             alert(result.statusText);
