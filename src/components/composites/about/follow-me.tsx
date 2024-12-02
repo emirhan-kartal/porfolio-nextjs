@@ -112,7 +112,7 @@ export default function FollowMe() {
                                     <GradientIcon
                                         icon={"akar-icons:linkedin-fill"}
                                         link={
-                                            "https://www.linkedin.com/in/emirhankartal/"
+                                            "https://www.linkedin.com/in/emirhan-kartal-612ab618a/"
                                         }
                                     />
                                 </Box>

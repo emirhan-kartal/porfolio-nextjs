@@ -91,7 +91,7 @@ export default function Footer({ className = "" }: { className?: string }) {
                         />
                         <GradientIcon
                             icon={"akar-icons:linkedin-fill"}
-                            link={"https://www.linkedin.com/in/emirhankartal/"}
+                            link={"https://www.linkedin.com/in/emirhan-kartal-612ab618a/"}
                         />
                     </Grid>
                 </Grid>
