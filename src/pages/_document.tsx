@@ -9,7 +9,7 @@ export default function Document(props: any) {
                 <script
                     async
                     src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9168305926758120"
-                    crossorigin="anonymous"
+                    crossOrigin="anonymous"
                 ></script>
                 <meta charSet="utf-8" />
                 <meta
