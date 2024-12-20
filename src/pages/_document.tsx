@@ -6,6 +6,11 @@ export default function Document(props: any) {
     return (
         <Html lang={props.locale}>
             <Head>
+                <script
+                    async
+                    src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9168305926758120"
+                    crossorigin="anonymous"
+                ></script>
                 <meta charSet="utf-8" />
                 <meta
                     name="description"
